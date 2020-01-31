@@ -17,13 +17,12 @@ public class Cola<T> {
         fin = frente;
     }
 
-    public void agregar(T elem) {
+    public void agregar(T elem) throws ColaLlenaException{
         if (isEmpty()) {
             datos[fin] = elem;
 
         } else if (isFull()) {
-            System.out.println("Cola llena");
-            return;
+            throw new ColaLlenaException("Error Cola Llena");
         } else {
             fin++;
             reiniciar();
@@ -32,14 +31,20 @@ public class Cola<T> {
 
     }
 
-    public T frente() {
+    public T quitar() throws ColaVaciaException{
+        if (isEmpty()) {
+            throw new ColaVaciaException("Error Cola Vacia");
+        }
         T elem = datos[frente];
         datos[frente] = null;
         frente++;
         reiniciar();
         return elem;
     }
-
+    public T frente() throws ColaVaciaException{
+        
+        return datos[frente];
+    }
     public boolean isFull() {
         if (frente == 0 && fin == datos.length - 1) {
             return true;
