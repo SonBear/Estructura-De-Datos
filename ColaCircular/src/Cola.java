@@ -17,7 +17,7 @@ public class Cola<T> {
         fin = frente;
     }
 
-    public void agregar(T elem) throws ColaLlenaException{
+    public void agregar(T elem) throws ColaLlenaException {
         if (isEmpty()) {
             datos[fin] = elem;
 
@@ -31,7 +31,7 @@ public class Cola<T> {
 
     }
 
-    public T quitar() throws ColaVaciaException{
+    public T quitar() throws ColaVaciaException {
         if (isEmpty()) {
             throw new ColaVaciaException("Error Cola Vacia");
         }
@@ -41,10 +41,14 @@ public class Cola<T> {
         reiniciar();
         return elem;
     }
-    public T frente() throws ColaVaciaException{
-        
+
+    public T frente() throws ColaVaciaException {
+        if (isEmpty()) {
+            throw new ColaVaciaException("Error Cola Vacia");
+        }
         return datos[frente];
     }
+
     public boolean isFull() {
         if (frente == 0 && fin == datos.length - 1) {
             return true;
@@ -57,16 +61,19 @@ public class Cola<T> {
     }
 
     public void reiniciar() {
-        if (fin >= datos.length) {
+        if (fin > datos.length - 1) {
             fin = 0;
         }
-        if (frente >= datos.length) {
+        if (frente > datos.length - 1) {
             frente = 0;
         }
     }
 
     @Override
     public String toString() {
+        if (isEmpty()) {
+            return "";
+        }
         String salida = "";
         int aux = frente;
 
@@ -79,6 +86,7 @@ public class Cola<T> {
             }
 
         }
+
         return salida + datos[aux];
     }
 
