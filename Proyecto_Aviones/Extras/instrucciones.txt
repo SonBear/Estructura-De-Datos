@@ -1,0 +1,5 @@
+	             Instrucciones
+
+1.Para generar Avion solo debe oprimir el boton generar, 
+recuerde que este desaparecera una ingrese el numero de 
+vuelos que necesite.

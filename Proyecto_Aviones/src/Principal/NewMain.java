@@ -8,7 +8,6 @@ package Principal;
 import Controlador.Controlador;
 import Modelo.SistemaDeVuelos;
 import Vista.MenuPrincipal;
-import sun.misc.Queue;
 
 /**
  *
@@ -20,12 +19,8 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MenuPrincipal menu = new MenuPrincipal();
-        SistemaDeVuelos si = new SistemaDeVuelos();
-        Controlador cont = new Controlador(menu, si);
+        Controlador cont = new Controlador(new MenuPrincipal(), new SistemaDeVuelos());
         cont.iniciar();
-        Queue<Integer> q = new Queue<>();
 
     }
-
 }

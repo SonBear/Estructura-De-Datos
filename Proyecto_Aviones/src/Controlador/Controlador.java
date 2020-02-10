@@ -8,16 +8,13 @@ import Vista.MenuPrincipal;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowStateListener;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author emman
  */
-public class Controlador implements ActionListener, WindowStateListener, WindowFocusListener {
+public class Controlador implements ActionListener {
 
     private MenuPrincipal menuPrincipal;
     private SistemaDeVuelos sistemaDeVuelos;
@@ -37,14 +34,13 @@ public class Controlador implements ActionListener, WindowStateListener, WindowF
     }
 
     private void initMisComponentes() {
-        menuPrincipal.addWindowStateListener(this);
         menuPrincipal.getGenerarVuelos().addActionListener(this);
         menuPrincipal.getAgregarAviones().addActionListener(this);
         menuPrincipal.getQuitarAviones().addActionListener(this);
         menuPrincipal.getPrioridadAviones().addActionListener(this);
         menuPrincipal.getItemAyuda().addActionListener(this);
         menuPrincipal.getItemSalir().addActionListener(this);
-        menuPrincipal.getPanelVuelos().setBackground(Color.WHITE);
+        menuPrincipal.getPanelVuelos().setBackground(new Color(220, 254, 220));
     }
 
     @Override
@@ -59,7 +55,7 @@ public class Controlador implements ActionListener, WindowStateListener, WindowF
                         menuPrincipal.getGenerarVuelos().setVisible(false);
 
                     } catch (NumberFormatException ex) {
-
+                        JOptionPane.showMessageDialog(menuPrincipal, "Ingrese numeros", "Error", 0);
                     }
                     break;
 
@@ -76,7 +72,9 @@ public class Controlador implements ActionListener, WindowStateListener, WindowF
                         JOptionPane.showMessageDialog(menuPrincipal, "El avion con numero " + numVuelo + " esta por salir");
 
                     } catch (NumberFormatException ex) {
-
+                        JOptionPane.showMessageDialog(menuPrincipal, "Ingrese numeros", "Error", 0);
+                    } catch (QueueEmptyException ex) {
+                        JOptionPane.showMessageDialog(menuPrincipal, "El avion con numero ese numero no se encuantra", "Error", 0);
                     }
                     break;
 
@@ -101,26 +99,4 @@ public class Controlador implements ActionListener, WindowStateListener, WindowF
 
         }
     }
-
-    @Override
-    public void windowStateChanged(WindowEvent e
-    ) {
-        if (e.getNewState() == e.getID()) {
-            System.out.println("2");
-        }
-        System.out.println("ldsahfkjasfh");
-    }
-
-    @Override
-    public void windowGainedFocus(WindowEvent e
-    ) {
-        System.out.println("sada");
-    }
-
-    @Override
-    public void windowLostFocus(WindowEvent e
-    ) {
-        System.out.println("1111");
-    }
-
 }

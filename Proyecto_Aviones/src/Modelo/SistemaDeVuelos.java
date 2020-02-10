@@ -11,7 +11,7 @@ public class SistemaDeVuelos extends Thread {
 
     public SistemaDeVuelos() {
         colaAviones = new QueueAvion();
-        pilaTemporal = new StackDeque<Avion>();
+        pilaTemporal = new StackDeque<>();
     }
 
     public void generarVuelos(int numeroDeVuelos) {
@@ -34,7 +34,7 @@ public class SistemaDeVuelos extends Thread {
         }
     }
 
-    public void priorizarAvion(Avion avion) {
+    public void priorizarAvion(Avion avion) throws QueueEmptyException {
         try {
             if (colaAviones.font().getId() == avion.getId()) {
                 System.out.println("El avion " + colaAviones.dequeue() + " ha salido");
@@ -48,17 +48,25 @@ public class SistemaDeVuelos extends Thread {
                     }
                 }
 
-                while (!pilaTemporal.isEmpty()) {
-                    colaAviones.insertFont(pilaTemporal.pop());
-                }
+                addFont();
             }
 
         } catch (QueueEmptyException ex) {
-            System.out.println("El avion no se encuentra");
+            addFont();
+            throw new QueueEmptyException("ColaLlena");
+        }
+
+    }
+
+    private void addFont() {
+        try {
+            while (!pilaTemporal.isEmpty()) {
+                colaAviones.insertFont(pilaTemporal.pop());
+            }
+
         } catch (StackEmptyException ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 
     public QueueDeque<Avion> getColaAviones() {

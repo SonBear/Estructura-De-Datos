@@ -50,8 +50,8 @@ public class DibujadorEsquema {
         dibujarpanel(MAXIMO_LABELS_LINEA, noFilas, g, INICIO_X, y);
 
         for (int i = 0, x = INICIO_X; i < colaAviones.length; i++, x += ANCHO_LABEL + SEPARACION) {
-            g.setColor(Color.red);
-            g.setStroke(new BasicStroke(2));
+            g.setColor(Color.GRAY);
+            g.setStroke(new BasicStroke(3));
 
             g.fillRect(x, y, ANCHO_LABEL + avionIcon.getIconHeight(), ALTO_LABEL);
 
@@ -77,7 +77,7 @@ public class DibujadorEsquema {
     }
 
     private void dibujarTriangulo(Graphics2D g, int x, int y) {
-        g.setColor(Color.blue);
+        g.setColor(Color.black);
         GeneralPath triangulo = new GeneralPath();
 
         int[] px = {x + ANCHO_LABEL + 2, x + ANCHO_LABEL + 2, x + ANCHO_LABEL + 10};

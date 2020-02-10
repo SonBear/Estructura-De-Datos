@@ -32,7 +32,8 @@ public class MenuAyuda extends javax.swing.JFrame {
         textHelp = new javax.swing.JTextArea();
         btnSalir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ayuda");
 
         textHelp.setColumns(20);
         textHelp.setRows(5);
