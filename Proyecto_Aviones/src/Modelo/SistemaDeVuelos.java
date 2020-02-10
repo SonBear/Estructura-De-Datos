@@ -1,9 +1,5 @@
 package Modelo;
 
-/**
- *
- * @author emman
- */
 public class SistemaDeVuelos extends Thread {
 
     private QueueAvion colaAviones;

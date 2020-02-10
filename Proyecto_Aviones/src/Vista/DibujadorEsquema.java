@@ -9,10 +9,6 @@ import java.awt.geom.GeneralPath;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-/**
- *
- * @author emman
- */
 public class DibujadorEsquema {
 
     private int ANCHO_PANEL;

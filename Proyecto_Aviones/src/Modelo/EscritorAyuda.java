@@ -16,18 +16,23 @@ import javax.swing.JTextArea;
  */
 public class EscritorAyuda {
 
-    public static void escribir(JTextArea txt) throws FileNotFoundException {
-        File file = new File("Proyecto_Aviones/Extras/instrucciones.txt");
+    public static void escribir(JTextArea txt) {
+        try {
+            File file = new File("Extras\\instrucciones.txt");
 
-        Scanner leer = new Scanner(file);
+            Scanner leer = new Scanner(file);
 
-        String resultado = "";
-        while (leer.hasNext()) {
-            resultado += leer.nextLine() + "\n";
+            String resultado = "";
+            while (leer.hasNext()) {
+                resultado += leer.nextLine() + "\n";
+            }
+
+            txt.setText(resultado);
+            leer.close();
+
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
-
-        txt.setText(resultado);
-        leer.close();
     }
 
 }

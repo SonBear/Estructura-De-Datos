@@ -9,9 +9,6 @@ import Modelo.EscritorAyuda;
 import Vista.MenuAyuda;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,11 +27,7 @@ public class ControladorMenuAyuda implements ActionListener {
 
     public void initComponets() {
         menu.getBtnSalir().addActionListener(this);
-        try {
-            EscritorAyuda.escribir(menu.getTextHelp());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ControladorMenuAyuda.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        EscritorAyuda.escribir(menu.getTextHelp());
     }
 
     @Override

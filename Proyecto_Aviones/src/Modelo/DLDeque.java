@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
-/**
- *
- * @author emman
- * @param <T>
- */
 public class DLDeque<T> implements Deque<T> {
 
     private DLNode<T> top;
@@ -17,8 +7,8 @@ public class DLDeque<T> implements Deque<T> {
     private int size;
 
     public DLDeque() {
-        top = new DLNode<T>();
-        tail = new DLNode<T>();
+        top = new DLNode<>();
+        tail = new DLNode<>();
         top.setNext(tail);
         tail.setPrev(top);
         size = 0;
