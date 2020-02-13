@@ -1,4 +1,7 @@
-package Modelo;
+package Modelo.Utilities;
+
+import Modelo.Exceptions.DequeEmptyException;
+import Modelo.Exceptions.StackEmptyException;
 
 public class StackDeque<T> implements Stack<T> {
 

@@ -13,3 +13,9 @@ eligir el numero de vuelo que necesite salir ahora.
 
 4. El boton quitar sirve para eliminar el siguiente vuelo en
 cola.
+
+5. En el menu de arriba se
+puede encontrar opciones de salir, ayuda y reiniciar.
+
+6. El boton reiniciar borra todo los datos, y regresa
+el boton de generar vuelos.

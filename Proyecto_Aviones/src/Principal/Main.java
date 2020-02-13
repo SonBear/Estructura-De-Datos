@@ -1,13 +1,11 @@
 package Principal;
 
-import Controlador.Controlador;
-import Modelo.SistemaDeVuelos;
-import Vista.MenuPrincipal;
+import Controlador.ControladorPrincipal;
 
 public class Main {
 
     public static void main(String[] args) {
-        Controlador cont = new Controlador(new MenuPrincipal(), new SistemaDeVuelos());
+        ControladorPrincipal cont = new ControladorPrincipal();
         cont.iniciar();
 
     }

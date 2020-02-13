@@ -5,10 +5,13 @@
  */
 package Controlador;
 
-import Modelo.EscritorAyuda;
+import Modelo.Utilities.EscritorAyuda;
 import Vista.MenuAyuda;
+import java.awt.Font;
+import static java.awt.Font.HANGING_BASELINE;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JFrame;
 
 /**
  *
@@ -16,22 +19,29 @@ import java.awt.event.ActionListener;
  */
 public class ControladorMenuAyuda implements ActionListener {
 
-    MenuAyuda menu = new MenuAyuda();
+    MenuAyuda menu;
+    EscritorAyuda escritor;
 
     public ControladorMenuAyuda() {
+        this.menu = new MenuAyuda();
+        escritor = new EscritorAyuda();
         initComponets();
-        menu.setLocationRelativeTo(null);
-        menu.setVisible(true);
 
     }
 
     public void initComponets() {
         menu.getBtnSalir().addActionListener(this);
-        EscritorAyuda.escribir(menu.getTextHelp());
+        menu.getTextHelp().setFont(new Font("D", HANGING_BASELINE, 12));
+        menu.getTextHelp().setEditable(false);
+        escritor.escribir(menu.getTextHelp());
+    }
+
+    public void iniciar(JFrame frame) {
+        menu.setLocationRelativeTo(frame);
+        menu.setVisible(true);
     }
 
     @Override
-
     public void actionPerformed(ActionEvent e) {
         menu.dispose();
     }

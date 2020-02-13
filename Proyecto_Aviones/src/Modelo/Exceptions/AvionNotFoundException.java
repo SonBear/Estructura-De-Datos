@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package Modelo.Exceptions;
 
 /**
  *
  * @author emman
  */
-class DequeEmptyException extends Exception {
+public class AvionNotFoundException extends Exception {
 
-    public DequeEmptyException(String message) {
+    public AvionNotFoundException(String message) {
         super(message);
     }
 

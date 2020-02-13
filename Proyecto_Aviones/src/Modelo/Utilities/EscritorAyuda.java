@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package Modelo.Utilities;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,9 +16,12 @@ import javax.swing.JTextArea;
  */
 public class EscritorAyuda {
 
-    public static void escribir(JTextArea txt) {
+    public void escribir(JTextArea txt) {
+
         try {
-            File file = new File("Extras\\instrucciones.txt");
+
+            File file;
+            file = new File("instrucciones.txt");
 
             Scanner leer = new Scanner(file);
 
@@ -28,6 +31,7 @@ public class EscritorAyuda {
             }
 
             txt.setText(resultado);
+
             leer.close();
 
         } catch (FileNotFoundException ex) {

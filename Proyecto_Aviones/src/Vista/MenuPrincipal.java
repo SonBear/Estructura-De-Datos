@@ -3,6 +3,8 @@ package Vista;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JToolBar;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
@@ -17,14 +19,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelVuelos = new javax.swing.JPanel();
+        jToolBar1 = new javax.swing.JToolBar();
         btnActualizar = new javax.swing.JButton();
         quitarAviones = new javax.swing.JButton();
         prioridadAviones = new javax.swing.JButton();
-        panelVuelos = new javax.swing.JPanel();
         generarVuelos = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
         menuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemAyuda = new javax.swing.JMenuItem();
+        itemReiniciar = new javax.swing.JMenuItem();
         itemSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -32,40 +37,69 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setMaximumSize(new java.awt.Dimension(400, 350));
         setMinimumSize(new java.awt.Dimension(400, 350));
 
-        btnActualizar.setText("Actualizar");
-        btnActualizar.setActionCommand("agregar");
-
-        quitarAviones.setText("Quitar");
-        quitarAviones.setActionCommand("quitar");
-
-        prioridadAviones.setText("Prioridad");
-        prioridadAviones.setActionCommand("prioridad");
-
-        generarVuelos.setText("Generar vuelos");
-        generarVuelos.setActionCommand("generarVuelos");
-
         javax.swing.GroupLayout panelVuelosLayout = new javax.swing.GroupLayout(panelVuelos);
         panelVuelos.setLayout(panelVuelosLayout);
         panelVuelosLayout.setHorizontalGroup(
             panelVuelosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVuelosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(generarVuelos)
-                .addGap(136, 136, 136))
+            .addGap(0, 520, Short.MAX_VALUE)
         );
         panelVuelosLayout.setVerticalGroup(
             panelVuelosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVuelosLayout.createSequentialGroup()
-                .addContainerGap(180, Short.MAX_VALUE)
-                .addComponent(generarVuelos)
-                .addContainerGap())
+            .addGap(0, 342, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
+        jToolBar1.setBackground(new java.awt.Color(255, 236, 212));
+        jToolBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jToolBar1.setRollover(true);
+        jToolBar1.setAutoscrolls(false);
+        jToolBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.SE_RESIZE_CURSOR));
+
+        btnActualizar.setBackground(new java.awt.Color(255, 251, 212));
+        btnActualizar.setText("Actualizar pantalla");
+        btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActualizar.setFocusable(false);
+        btnActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnActualizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnActualizar);
+
+        quitarAviones.setBackground(new java.awt.Color(255, 251, 212));
+        quitarAviones.setText("Quitar vuelo");
+        quitarAviones.setActionCommand("quitar");
+        quitarAviones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        quitarAviones.setFocusable(false);
+        quitarAviones.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        quitarAviones.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(quitarAviones);
+
+        prioridadAviones.setBackground(new java.awt.Color(255, 251, 212));
+        prioridadAviones.setText("Priorizar vuelo");
+        prioridadAviones.setActionCommand("prioridad");
+        prioridadAviones.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        prioridadAviones.setFocusable(false);
+        prioridadAviones.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        prioridadAviones.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(prioridadAviones);
+
+        generarVuelos.setBackground(new java.awt.Color(255, 251, 212));
+        generarVuelos.setText("Generar vuelos");
+        generarVuelos.setActionCommand("generarVuelos");
+        generarVuelos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        generarVuelos.setFocusable(false);
+        generarVuelos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        generarVuelos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(generarVuelos);
+        jToolBar1.add(jProgressBar1);
+
+        menuBar.setBackground(new java.awt.Color(255, 255, 255));
+
+        jMenu1.setText("Opciones");
 
         itemAyuda.setText("Ayuda");
         itemAyuda.setActionCommand("darAyuda");
         jMenu1.add(itemAyuda);
+
+        itemReiniciar.setText("Reiniciar");
+        jMenu1.add(itemReiniciar);
 
         itemSalir.setText("Salir");
         itemSalir.setActionCommand("salirE");
@@ -80,28 +114,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(btnActualizar)
-                .addGap(56, 56, 56)
-                .addComponent(quitarAviones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addComponent(prioridadAviones)
-                .addGap(36, 36, 36))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelVuelos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(panelVuelos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(prioridadAviones)
-                    .addComponent(quitarAviones)
-                    .addComponent(btnActualizar))
-                .addGap(40, 40, 40))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -135,12 +159,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
         return itemSalir;
     }
 
+    public JMenuItem getItemReiniciar() {
+        return itemReiniciar;
+    }
+
+    public JProgressBar getjProgressBar1() {
+        return jProgressBar1;
+    }
+
+    public JToolBar getjToolBar1() {
+        return jToolBar1;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton generarVuelos;
     private javax.swing.JMenuItem itemAyuda;
+    private javax.swing.JMenuItem itemReiniciar;
     private javax.swing.JMenuItem itemSalir;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel panelVuelos;
     private javax.swing.JButton prioridadAviones;

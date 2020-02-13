@@ -1,4 +1,6 @@
-package Modelo;
+package Modelo.Utilities;
+
+import Modelo.Exceptions.DequeEmptyException;
 
 public class DLDeque<T> implements Deque<T> {
 
@@ -71,23 +73,22 @@ public class DLDeque<T> implements Deque<T> {
     @Override
     public T removeFirst() throws DequeEmptyException {
         if (isEmpty()) {
-            throw new DequeEmptyException("F");
-        } else {
-            DLNode<T> first = top.getNext();
-            T temp = first.getElement();
-            DLNode<T> second = first.getNext();
-            top.setNext(second);
-            second.setPrev(top);
-            size--;
-            return temp;
+            throw new DequeEmptyException("Deque Vacio");
         }
+        DLNode<T> first = top.getNext();
+        T temp = first.getElement();
+        DLNode<T> second = first.getNext();
+        top.setNext(second);
+        second.setPrev(top);
+        size--;
+        return temp;
 
     }
 
     @Override
     public T removeLast() throws DequeEmptyException {
         if (isEmpty()) {
-            throw new DequeEmptyException("F");
+            throw new DequeEmptyException("Deque Vacio");
         }
         DLNode<T> last = tail.getPrev();
         T temp = last.getElement();
@@ -101,7 +102,7 @@ public class DLDeque<T> implements Deque<T> {
     @Override
     public T first() throws DequeEmptyException {
         if (isEmpty()) {
-            throw new DequeEmptyException("F");
+            throw new DequeEmptyException("Deque Vacio");
         }
         return (T) top.getNext().getElement();
     }
@@ -109,7 +110,7 @@ public class DLDeque<T> implements Deque<T> {
     @Override
     public T last() throws DequeEmptyException {
         if (isEmpty()) {
-            throw new DequeEmptyException("F");
+            throw new DequeEmptyException("Deque Vacio");
         }
         return (T) tail.getPrev().getElement();
     }

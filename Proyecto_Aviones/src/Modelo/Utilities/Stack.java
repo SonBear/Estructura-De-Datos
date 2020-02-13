@@ -1,4 +1,6 @@
-package Modelo;
+package Modelo.Utilities;
+
+import Modelo.Exceptions.StackEmptyException;
 
 public interface Stack<T> {
 

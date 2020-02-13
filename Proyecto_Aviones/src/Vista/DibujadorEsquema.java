@@ -1,13 +1,16 @@
 package Vista;
 
-import Modelo.QueueEmptyException;
+import Modelo.Avion;
+import Modelo.Utilities.Deque;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
+import static java.lang.Thread.sleep;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 public class DibujadorEsquema {
 
@@ -28,14 +31,23 @@ public class DibujadorEsquema {
 
     private JPanel panel;
     private ImageIcon avionIcon;
+    private Deque<Avion> aviones;
+    private JProgressBar progressBar;
 
-    public DibujadorEsquema(JPanel panel) {
-        this.panel = panel;
+    public DibujadorEsquema(MenuPrincipal menu, Deque<Avion> colaAviones) {
+        this.panel = menu.getPanelVuelos();
+        this.progressBar = menu.getjProgressBar1();
         avionIcon = new ImageIcon(getClass().getResource("avion.gif"));
-
+        this.aviones = colaAviones;
     }
 
-    public void dibujar(String[] colaAviones) throws QueueEmptyException {
+    public void dibujar() {
+        if (aviones.isEmpty()) {
+            progressBar.setValue(0);
+            panel.repaint();
+            return;
+        }
+        String[] colaAviones = aviones.toString().split(" <=> ");
         ANCHO_PANEL = panel.getWidth();
         ALTO_PANEL = panel.getHeight();
         MAXIMO_LABELS_LINEA = (ANCHO_PANEL - INICIO_X * 2) / (ANCHO_LABEL + SEPARACION);
@@ -44,9 +56,10 @@ public class DibujadorEsquema {
         int y = INICIO_Y;
         noFilas = colaAviones.length / MAXIMO_LABELS_LINEA;
         dibujarpanel(MAXIMO_LABELS_LINEA, noFilas, g, INICIO_X, y);
-
+        g.setColor(Color.red.darker());
+        progressBar.setMaximum(colaAviones.length);
         for (int i = 0, x = INICIO_X; i < colaAviones.length; i++, x += ANCHO_LABEL + SEPARACION) {
-            g.setColor(Color.GRAY);
+            progressBar.setValue(i + 1);
             g.setStroke(new BasicStroke(3));
 
             g.fillRect(x, y, ANCHO_LABEL + avionIcon.getIconHeight(), ALTO_LABEL);
@@ -58,9 +71,15 @@ public class DibujadorEsquema {
                 x = INICIO_X - (ANCHO_LABEL + SEPARACION);
                 y += SEPARACION_LINEA;
             }
+            try {
+                sleep(100);
+            } catch (InterruptedException ex) {
 
+                System.out.println(ex.getMessage());
+                return;
+            }
+            g.setColor(Color.GRAY);
         }
-
         g.dispose();
 
     }

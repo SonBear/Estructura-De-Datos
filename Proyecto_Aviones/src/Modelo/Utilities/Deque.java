@@ -1,4 +1,6 @@
-package Modelo;
+package Modelo.Utilities;
+
+import Modelo.Exceptions.DequeEmptyException;
 
 public interface Deque<T> {
 

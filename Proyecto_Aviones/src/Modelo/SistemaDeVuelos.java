@@ -1,45 +1,57 @@
 package Modelo;
 
+import Modelo.Exceptions.DequeEmptyException;
+import Modelo.Exceptions.ValorEntradaVuelosException;
+import Modelo.Exceptions.AvionNotFoundException;
+import Modelo.Exceptions.StackEmptyException;
+import Modelo.Utilities.Stack;
+import Modelo.Utilities.CalculadoraDeNumeros;
+import Modelo.Utilities.StackDeque;
+import Modelo.Utilities.DLDeque;
+import Modelo.Utilities.Deque;
+
 public class SistemaDeVuelos extends Thread {
 
-    private QueueAvion colaAviones;
-    private StackDeque<Avion> pilaTemporal;
+    private Deque<Avion> colaAviones;
+    private Stack<Avion> pilaTemporal;
+    private final int LIMITEVUELOS = 500;
 
     public SistemaDeVuelos() {
-        colaAviones = new QueueAvion();
+        colaAviones = new DLDeque<>();
         pilaTemporal = new StackDeque<>();
     }
 
-    public void generarVuelos(int numeroDeVuelos) {
-        colaAviones = new QueueAvion();
-        for (int i = 0; i < numeroDeVuelos; i++) {
-            int valorEntero = (int) Math.floor(Math.random() * (100 - 301) + 300);
-            colaAviones.enqueue(new Avion(valorEntero));
+    public void generarVuelos(int numeroDeVuelos) throws ValorEntradaVuelosException {
+        if (numeroDeVuelos > LIMITEVUELOS || numeroDeVuelos <= 0) {
+            throw new ValorEntradaVuelosException("Error en el ingreso de datos");
+        }
+        int[] idAviones = CalculadoraDeNumeros.generarNumerosAleatorio(numeroDeVuelos, LIMITEVUELOS);
+        for (int i = 0; i < idAviones.length; i++) {
+            agregarAvion(idAviones[i]);
         }
     }
 
-    public void agregarAvion(Avion avion) {
-        colaAviones.enqueue(avion);
+    public void agregarAvion(int id) {
+        colaAviones.insertLast(new Avion(id));
     }
 
-    public void eliminarAvion() throws QueueEmptyException {
+    public void eliminarAvion() {
         try {
-            colaAviones.dequeue();
-        } catch (QueueEmptyException ex) {
+            colaAviones.removeFirst();
+        } catch (DequeEmptyException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public void priorizarAvion(Avion avion) throws QueueEmptyException {
+    public void priorizarAvion(Avion avion) throws AvionNotFoundException {
         try {
-            if (colaAviones.font().getId() == avion.getId()) {
-                System.out.println("El avion " + colaAviones.dequeue() + " ha salido");
+            if (colaAviones.first().getId() == avion.getId()) {
+                System.out.println("El avion " + colaAviones.removeFirst() + " ha salido");
             } else {
-                while (colaAviones.font().getId() != avion.getId()) {
-                    pilaTemporal.push(colaAviones.dequeue());
-                    if (colaAviones.font().getId() == avion.getId()) {
-                        System.out.println("El avion con id " + colaAviones.font().getId() + " ha salido");
-                        colaAviones.dequeue();
+                while (colaAviones.first().getId() != avion.getId()) {
+                    pilaTemporal.push(colaAviones.removeFirst());
+                    if (colaAviones.first().getId() == avion.getId()) {
+                        System.out.println("El avion con id " + colaAviones.removeFirst().getId() + " ha salido");
                         break;
                     }
                 }
@@ -47,9 +59,10 @@ public class SistemaDeVuelos extends Thread {
                 addFont();
             }
 
-        } catch (QueueEmptyException ex) {
+        } catch (DequeEmptyException ex) {
             addFont();
-            throw new QueueEmptyException("ColaLlena");
+
+            throw new AvionNotFoundException("Avion no encontrado");
         }
 
     }
@@ -57,7 +70,7 @@ public class SistemaDeVuelos extends Thread {
     private void addFont() {
         try {
             while (!pilaTemporal.isEmpty()) {
-                colaAviones.insertFont(pilaTemporal.pop());
+                colaAviones.insertFirst(pilaTemporal.pop());
             }
 
         } catch (StackEmptyException ex) {
@@ -65,11 +78,11 @@ public class SistemaDeVuelos extends Thread {
         }
     }
 
-    public QueueDeque<Avion> getColaAviones() {
+    public Deque<Avion> getColaAviones() {
         return colaAviones;
     }
 
-    public StackDeque<Avion> getPilaTemporal() {
+    public Stack<Avion> getPilaTemporal() {
         return pilaTemporal;
     }
 
@@ -83,6 +96,16 @@ public class SistemaDeVuelos extends Thread {
     @Override
     public String toString() {
         return colaAviones.toString();
+    }
+
+    public void elminarTodo() {
+        while (!colaAviones.isEmpty()) {
+            try {
+                colaAviones.removeLast();
+            } catch (DequeEmptyException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
 }

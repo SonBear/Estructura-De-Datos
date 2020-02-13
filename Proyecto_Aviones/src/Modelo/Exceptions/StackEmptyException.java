@@ -1,4 +1,4 @@
-package Modelo;
+package Modelo.Exceptions;
 
 public class StackEmptyException extends Exception {
 
