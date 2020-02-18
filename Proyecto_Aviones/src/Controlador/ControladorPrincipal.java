@@ -71,15 +71,24 @@ public class ControladorPrincipal implements ActionListener, Runnable {
                     break;
 
                 case "quitar":
+                    if (sistemaDeVuelos.getColaAviones().isEmpty()) {
+                        JOptionPane.showMessageDialog(menuPrincipal, "Cola de vuelos vacia", "Error", 0);
+                    } else {
+                        sistemaDeVuelos.eliminarAvion();
 
-                    sistemaDeVuelos.eliminarAvion();
+                    }
 
                     break;
 
                 case "prioridad":
-                    int numVuelo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de vuelo a eliminar"));
-                    sistemaDeVuelos.priorizarAvion(new Avion(numVuelo));
-                    JOptionPane.showMessageDialog(menuPrincipal, "El avion con numero " + numVuelo + " esta por salir");
+                    if (sistemaDeVuelos.getColaAviones().isEmpty()) {
+                        JOptionPane.showMessageDialog(menuPrincipal, "Cola de vuelos vacia", "Error", 0);
+                    } else {
+
+                        int numVuelo = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero de vuelo a eliminar"));
+                        sistemaDeVuelos.priorizarAvion(new Avion(numVuelo));
+                        JOptionPane.showMessageDialog(menuPrincipal, "El avion con numero " + numVuelo + " esta por salir");
+                    }
 
                     break;
 

@@ -3,18 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/Stack.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Principal/Main.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/DLNode.java</file>
+            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Controlador/ControladorPrincipal.java</file>
             <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/StackDeque.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Vista/DibujadorEsquema.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Vista/MenuPrincipal.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/SistemaDeVuelos.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Exceptions/ValorEntradaVuelosException.java</file>
+            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/DLNode.java</file>
             <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/CalculadoraDeNumeros.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/Deque.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Controlador/ControladorMenuAyuda.java</file>
-            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/EscritorAyuda.java</file>
+            <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/SistemaDeVuelos.java</file>
             <file>file:/C:/Users/emman/Desktop/Estructura%20de%20datos/PROGRAMAS/Proyecto_Aviones/src/Modelo/Utilities/DLDeque.java</file>
         </group>
     </open-files>
