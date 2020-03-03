@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,7 +22,9 @@ public class EscritorTablas {
         model.addColumn("Ruta");
         model.addColumn("Fecha");
         for (int i = 0; i < datos.length; i++) {
-            model.addRow(new String[]{datos[i].getName(), datos[i].getPath(), datos[i].lastModified() + " "});
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String date = sdf.format(datos[i].lastModified());
+            model.addRow(new String[]{datos[i].getName(), datos[i].getPath(), date});
         }
         tabla.setModel(model);
     }

@@ -57,15 +57,9 @@ public class ControladorPrincipal implements ActionListener {
                 case "seleccionarRuta":
                     String path2 = obtenerRuta(JFileChooser.DIRECTORIES_ONLY);
                     menuPrincipal.getTxtBuscarDirectorio().setText(path2);
-                    if (menuPrincipal.getCheckDirectorios().isSelected()) {
-                        archivos = buscadorArchivos.obtenerListaTodosArchivos(path2);
-                        Algoritmos.sort(archivos, checkSeleccionado());
-                        EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
-                    } else {
-                        archivos = buscadorArchivos.enlistarArchivos(path2);
-                        Algoritmos.sort(archivos, checkSeleccionado());
-                        EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
-                    }
+                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
+                    Algoritmos.sort(archivos, checkSeleccionado());
+                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
 
                     break;
                 default:
@@ -76,6 +70,14 @@ public class ControladorPrincipal implements ActionListener {
             errorMessage(ex.getMessage());
         } catch (NoCheckSelectedException ex) {
             errorMessage(ex.getMessage());
+        }
+    }
+
+    public File[] obtenerArchivos(boolean check, String path) {
+        if (check) {
+            return buscadorArchivos.obtenerListaTodosArchivos(path);
+        } else {
+            return buscadorArchivos.enlistarArchivos(path);
         }
     }
 
