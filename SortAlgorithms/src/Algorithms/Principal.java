@@ -20,10 +20,11 @@ public class Principal {
         Controlador ne = new Controlador();
         //ne.iniciarPrimeraVez();
         ne.serArrays();
-        System.out.println("Bubble Sort");
-        ne.obtenerResultadosBubleSort();
-        //System.out.println("Insertion Sort");
-        //ne.obtenerResultadosInsertionSort();
+
+        //System.out.println("Bubble Sort");
+        //ne.obtenerResultadosBubleSort();
+        System.out.println("Insertion Sort");
+        ne.obtenerResultadosInsertionSort();
         //System.out.println("Merge Sort");
         //ne.obtenerResultadosMergeSort();
         //System.out.println("Quick Sort");

@@ -26,7 +26,9 @@ public class EscritorTablas {
             String date = sdf.format(datos[i].lastModified());
             model.addRow(new String[]{datos[i].getName(), datos[i].getPath(), date});
         }
+
         tabla.setModel(model);
+
     }
 
 }

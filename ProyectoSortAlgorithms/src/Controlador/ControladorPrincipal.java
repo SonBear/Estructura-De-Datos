@@ -6,14 +6,18 @@
 package Controlador;
 
 import Excepciones.DirectoryNoSelectedException;
+import Excepciones.FileNoFoundException;
 import Excepciones.NoCheckSelectedException;
+import Excepciones.NoFileNameWriteException;
 import Modelo.Algoritmos;
+import Modelo.BinarySearch;
 import Modelo.BuscadorArchivos;
 import Modelo.EscritorTablas;
 import Vista.MenuPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JFileChooser;
@@ -24,6 +28,8 @@ import javax.swing.JOptionPane;
  * @author emman
  */
 public class ControladorPrincipal implements ActionListener {
+
+    private File[] archivos;
 
     MenuPrincipal menuPrincipal = new MenuPrincipal();
     BuscadorArchivos buscadorArchivos = new BuscadorArchivos();
@@ -47,11 +53,11 @@ public class ControladorPrincipal implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            File[] archivos;
             switch (e.getActionCommand()) {
                 case "buscarArchivo":
                     String nombreArchivo = menuPrincipal.getTxtBuscarArchivo().getText();
-
+                    File[] a = BinarySearch.search(archivos, nombreArchivo);
+                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosEncontrados(), a);
                     break;
 
                 case "seleccionarRuta":
@@ -70,7 +76,15 @@ public class ControladorPrincipal implements ActionListener {
             errorMessage(ex.getMessage());
         } catch (NoCheckSelectedException ex) {
             errorMessage(ex.getMessage());
+        } catch (FileNoFoundException ex) {
+            errorMessage(ex.getMessage());
+        } catch (NoFileNameWriteException ex) {
+            errorMessage(ex.getMessage());
         }
+    }
+
+    public int buscarArchivo(File archivoBuscar, File[] archivos) {
+        return Arrays.binarySearch(archivos, archivoBuscar);
     }
 
     public File[] obtenerArchivos(boolean check, String path) {
@@ -94,7 +108,7 @@ public class ControladorPrincipal implements ActionListener {
     }
 
     public void errorMessage(String mensaje) {
-        JOptionPane.showMessageDialog(menuPrincipal, mensaje);
+        JOptionPane.showMessageDialog(menuPrincipal, mensaje, "Error", 0);
     }
 
     public ButtonModel checkSeleccionado() throws NoCheckSelectedException {
