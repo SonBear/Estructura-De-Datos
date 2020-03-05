@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package Algorithms;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +12,17 @@ import java.io.IOException;
  *
  * @author emman
  */
-public class NewClass {
-    /*Ejemplo mezcla directa*/
+public class NewMain {
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) throws IOException {
-        MezclaDirecta.MEZCLADIRECTA(new File("archivos\\f.dat"), 10);
+        int a[] = {3, 5, 9, 8, 1, 4, 2, 7, 0};
+        Algorithms.mezclaDirecta(a);
+
+        Algorithms.MEZCLADIRECTA(new File("archivos\\f.dat"), 11);
 
     }
+
 }

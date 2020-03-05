@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class ManejadorArchivos {
 
     public static void guardarDatos(File a[]) throws IOException {
-        File file = new File("ME" + a.length + ".txt");
+        File file = new File("archivos\\" + "ME" + a.length + ".dat");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -35,7 +35,7 @@ public class ManejadorArchivos {
 
     public static File[] recuperarDatos(int tamanio) throws FileNotFoundException {
         File a[] = new File[tamanio];
-        File file = new File("ME" + tamanio + ".txt");
+        File file = new File("archivos\\" + "ME" + tamanio + ".dat");
         Scanner scan = new Scanner(file);
         for (int i = 0; scan.hasNext(); i++) {
             a[i] = new File(scan.nextLine());
