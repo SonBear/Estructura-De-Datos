@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,17 +38,17 @@ public class MezclaDirecta {
         FileWriter flWriter2 = new FileWriter(f2);
         BufferedWriter bw2 = new BufferedWriter(flWriter2);
         int k;
-        int dato;
+        String dato;
         while (leerAr.hasNext()) {
 
             for (k = 0; k < n && leerAr.hasNext(); k++) {
 
-                dato = leerAr.nextInt();
+                dato = leerAr.nextLine();
                 bw1.write(dato + "\n");
             }
 
             for (int l = 0; l < n && leerAr.hasNext(); l++) {
-                dato = leerAr.nextInt();
+                dato = leerAr.nextLine();
                 bw2.write(dato + "\n");
 
             }
@@ -65,13 +67,13 @@ public class MezclaDirecta {
         Scanner lF2 = new Scanner(f2);
         int k, j;
         boolean b1 = true, b2 = true;
-        int clave1 = 0, clave2 = 0;
+        String clave1 = "", clave2 = "";
         if (lF1.hasNext()) {
-            clave1 = lF1.nextInt();
+            clave1 = lF1.nextLine();
             b1 = false;
         }
         if (lF2.hasNext()) {
-            clave2 = lF2.nextInt();
+            clave2 = lF2.nextLine();
             b2 = false;
         }
 
@@ -79,12 +81,12 @@ public class MezclaDirecta {
             k = 0;
             j = 0;
             while (((k < n) && (b1 == false)) && ((j < n) && (b2 == false))) {
-                if (clave1 <= clave2) {
+                if (name(clave1).compareTo(name(clave2)) < 0) {//
                     pF.write(clave1 + "\n");
                     b1 = true;
                     k++;
                     if (lF1.hasNext()) {
-                        clave1 = lF1.nextInt();
+                        clave1 = lF1.nextLine();
                         b1 = false;
                     }
                 } else {
@@ -92,7 +94,7 @@ public class MezclaDirecta {
                     b2 = true;
                     j++;
                     if (lF2.hasNext()) {
-                        clave2 = lF2.nextInt();
+                        clave2 = lF2.nextLine();
                         b2 = false;
                     }
                 }
@@ -104,7 +106,7 @@ public class MezclaDirecta {
                     b1 = true;
                     k++;
                     if (lF1.hasNext()) {
-                        clave1 = lF1.nextInt();
+                        clave1 = lF1.nextLine();
                         b1 = false;
                     }
                 }
@@ -117,7 +119,7 @@ public class MezclaDirecta {
                     b2 = true;
                     j++;
                     if (lF2.hasNext()) {
-                        clave2 = lF2.nextInt();
+                        clave2 = lF2.nextLine();
                         b2 = false;
                     }
                 }
@@ -134,13 +136,13 @@ public class MezclaDirecta {
         }
 
         while (lF1.hasNext()) {
-            clave1 = lF1.nextInt();
+            clave1 = lF1.nextLine();
             pF.write(clave1 + "\n");
 
         }
 
         while (lF2.hasNext()) {
-            clave2 = lF2.nextInt();
+            clave2 = lF2.nextLine();
             pF.write(clave2 + "\n");
 
         }
@@ -150,7 +152,16 @@ public class MezclaDirecta {
 
     }
 
-    public static void sort(File[] archivos) {
+    public static void sort(File listaArchivos, int logLista) {
+        try {
+            MEZCLADIRECTA(listaArchivos, logLista);
+        } catch (IOException ex) {
+            Logger.getLogger(MezclaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
+    public static String name(String path) {
+        String name = new File(path).getName().toLowerCase();
+        return name;
     }
 }

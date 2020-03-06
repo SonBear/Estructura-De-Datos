@@ -23,10 +23,10 @@ public class Principal {
 
         //System.out.println("Bubble Sort");
         //ne.obtenerResultadosBubleSort();
-        System.out.println("Insertion Sort");
-        ne.obtenerResultadosInsertionSort();
-        //System.out.println("Merge Sort");
-        //ne.obtenerResultadosMergeSort();
+        //System.out.println("Insertion Sort");
+        //ne.obtenerResultadosInsertionSort();
+        System.out.println("Merge Sort");
+        ne.obtenerResultadosMergeSort();
         //System.out.println("Quick Sort");
         //ne.obtenerResultadosQuickSort();
         //System.out.println("Shell Sort");

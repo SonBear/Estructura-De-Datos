@@ -6,6 +6,7 @@
 package Modelo;
 
 import java.io.File;
+import java.io.IOException;
 import javax.swing.ButtonModel;
 
 /**
@@ -14,7 +15,7 @@ import javax.swing.ButtonModel;
  */
 public class Algoritmos {
 
-    public static void sort(File[] archivos, ButtonModel check) {
+    public static void sort(File[] archivos, ButtonModel check) throws IOException {
         switch (check.getActionCommand()) {
             case "bubleSort":
                 System.out.println("s");
@@ -25,7 +26,10 @@ public class Algoritmos {
                 break;
 
             case "mezclaDirecta":
-                MezclaDirecta.sort(archivos);
+                File f = new File("archivos\\f.dat");
+                ManejadorArchivos.guardarDatos(archivos, f);
+                MezclaDirecta.sort(f, archivos.length);
+                ManejadorArchivos.recuperarDatos(f, archivos);
                 break;
             case "mergeSort":
                 MergeSort.sort(archivos);

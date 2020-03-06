@@ -38,6 +38,30 @@ public class Algorithms {
         System.out.println("Comparaciones: " + comp + " " + "Intercambios: " + swaps);
     }
 
+    public class InsertionSort {
+
+        long comp = 0;
+        long inter = 0;
+
+        public void sort(int arr[]) {
+            int n = arr.length;
+            for (int i = 1; i < n; ++i) {
+                int key = arr[i];
+                int j = i - 1;
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];
+                    j = j - 1;
+                    comp++;
+                    inter++;
+                }
+                arr[j + 1] = key;
+            }
+            System.out.println("Comparaciones: " + comp);
+            System.out.println("Intercambios: " + inter);
+        }
+
+    }
+
     public static void bubbleSort(int arr[]) {
         long comp = 0;
         long swaps = 0;
