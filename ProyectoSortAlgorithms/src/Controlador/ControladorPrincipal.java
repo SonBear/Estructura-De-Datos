@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
  *
  * @author emman
  */
-public class ControladorPrincipal implements ActionListener {
+public class ControladorPrincipal implements ActionListener, Runnable {
 
     private File[] archivos;
 
@@ -73,16 +73,12 @@ public class ControladorPrincipal implements ActionListener {
                 case "txtBuscarDirectorio":
 
                     String path = obtenerRuta();
-                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path);
-                    Algoritmos.sort(archivos, checkSeleccionado());
-                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+                    new d(path).start();
                     break;
                 case "seleccionarRuta":
                     String path2 = obtenerRuta(JFileChooser.DIRECTORIES_ONLY);
                     menuPrincipal.getTxtBuscarDirectorio().setText(path2);
-                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
-                    Algoritmos.sort(archivos, checkSeleccionado());
-                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+                    new d(path2).start();
                     break;
                 default:
 
@@ -93,19 +89,12 @@ public class ControladorPrincipal implements ActionListener {
             errorMessage(ex.getMessage());
             cursorNormal();
 
-        } catch (NoCheckSelectedException ex) {
-            limpiartxtDirectorio();
-            errorMessage(ex.getMessage());
-            cursorNormal();
-
         } catch (FileNoFoundException ex) {
             limpiartxtArchivoCampos();
             errorMessage(ex.getMessage());
             cursorNormal();
-        } catch (IOException ex) {
-            errorMessage("Archivo no encontrado");
-            cursorNormal();
         }
+
     }
 
     public int buscarArchivo(File archivoBuscar, File[] archivos) {
@@ -173,6 +162,47 @@ public class ControladorPrincipal implements ActionListener {
         menuPrincipal.getTxtBuscarArchivo().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         menuPrincipal.getTxtBuscarDirectorio().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         menuPrincipal.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    public void csa(String path2) throws IOException, NoCheckSelectedException {
+        archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
+        Algoritmos.sort(archivos, checkSeleccionado());
+        EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+    private class d extends Thread {
+
+        private String path2;
+
+        public d(String path2) {
+            this.setDaemon(true);
+            this.path2 = path2;
+        }
+
+        @Override
+        public void run() {
+            try {
+                cursorWait();
+                archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
+                Algoritmos.sort(archivos, checkSeleccionado());
+                EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+                cursorNormal();
+
+            } catch (NoCheckSelectedException ex) {
+                cursorNormal();
+                errorMessage(ex.getMessage());
+
+            } catch (IOException ex) {
+                errorMessage("Archivo no encontrado");
+            }
+        }
+
     }
 
 }
