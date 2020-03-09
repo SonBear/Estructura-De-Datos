@@ -35,33 +35,32 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="695" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
                       <Component id="jScrollPane3" min="-2" pref="695" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="checkBubleSort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="checkInsertionSort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="372" max="-2" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="checkBubbleSort" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                              <Component id="checkMezclaDirecta" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Component id="checkMergeSort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="checkShellSort" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                               <Component id="checkQuickSort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="checkInsertionSort" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jScrollPane1" min="-2" pref="695" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="checkShellSort" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="checkMezclaDirecta" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="66" max="32767" attributes="0"/>
@@ -76,11 +75,11 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnBuscarArchivo" min="-2" max="-2" attributes="0"/>
                           <Component id="btnBuscarDirectorio" min="-2" max="-2" attributes="0"/>
                           <Component id="checkDirectorios" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBuscarArchivo" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel1" min="-2" pref="246" max="-2" attributes="0"/>
@@ -112,16 +111,16 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="checkDirectorios" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="checkBubleSort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkInsertionSort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkMergeSort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkQuickSort" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkShellSort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkBubbleSort" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="checkMezclaDirecta" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkMergeSort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkShellSort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkQuickSort" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkInsertionSort" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="140" max="-2" attributes="0"/>
@@ -141,42 +140,6 @@
           <Font name="Tahoma" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Proyecto Algoritmos de Ordenamiento"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkBubleSort">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Buble Sort"/>
-        <Property name="actionCommand" type="java.lang.String" value="bubleSort"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkInsertionSort">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Insertion Sort"/>
-        <Property name="actionCommand" type="java.lang.String" value="insertionSort"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkMergeSort">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Merge Sort"/>
-        <Property name="actionCommand" type="java.lang.String" value="mergeSort"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkQuickSort">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Quick Sort"/>
-        <Property name="actionCommand" type="java.lang.String" value="quickSort"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkShellSort">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Shell Sort"/>
-        <Property name="actionCommand" type="java.lang.String" value="shellSort"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkMezclaDirecta">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Mezcla Directa"/>
-        <Property name="actionCommand" type="java.lang.String" value="mezclaDirecta"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -222,12 +185,6 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="txtBuscarArchivo">
-    </Component>
-    <Component class="javax.swing.JToggleButton" name="btnBuscarArchivo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Buscar Archivo"/>
-        <Property name="actionCommand" type="java.lang.String" value="buscarArchivo"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtBuscarDirectorio">
     </Component>
@@ -292,6 +249,48 @@
     <Component class="javax.swing.JCheckBox" name="checkDirectorios">
       <Properties>
         <Property name="text" type="java.lang.String" value="todos los directorios"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkBubbleSort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Bubble Sort"/>
+        <Property name="actionCommand" type="java.lang.String" value="bubbleSort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkMezclaDirecta">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mezcla Directa"/>
+        <Property name="actionCommand" type="java.lang.String" value="mezclaDirecta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkMergeSort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Merge Sort"/>
+        <Property name="actionCommand" type="java.lang.String" value="mergeSort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkShellSort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Shell Sort"/>
+        <Property name="actionCommand" type="java.lang.String" value="shellSort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkQuickSort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Quick Sort"/>
+        <Property name="actionCommand" type="java.lang.String" value="quickSort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="checkInsertionSort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Insertion Sort"/>
+        <Property name="actionCommand" type="java.lang.String" value="insertionSort"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscarArchivo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar Archivo"/>
+        <Property name="actionCommand" type="java.lang.String" value="buscarArchivo"/>
       </Properties>
     </Component>
   </SubComponents>

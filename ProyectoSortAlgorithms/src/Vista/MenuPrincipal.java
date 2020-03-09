@@ -11,7 +11,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 /**
  *
@@ -23,7 +22,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
      * Creates new form MenuPrincipal
      */
     public MenuPrincipal() {
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
         initComponents();
+
         setButtonGroup();
     }
 
@@ -37,16 +53,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         fileChooser = new javax.swing.JFileChooser();
         jLabel1 = new javax.swing.JLabel();
-        checkBubleSort = new javax.swing.JCheckBox();
-        checkInsertionSort = new javax.swing.JCheckBox();
-        checkMergeSort = new javax.swing.JCheckBox();
-        checkQuickSort = new javax.swing.JCheckBox();
-        checkShellSort = new javax.swing.JCheckBox();
-        checkMezclaDirecta = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbArchivosEncontrados = new javax.swing.JTable();
         txtBuscarArchivo = new javax.swing.JTextField();
-        btnBuscarArchivo = new javax.swing.JToggleButton();
         txtBuscarDirectorio = new javax.swing.JTextField();
         btnBuscarDirectorio = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -54,6 +63,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tbArchivosOrdenados = new javax.swing.JTable();
         checkDirectorios = new javax.swing.JCheckBox();
+        checkBubbleSort = new javax.swing.JRadioButton();
+        checkMezclaDirecta = new javax.swing.JRadioButton();
+        checkMergeSort = new javax.swing.JRadioButton();
+        checkShellSort = new javax.swing.JRadioButton();
+        checkQuickSort = new javax.swing.JRadioButton();
+        checkInsertionSort = new javax.swing.JRadioButton();
+        btnBuscarArchivo = new javax.swing.JButton();
 
         fileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
 
@@ -62,24 +78,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Proyecto Algoritmos de Ordenamiento");
-
-        checkBubleSort.setText("Buble Sort");
-        checkBubleSort.setActionCommand("bubleSort");
-
-        checkInsertionSort.setText("Insertion Sort");
-        checkInsertionSort.setActionCommand("insertionSort");
-
-        checkMergeSort.setText("Merge Sort");
-        checkMergeSort.setActionCommand("mergeSort");
-
-        checkQuickSort.setText("Quick Sort");
-        checkQuickSort.setActionCommand("quickSort");
-
-        checkShellSort.setText("Shell Sort");
-        checkShellSort.setActionCommand("shellSort");
-
-        checkMezclaDirecta.setText("Mezcla Directa");
-        checkMezclaDirecta.setActionCommand("mezclaDirecta");
 
         tbArchivosEncontrados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -104,9 +102,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbArchivosEncontrados);
-
-        btnBuscarArchivo.setText("Buscar Archivo");
-        btnBuscarArchivo.setActionCommand("buscarArchivo");
 
         btnBuscarDirectorio.setText("Buscar Directorio");
         btnBuscarDirectorio.setActionCommand("seleccionarRuta");
@@ -141,6 +136,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         checkDirectorios.setText("todos los directorios");
 
+        checkBubbleSort.setText("Bubble Sort");
+        checkBubbleSort.setActionCommand("bubbleSort");
+
+        checkMezclaDirecta.setText("Mezcla Directa");
+        checkMezclaDirecta.setActionCommand("mezclaDirecta");
+
+        checkMergeSort.setText("Merge Sort");
+        checkMergeSort.setActionCommand("mergeSort");
+
+        checkShellSort.setText("Shell Sort");
+        checkShellSort.setActionCommand("shellSort");
+
+        checkQuickSort.setText("Quick Sort");
+        checkQuickSort.setActionCommand("quickSort");
+
+        checkInsertionSort.setText("Insertion Sort");
+        checkInsertionSort.setActionCommand("insertionSort");
+
+        btnBuscarArchivo.setText("Buscar Archivo");
+        btnBuscarArchivo.setActionCommand("buscarArchivo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,27 +165,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(61, 61, 61)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
+                        .addGap(372, 372, 372)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkBubleSort)
-                                .addGap(30, 30, 30)
-                                .addComponent(checkInsertionSort)
-                                .addGap(35, 35, 35)
+                                .addComponent(checkBubbleSort)
+                                .addGap(39, 39, 39)
+                                .addComponent(checkMezclaDirecta)
+                                .addGap(45, 45, 45)
                                 .addComponent(checkMergeSort)
-                                .addGap(32, 32, 32)
+                                .addGap(18, 18, 18)
+                                .addComponent(checkShellSort)
+                                .addGap(52, 52, 52)
                                 .addComponent(checkQuickSort)
-                                .addGap(18, 18, 18)))
-                        .addGap(28, 28, 28)
-                        .addComponent(checkShellSort)
-                        .addGap(27, 27, 27)
-                        .addComponent(checkMezclaDirecta)))
+                                .addGap(31, 31, 31)
+                                .addComponent(checkInsertionSort))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(66, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -180,10 +195,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             .addComponent(txtBuscarArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnBuscarArchivo)
                             .addComponent(btnBuscarDirectorio)
-                            .addComponent(checkDirectorios))
-                        .addGap(136, 136, 136))
+                            .addComponent(checkDirectorios)
+                            .addComponent(btnBuscarArchivo))
+                        .addGap(116, 116, 116))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(287, 287, 287))))
@@ -207,15 +222,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(btnBuscarDirectorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkDirectorios)
-                .addGap(60, 60, 60)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkBubleSort)
-                    .addComponent(checkInsertionSort)
+                    .addComponent(checkBubbleSort)
+                    .addComponent(checkMezclaDirecta)
                     .addComponent(checkMergeSort)
-                    .addComponent(checkQuickSort)
                     .addComponent(checkShellSort)
-                    .addComponent(checkMezclaDirecta))
-                .addGap(25, 25, 25)
+                    .addComponent(checkQuickSort)
+                    .addComponent(checkInsertionSort))
+                .addGap(39, 39, 39)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,71 +244,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MenuPrincipal().setVisible(true);
-            }
-        });
-    }
-
-    public JToggleButton getBtnBuscarArchivo() {
+    public JButton getBtnBuscarArchivo() {
         return btnBuscarArchivo;
     }
 
     public JButton getBtnBuscarDirectorio() {
         return btnBuscarDirectorio;
-    }
-
-    public JCheckBox getCheckInsertionSort() {
-        return checkInsertionSort;
-    }
-
-    public JCheckBox getCheckMergeSort() {
-        return checkMergeSort;
-    }
-
-    public JCheckBox getCheckMezclaDirecta() {
-        return checkMezclaDirecta;
-    }
-
-    public JCheckBox getCheckQuickSort() {
-        return checkQuickSort;
-    }
-
-    public JCheckBox getCheckShellSort() {
-        return checkShellSort;
-    }
-
-    public JCheckBox getChekBubleSort() {
-        return checkBubleSort;
     }
 
     public JTable getTbArchivosEncontrados() {
@@ -313,7 +269,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     public void setButtonGroup() {
-        buttonGroup1.add(checkBubleSort);
+        buttonGroup1.add(checkBubbleSort);
         buttonGroup1.add(checkShellSort);
         buttonGroup1.add(checkInsertionSort);
         buttonGroup1.add(checkMergeSort);
@@ -335,16 +291,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnBuscarArchivo;
+    private javax.swing.JButton btnBuscarArchivo;
     private javax.swing.JButton btnBuscarDirectorio;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JCheckBox checkBubleSort;
+    private javax.swing.JRadioButton checkBubbleSort;
     private javax.swing.JCheckBox checkDirectorios;
-    private javax.swing.JCheckBox checkInsertionSort;
-    private javax.swing.JCheckBox checkMergeSort;
-    private javax.swing.JCheckBox checkMezclaDirecta;
-    private javax.swing.JCheckBox checkQuickSort;
-    private javax.swing.JCheckBox checkShellSort;
+    private javax.swing.JRadioButton checkInsertionSort;
+    private javax.swing.JRadioButton checkMergeSort;
+    private javax.swing.JRadioButton checkMezclaDirecta;
+    private javax.swing.JRadioButton checkQuickSort;
+    private javax.swing.JRadioButton checkShellSort;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

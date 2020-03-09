@@ -17,6 +17,7 @@ import Vista.MenuPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -39,12 +40,17 @@ public class ControladorPrincipal implements ActionListener {
     }
 
     public void iniciar() {
-
+        menuPrincipal.setLocationRelativeTo(null);
+        menuPrincipal.setTitle("Archivos");
         menuPrincipal.setVisible(true);
+
     }
 
     public void initComponents() {
-
+        menuPrincipal.getTxtBuscarArchivo().addActionListener(this);
+        menuPrincipal.getTxtBuscarDirectorio().addActionListener(this);
+        menuPrincipal.getTxtBuscarArchivo().setActionCommand("txtBuscarArchivos");
+        menuPrincipal.getTxtBuscarDirectorio().setActionCommand("txtBuscarDirectorio");
         menuPrincipal.getBtnBuscarArchivo().addActionListener(this);
         menuPrincipal.getBtnBuscarDirectorio().addActionListener(this);
 
@@ -52,14 +58,23 @@ public class ControladorPrincipal implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         try {
             switch (e.getActionCommand()) {
+                case "txtBuscarArchivos":
                 case "buscarArchivo":
+
                     String nombreArchivo = menuPrincipal.getTxtBuscarArchivo().getText();
                     File[] a = BinarySearch.search(archivos, nombreArchivo);
                     EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosEncontrados(), a);
                     break;
 
+                case "txtBuscarDirectorio":
+                    String path = obtenerRuta();
+                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path);
+                    Algoritmos.sort(archivos, checkSeleccionado());
+                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+                    break;
                 case "seleccionarRuta":
                     String path2 = obtenerRuta(JFileChooser.DIRECTORIES_ONLY);
                     menuPrincipal.getTxtBuscarDirectorio().setText(path2);
@@ -69,22 +84,34 @@ public class ControladorPrincipal implements ActionListener {
 
                     break;
                 default:
-                    throw new AssertionError();
+
             }
 
-        } catch (DirectoryNoSelectedException ex) {
+        } catch (DirectoryNoSelectedException | NoFileNameWriteException ex) {
             errorMessage(ex.getMessage());
+
         } catch (NoCheckSelectedException ex) {
+            limpiartxtDirectorio();
             errorMessage(ex.getMessage());
+
         } catch (FileNoFoundException ex) {
+            limpiartxtArchivoCampos();
             errorMessage(ex.getMessage());
-        } catch (NoFileNameWriteException ex) {
-            errorMessage(ex.getMessage());
+        } catch (IOException ex) {
+            errorMessage("Archivo no encontrado");
         }
     }
 
     public int buscarArchivo(File archivoBuscar, File[] archivos) {
         return Arrays.binarySearch(archivos, archivoBuscar);
+    }
+
+    public void limpiartxtDirectorio() {
+        menuPrincipal.getTxtBuscarDirectorio().setText("");
+    }
+
+    public void limpiartxtArchivoCampos() {
+        menuPrincipal.getTxtBuscarArchivo().setText("");
     }
 
     public File[] obtenerArchivos(boolean check, String path) {
@@ -95,16 +122,14 @@ public class ControladorPrincipal implements ActionListener {
         }
     }
 
-    public String obtenerRuta(int type) throws DirectoryNoSelectedException {
-
-        menuPrincipal.getFileChooser().setFileSelectionMode(type);
-        menuPrincipal.getFileChooser().showOpenDialog(menuPrincipal);
-        File dsa = menuPrincipal.getFileChooser().getSelectedFile();
-        if (dsa == null) {
-            throw new DirectoryNoSelectedException("Directory no selected");
+    public String obtenerRuta() throws DirectoryNoSelectedException {
+        String ruta = menuPrincipal.getTxtBuscarDirectorio().getText();
+        File file = new File(ruta);
+        if (!file.isDirectory()) {
+            throw new DirectoryNoSelectedException("Ruta no encontrada");
         }
 
-        return dsa.getAbsolutePath();
+        return ruta;
     }
 
     public void errorMessage(String mensaje) {
@@ -119,6 +144,17 @@ public class ControladorPrincipal implements ActionListener {
         }
 
         return f.getSelection();
+    }
+
+    private String obtenerRuta(int type) throws DirectoryNoSelectedException {
+        menuPrincipal.getFileChooser().setFileSelectionMode(type);
+        menuPrincipal.getFileChooser().showOpenDialog(menuPrincipal);
+        File dsa = menuPrincipal.getFileChooser().getSelectedFile();
+        if (dsa == null) {
+            throw new DirectoryNoSelectedException("Directorio no seleccionado");
+        }
+        menuPrincipal.getFileChooser().setSelectedFile(null);
+        return dsa.getAbsolutePath();
     }
 
 }

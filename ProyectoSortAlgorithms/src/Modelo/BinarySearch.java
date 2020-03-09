@@ -23,9 +23,9 @@ public class BinarySearch {
         int low = fromIndex;
         int high = toIndex;
         while (low <= high) {
-            int mid = (low + high) >>> 1;
+            int mid = (low + high) >>> 1; //Divide entre dos :v
             File midVal = a.get(mid);
-            String name = name(midVal);
+            String name = name(midVal, key);
 
             if (name.compareTo(key.toLowerCase()) < 0) {
                 low = mid + 1;
@@ -33,9 +33,11 @@ public class BinarySearch {
                 high = mid - 1;
             } else {
                 cont++;
-                System.out.println(name);
                 founds.add(midVal);
                 a.remove(midVal);
+                if (a.isEmpty()) { //Por si solo existe un archico;
+                    return cont;
+                }
                 low = 0;
                 high = a.size();
                 //return mid; // key found
@@ -44,10 +46,16 @@ public class BinarySearch {
         return cont;  // key not found.
     }
 
-    private static String name(File archivo) {
-        String name = archivo.getName().toLowerCase();
-        String[] sd = name.split("[.]");
-        return sd[0];
+    private static String name(File archivo, String key) {
+        String nameFile = archivo.getName();
+        int end = key.length();
+        if (end >= nameFile.length()) {
+            return nameFile.toLowerCase();
+        }
+        String name = nameFile.substring(0, end);
+
+        return name.toLowerCase();
+
     }
 
     private static ArrayList<File> t(File[] asd) {
@@ -66,10 +74,17 @@ public class BinarySearch {
         if (archivos == null) {
             throw new DirectoryNoSelectedException("Directorio no seleccionado");
         }
-        int cont = binarySearch(t(archivos), 0, archivos.length, fileName, array);
+
         if (fileName.equals("") || fileName == null) {
             throw new NoFileNameWriteException("Nombre en blanco");
         }
+        int cont;
+        if (archivos.length > 0) {
+            cont = binarySearch(t(archivos), 0, archivos.length, fileName, array);
+        } else {
+            cont = 0;
+        }
+
         if (cont == 0) {
             throw new FileNoFoundException("Archivo no encontrado");
         }

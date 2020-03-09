@@ -7,7 +7,10 @@ package Modelo;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.EventObject;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,6 +32,25 @@ public class EscritorTablas {
 
         tabla.setModel(model);
 
+        tabla.setCellEditor(new DefaultCellEditor(new JTextField()) {
+
+            @Override
+            public boolean isCellEditable(EventObject anEvent) {
+                return false;
+            }
+
+            @Override
+            public boolean shouldSelectCell(EventObject anEvent) {
+                return true;
+            }
+
+            @Override
+            public boolean stopCellEditing() {
+                return false;
+            }
+
+        });
+        tabla.setAutoscrolls(true);
     }
 
 }
