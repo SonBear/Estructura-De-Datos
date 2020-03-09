@@ -13,12 +13,11 @@ import javax.swing.ButtonModel;
  *
  * @author emman
  */
-public class Algoritmos implements Runnable {
+public class Algoritmos {
 
     public static void sort(File[] archivos, ButtonModel check) throws IOException {
         switch (check.getActionCommand()) {
             case "bubbleSort":
-                System.out.println("s");
                 BubleSort.sort(archivos);
                 break;
             case "insertionSort":
@@ -44,11 +43,6 @@ public class Algoritmos implements Runnable {
             default:
                 throw new AssertionError();
         }
-    }
-
-    @Override
-    public void run() {
-
     }
 
 }

@@ -14,6 +14,7 @@ import Modelo.BinarySearch;
 import Modelo.BuscadorArchivos;
 import Modelo.EscritorTablas;
 import Vista.MenuPrincipal;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -47,6 +48,7 @@ public class ControladorPrincipal implements ActionListener {
     }
 
     public void initComponents() {
+
         menuPrincipal.getTxtBuscarArchivo().addActionListener(this);
         menuPrincipal.getTxtBuscarDirectorio().addActionListener(this);
         menuPrincipal.getTxtBuscarArchivo().setActionCommand("txtBuscarArchivos");
@@ -58,18 +60,18 @@ public class ControladorPrincipal implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        cursorWait();
         try {
             switch (e.getActionCommand()) {
                 case "txtBuscarArchivos":
                 case "buscarArchivo":
-
                     String nombreArchivo = menuPrincipal.getTxtBuscarArchivo().getText();
                     File[] a = BinarySearch.search(archivos, nombreArchivo);
                     EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosEncontrados(), a);
                     break;
 
                 case "txtBuscarDirectorio":
+
                     String path = obtenerRuta();
                     archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path);
                     Algoritmos.sort(archivos, checkSeleccionado());
@@ -81,24 +83,28 @@ public class ControladorPrincipal implements ActionListener {
                     archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
                     Algoritmos.sort(archivos, checkSeleccionado());
                     EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
-
                     break;
                 default:
 
             }
+            cursorNormal();
 
         } catch (DirectoryNoSelectedException | NoFileNameWriteException ex) {
             errorMessage(ex.getMessage());
+            cursorNormal();
 
         } catch (NoCheckSelectedException ex) {
             limpiartxtDirectorio();
             errorMessage(ex.getMessage());
+            cursorNormal();
 
         } catch (FileNoFoundException ex) {
             limpiartxtArchivoCampos();
             errorMessage(ex.getMessage());
+            cursorNormal();
         } catch (IOException ex) {
             errorMessage("Archivo no encontrado");
+            cursorNormal();
         }
     }
 
@@ -155,6 +161,18 @@ public class ControladorPrincipal implements ActionListener {
         }
         menuPrincipal.getFileChooser().setSelectedFile(null);
         return dsa.getAbsolutePath();
+    }
+
+    private void cursorWait() {
+        menuPrincipal.getTxtBuscarArchivo().setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        menuPrincipal.getTxtBuscarDirectorio().setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        menuPrincipal.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    }
+
+    private void cursorNormal() {
+        menuPrincipal.getTxtBuscarArchivo().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        menuPrincipal.getTxtBuscarDirectorio().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        menuPrincipal.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
 }
