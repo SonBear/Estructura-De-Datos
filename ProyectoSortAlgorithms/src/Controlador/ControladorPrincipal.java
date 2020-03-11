@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 public class ControladorPrincipal implements ActionListener {
 
     private File[] archivos;
+    boolean buscando = false;
 
     MenuPrincipal menuPrincipal = new MenuPrincipal();
     BuscadorArchivos buscadorArchivos = new BuscadorArchivos();
@@ -60,52 +61,39 @@ public class ControladorPrincipal implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        cursorWait();
-        try {
-            switch (e.getActionCommand()) {
-                case "txtBuscarArchivos":
-                case "buscarArchivo":
-                    String nombreArchivo = menuPrincipal.getTxtBuscarArchivo().getText();
-                    File[] a = BinarySearch.search(archivos, nombreArchivo);
-                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosEncontrados(), a);
-                    break;
+        if (!buscando) {
+            try {
+                switch (e.getActionCommand()) {
+                    case "txtBuscarArchivos":
+                    case "buscarArchivo":
+                        String nombreArchivo = menuPrincipal.getTxtBuscarArchivo().getText();
+                        new BuscarNombreArchivo(nombreArchivo).start();
 
-                case "txtBuscarDirectorio":
+                        break;
 
-                    String path = obtenerRuta();
-                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path);
-                    Algoritmos.sort(archivos, checkSeleccionado());
-                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
-                    break;
-                case "seleccionarRuta":
-                    String path2 = obtenerRuta(JFileChooser.DIRECTORIES_ONLY);
-                    menuPrincipal.getTxtBuscarDirectorio().setText(path2);
-                    archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
-                    Algoritmos.sort(archivos, checkSeleccionado());
-                    EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
-                    break;
-                default:
+                    case "txtBuscarDirectorio":
+
+                        String path = obtenerRuta();
+                        new BuscarArchivos(path).start();
+                        break;
+                    case "seleccionarRuta":
+                        String path2 = obtenerRuta(JFileChooser.DIRECTORIES_ONLY);
+                        menuPrincipal.getTxtBuscarDirectorio().setText(path2);
+                        new BuscarArchivos(path2).start();
+                        break;
+                    default:
+
+                }
+
+            } catch (DirectoryNoSelectedException ex) {
+                cursorNormal();
+                errorMessage(ex.getMessage());
 
             }
-            cursorNormal();
-
-        } catch (DirectoryNoSelectedException | NoFileNameWriteException ex) {
-            errorMessage(ex.getMessage());
-            cursorNormal();
-
-        } catch (NoCheckSelectedException ex) {
-            limpiartxtDirectorio();
-            errorMessage(ex.getMessage());
-            cursorNormal();
-
-        } catch (FileNoFoundException ex) {
-            limpiartxtArchivoCampos();
-            errorMessage(ex.getMessage());
-            cursorNormal();
-        } catch (IOException ex) {
-            errorMessage("Archivo no encontrado");
-            cursorNormal();
+        } else {
+            advertencia("Se sigue buscando archivos por favor espere....");
         }
+
     }
 
     public int buscarArchivo(File archivoBuscar, File[] archivos) {
@@ -136,6 +124,10 @@ public class ControladorPrincipal implements ActionListener {
         }
 
         return ruta;
+    }
+
+    public void advertencia(String mensaje) {
+        JOptionPane.showMessageDialog(menuPrincipal, mensaje, "Espera", 2);
     }
 
     public void errorMessage(String mensaje) {
@@ -173,6 +165,75 @@ public class ControladorPrincipal implements ActionListener {
         menuPrincipal.getTxtBuscarArchivo().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         menuPrincipal.getTxtBuscarDirectorio().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         menuPrincipal.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    private class BuscarArchivos extends Thread {
+
+        private String path2;
+
+        public BuscarArchivos(String path2) {
+            this.setDaemon(true);
+            this.path2 = path2;
+        }
+
+        @Override
+        public void run() {
+            try {
+                buscando = true;
+                cursorWait();
+                archivos = obtenerArchivos(menuPrincipal.getCheckDirectorios().isSelected(), path2);
+                Algoritmos.sort(archivos, checkSeleccionado());
+                EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosOrdenados(), archivos);
+                cursorNormal();
+                buscando = false;
+
+            } catch (NoCheckSelectedException ex) {
+                cursorNormal();
+                buscando = false;
+                errorMessage(ex.getMessage());
+
+            } catch (IOException ex) {
+                cursorWait();
+                buscando = false;
+                errorMessage("Archivo no encontrado");
+            }
+        }
+
+    }
+
+    private class BuscarNombreArchivo extends Thread {
+
+        private String nombreArchivo;
+
+        public BuscarNombreArchivo(String nombreArchivo) {
+            this.nombreArchivo = nombreArchivo;
+            this.setDaemon(true);
+        }
+
+        @Override
+        public void run() {
+            try {
+                buscando = true;
+                cursorWait();
+                File[] a = BinarySearch.search(archivos, nombreArchivo);
+
+                EscritorTablas.escribirTablas(menuPrincipal.getTbArchivosEncontrados(), a);
+                cursorNormal();
+                buscando = false;
+
+            } catch (FileNoFoundException ex) {
+                cursorNormal();
+                buscando = false;
+                errorMessage("Archivo no encontrado");
+
+            } catch (NoFileNameWriteException | DirectoryNoSelectedException ex) {
+                cursorNormal();
+                buscando = false;
+                errorMessage(ex.getMessage());
+
+            }
+        }
+
     }
 
 }

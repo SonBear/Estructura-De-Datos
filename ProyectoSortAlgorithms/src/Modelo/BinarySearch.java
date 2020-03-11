@@ -72,7 +72,6 @@ public class BinarySearch {
         for (int i = 0; i < asd.length; i++) {
             d.add(asd[i]);
         }
-        System.out.println(" d " + d.toString());
         return d;
     }
 
