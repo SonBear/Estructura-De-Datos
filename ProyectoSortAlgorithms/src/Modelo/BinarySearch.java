@@ -24,7 +24,11 @@ public class BinarySearch {
         int high = toIndex;
         while (low <= high) {
             int mid = (low + high) >>> 1; //Divide entre dos :v
+            if (mid >= a.size()) {
+                return cont;
+            }
             File midVal = a.get(mid);
+
             String name = name(midVal, key);
 
             if (name.compareTo(key.toLowerCase()) < 0) {
@@ -35,11 +39,13 @@ public class BinarySearch {
                 cont++;
                 founds.add(midVal);
                 a.remove(midVal);
-                if (a.isEmpty()) { //Por si solo existe un archico;
+                if (a.isEmpty()) { //Por si solo existe un archivo;
                     return cont;
+                } else {
+                    low = 0;
+                    high = a.size();
                 }
-                low = 0;
-                high = a.size();
+
                 //return mid; // key found
             }
         }
@@ -47,14 +53,18 @@ public class BinarySearch {
     }
 
     private static String name(File archivo, String key) {
-        String nameFile = archivo.getName();
-        int end = key.length();
-        if (end >= nameFile.length()) {
-            return nameFile.toLowerCase();
+        String nameFile = archivo.getName().toLowerCase();
+        String name = nameFile;
+        int end = name.length();
+        if (!archivo.isDirectory()) {
+            end = nameFile.lastIndexOf(".");
+            System.out.println(end);
+            if (end < 0) {
+                end = name.length();
+            }
         }
-        String name = nameFile.substring(0, end);
-
-        return name.toLowerCase();
+        name = name.substring(0, end);
+        return name;
 
     }
 
@@ -69,7 +79,7 @@ public class BinarySearch {
 
     public static File[] search(File[] archivos, String fileName) throws FileNoFoundException, NoFileNameWriteException, DirectoryNoSelectedException {
 
-        ArrayList<File> array = new ArrayList<>();
+        ArrayList<File> founds = new ArrayList<>();
         //------Al
         if (archivos == null) {
             throw new DirectoryNoSelectedException("Directorio no seleccionado");
@@ -80,7 +90,7 @@ public class BinarySearch {
         }
         int cont;
         if (archivos.length > 0) {
-            cont = binarySearch(t(archivos), 0, archivos.length, fileName, array);
+            cont = binarySearch(t(archivos), 0, archivos.length, fileName, founds);
         } else {
             cont = 0;
         }
@@ -89,9 +99,9 @@ public class BinarySearch {
             throw new FileNoFoundException("Archivo no encontrado");
         }
 
-        File[] encontrados = new File[array.size()];
+        File[] encontrados = new File[founds.size()];
+        encontrados = founds.toArray(encontrados);
 
-        encontrados = array.toArray(encontrados);
         return encontrados;
     }
 }
