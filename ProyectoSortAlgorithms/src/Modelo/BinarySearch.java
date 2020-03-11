@@ -59,7 +59,7 @@ public class BinarySearch {
         if (!archivo.isDirectory()) {
             end = nameFile.lastIndexOf(".");
             System.out.println(end);
-            if (end < 0) {
+            if (end <= 0 || key.length() == name.length()) {
                 end = name.length();
             }
         }
