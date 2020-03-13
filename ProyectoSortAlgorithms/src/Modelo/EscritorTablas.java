@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.File;
@@ -13,8 +8,10 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Clase encargada de escribir una lista de parametros de los objetos tipo File en tablas.
  *
  * @author emman
+ *
  */
 public class EscritorTablas {
 

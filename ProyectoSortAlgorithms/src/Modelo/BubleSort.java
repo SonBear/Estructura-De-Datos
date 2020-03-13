@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.File;
@@ -20,7 +15,7 @@ public class BubleSort {
         for (int i = 0; i < n - 1; i++) {
             swapped = false;
             for (int j = 0; j < n - i - 1; j++) {
-                if (archivos[j].getName().toLowerCase().compareTo(archivos[j + 1].getName().toLowerCase()) > 0) {
+                if (name(archivos[j]).compareTo(name(archivos[j + 1])) > 0) {
                     swap(i, j, archivos);
                     swapped = true;
                 }
@@ -31,6 +26,10 @@ public class BubleSort {
             }
         }
 
+    }
+
+    private static String name(File archivo) {
+        return archivo.getName().toLowerCase();
     }
 
     private static void swap(int i, int j, File[] a) {

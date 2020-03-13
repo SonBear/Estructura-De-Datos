@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Vista;
 
 import javax.swing.ButtonGroup;
@@ -13,6 +8,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
+ * Menu principal del programa
  *
  * @author emman
  */
@@ -268,6 +264,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         return txtBuscarDirectorio;
     }
 
+    /**
+     * Inicializa el ButtonGroup del menu principal
+     */
     public void setButtonGroup() {
         buttonGroup1.add(checkBubbleSort);
         buttonGroup1.add(checkShellSort);

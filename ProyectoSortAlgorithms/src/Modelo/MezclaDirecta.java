@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.BufferedWriter;
@@ -11,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +19,6 @@ public class MezclaDirecta {
         for (int i = 1; i < n; i *= 2) {
             PARTICIONA(f, f1, f2, i);
             FUSIONA(f, f1, f2, i);
-
         }
     }
 
@@ -156,7 +148,7 @@ public class MezclaDirecta {
         try {
             MEZCLADIRECTA(listaArchivos, logLista);
         } catch (IOException ex) {
-            Logger.getLogger(MezclaDirecta.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 

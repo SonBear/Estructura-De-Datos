@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.io.File;
@@ -10,8 +5,10 @@ import java.io.IOException;
 import javax.swing.ButtonModel;
 
 /**
+ * Clase que nos permite ejecutar cualquiera de los algoritmos planteados para este programa
  *
  * @author emman
+ *
  */
 public class Algoritmos {
 
@@ -26,6 +23,9 @@ public class Algoritmos {
 
             case "mezclaDirecta":
                 File f = new File("archivos\\f.dat");
+                if (!f.exists()) {
+                    f.createNewFile();
+                }
                 ManejadorArchivos.guardarDatos(archivos, f);
                 MezclaDirecta.sort(f, archivos.length);
                 ManejadorArchivos.recuperarDatos(f, archivos);
@@ -41,7 +41,8 @@ public class Algoritmos {
                 break;
 
             default:
-                throw new AssertionError();
+                System.out.println("F");
+                ;
         }
     }
 
