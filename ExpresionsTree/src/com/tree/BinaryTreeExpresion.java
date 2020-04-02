@@ -23,7 +23,7 @@ public class BinaryTreeExpresion {
     /**
      * funcion que construye un arbol de expresiones
      *
-     * @param expresion la expresion debe estar separada por espacios: para los parentesis, operadores, y operandos ejm: a + b - ( 4 * 2 ) * 3, es la entrada con la cual se elaborara el arbol
+     * @param expresion expresion a ser evaluada
      * @return la raíz principal del arbol contruido
      * @throws StackEmptyException pila vacía
      * @throws ExpresionNoValidException Si la expresion no es correcta

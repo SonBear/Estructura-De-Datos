@@ -16,7 +16,7 @@ public class Parser {
     /**
      *
      * @param expresion es la cadena que sera transmormada de forma postfija.
-     * @return una expresion que es en postfija y facil de comvertirla en tokens ejem: A3* (B1+ C) = A B C +
+     * @return una expresion que es en postfija y facil de convertirla en tokens ejem: A3* (B1+ C) = A B C + *
      *
      * @throws StackEmptyException
      */
@@ -112,6 +112,12 @@ public class Parser {
 
     }
 
+    /**
+     * Revisa si la expresion esta escrita correctamente de manera infija
+     *
+     * @param expresion cadena a verificar
+     * @return true si la cadena es correcta false de otro modo
+     */
     public boolean infixExpresion(String expresion) {
 
         if (expresion.endsWith("-") || expresion.endsWith("+") || expresion.endsWith("*") || expresion.endsWith("/")) {
@@ -127,6 +133,12 @@ public class Parser {
         return isOkParenthesis(expresion);
     }
 
+    /**
+     * Revisa si no hay operadores contiguos dentro de una expresion.
+     *
+     * @param expresion cadena a verificar
+     * @return el valor booleano correspondiente false si hay operadores contiguos de otro modo true
+     */
     private boolean isOkOperators(String expresion) {
         String expresion2 = expresion.replaceAll("\\(", "").replaceAll("\\)", "").replaceAll(" ", "");
         Stack<Character> st = new StackDeque();
@@ -145,6 +157,12 @@ public class Parser {
         return true;
     }
 
+    /**
+     * Revisa si los parentesis son correctos dentro de una cadena
+     *
+     * @param expresion que comprobara si los parentesis estan correctos
+     * @return el valor booleano correspondiente
+     */
     private boolean isOkParenthesis(String expresion) {
         Stack<Character> st = new StackDeque();
         char[] tokens = expresion.toCharArray();
@@ -161,25 +179,6 @@ public class Parser {
         }
 
         return st.isEmpty();
-    }
-
-    // A utility method to apply an operator 'op' on operands 'a'
-    // and 'b'. Return the result.
-    public int applyOp(char op, int b, int a) throws UnsupportedOperationException {
-        switch (op) {
-            case '+':
-                return a + b;
-            case '-':
-                return a - b;
-            case '*':
-                return a * b;
-            case '/':
-                if (b == 0) {
-                    throw new UnsupportedOperationException("Cannot divide by zero");
-                }
-                return a / b;
-        }
-        return 0;
     }
 
 }
