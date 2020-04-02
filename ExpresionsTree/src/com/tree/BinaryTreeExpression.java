@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
  *
  * @author emman
  */
-public class BinaryTreeExpresion {
+public class BinaryTreeExpression {
 
     private Parser parser = new Parser();
 

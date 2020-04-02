@@ -7,7 +7,7 @@ package com.principal;
 
 import com.exceptions.ExpresionNoValidException;
 import com.exceptions.StackEmptyException;
-import com.tree.BinaryTreeExpresion;
+import com.tree.BinaryTreeExpression;
 import com.tree.Nodo;
 
 /**
@@ -21,7 +21,7 @@ public class prueba {
      */
     public static void main(String[] args) throws StackEmptyException {
         try {
-            BinaryTreeExpresion pr = new BinaryTreeExpresion();
+            BinaryTreeExpression pr = new BinaryTreeExpression();
 
 
             /*------Primer ejemplo-----------*/
@@ -53,16 +53,16 @@ public class prueba {
             System.out.println("");
             System.out.println("");
             /*------Tercer ejemplo-----------*/
-            String input3 = "** -4";
-            System.out.println("---Ejemplo numero tres: " + input3 + "---");
-            Nodo root3 = pr.constructTree(input3);
-            System.out.println("----PreOrden----");
-            pr.preOrder(root3);
-            System.out.println("\n" + "----InOrden----");
-            pr.inOrder(root3);
-            System.out.println("\n" + "----PosOrden----");
-            pr.posOrder(root3);
-            System.out.println("");
+            /* String input3 = "** -4";
+             System.out.println("---Ejemplo numero tres: " + input3 + "---");
+             Nodo root3 = pr.constructTree(input3);
+             System.out.println("----PreOrden----");
+             pr.preOrder(root3);
+             System.out.println("\n" + "----InOrden----");
+             pr.inOrder(root3);
+             System.out.println("\n" + "----PosOrden----");
+             pr.posOrder(root3);
+             System.out.println("");*/
             /*-----------------------------*/
             System.out.println("");
             System.out.println("");
