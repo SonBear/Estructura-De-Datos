@@ -9,6 +9,7 @@ import com.exceptions.ExpresionNoValidException;
 import com.exceptions.StackEmptyException;
 import com.tree.BinaryTreeExpression;
 import com.tree.Nodo;
+import com.utilities.Parser;
 
 /**
  *
@@ -25,7 +26,9 @@ public class prueba {
 
 
             /*------Primer ejemplo-----------*/
-            String input = "3 + ((5+9)*2)";
+            String input = "A * (B + C) ";
+            Parser prs = new Parser();
+            System.out.println(prs.infixToPostfix(input));
             System.out.println("---Ejemplo numero uno: " + input + "---");
             Nodo root1 = pr.constructTree(input);
             System.out.println("----PreOrden----");
