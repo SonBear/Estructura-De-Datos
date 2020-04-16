@@ -7,6 +7,7 @@ package com.tree;
 
 import com.exceptions.ExpresionNoValidException;
 import com.utilities.Parser;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.EmptyStackException;
@@ -20,12 +21,13 @@ import java.util.StringTokenizer;
 public class BinaryTreeExpression {
 
     private Parser parser = new Parser();
-    private final int RADIUS = 50;
+    private final int RADIUS = 40;
+    private final int SEPARACIONINX = 100 + RADIUS;
     private int INICIALX = 190;
-    private int INICIALY = 30;
-    private final int SEPARACIONX = 10 + RADIUS;
-    private final int SEPARACIONY = 20 + RADIUS;
-    private final int DESDERECHO = SEPARACIONX * 2;
+    private int INICIALY = 40;
+    private int SEPARACIONX = SEPARACIONINX;
+    private int SEPARACIONY = 30 + RADIUS;
+    private final int SEPARACIONMIN = RADIUS / 2;
 
     /**
      * funcion que construye un arbol de expresiones
@@ -108,28 +110,27 @@ public class BinaryTreeExpression {
     public void drawTree(Graphics2D g, String s) throws EmptyStackException, ExpresionNoValidException {
 
         Nodo<String> root = constructTree(s);
+        g.setStroke(new BasicStroke(2));
         preOrderDraw(root, g, INICIALX, INICIALY);
+        SEPARACIONX = SEPARACIONINX;
         g.dispose();
     }
 
     private void preOrderDraw(Nodo<String> t, Graphics2D g, int x, int y) {
         if (t != null) {
-            System.out.print("(" + x + ", " + y + ")");
-            System.out.print(t.getObj() + " ");
+            SEPARACIONX -= RADIUS / 2;
+
             if (!t.isSheet()) {
 
                 g.drawLine(x, y, x - SEPARACIONX, y + SEPARACIONY);
                 g.drawLine(x, y, x + SEPARACIONX, y + SEPARACIONY);
             }
-
             drawNode(g, x, y, t.getObj());
 
-            preOrderDraw(t.getLeft(), g, x -= SEPARACIONX, y += SEPARACIONY);
+            preOrderDraw(t.getLeft(), g, x - SEPARACIONX, y + SEPARACIONY);
 
-            x += DESDERECHO + SEPARACIONX;
-            y += SEPARACIONY;
-
-            preOrderDraw(t.getRight(), g, x -= SEPARACIONX, y -= SEPARACIONY);
+            preOrderDraw(t.getRight(), g, x + SEPARACIONX, y + SEPARACIONY);
+            SEPARACIONX += RADIUS / 2;
         }
     }
 
