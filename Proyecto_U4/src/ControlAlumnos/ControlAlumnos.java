@@ -5,11 +5,12 @@
  */
 package ControlAlumnos;
 
-import Close.Alumno;
+import Close.Egresado;
 import Estructuras.Arbol;
 import Estructuras.ArbolABBANombres;
 import Estructuras.ArbolABBAProfesion;
 import Estructuras.ArbolABBAPromedios;
+import Estructuras.Exceptions.ItemNotFoundException;
 import Utilidades.LectorCVS;
 import java.util.ArrayList;
 
@@ -21,10 +22,10 @@ public class ControlAlumnos {
     //Error desconocido F
 
     private LectorCVS lector = new LectorCVS("archivos\\alumnos.cvs");
-    private Alumno[] alumnos = lector.obtenerDatos();
-    private Arbol<Double> arbolPromedios = new ArbolABBAPromedios(alumnos);
-    private Arbol<String> arbolNombres = new ArbolABBANombres(alumnos);
-    private Arbol<String> arbolProfesion = new ArbolABBAProfesion(alumnos);
+    private Egresado[] egresados = lector.obtenerDatos();
+    private Arbol<Double> arbolPromedios = new ArbolABBAPromedios(egresados);
+    private Arbol<String> arbolNombres = new ArbolABBANombres(egresados);
+    private Arbol<String> arbolProfesion = new ArbolABBAProfesion(egresados);
 
     public void f() {
 
@@ -39,57 +40,147 @@ public class ControlAlumnos {
         generarArbol(arbolNombres);
     }
 
-    private void generarArbolProfesion() {
-        for (int i = 0; i < alumnos.length; i++) {
-            arbolProfesion.insertar(i);
-        }
-        arbolProfesion.recorrerArbol();
+    public void listar() {
+        System.out.println("Lista Por Nombres");
+        imprimirLista(arbolNombres.enlistarIndices());
+        System.out.println("Lista por promedios");
+        imprimirLista(arbolPromedios.enlistarIndices());
+        System.out.println("Lista por Profesiones");
+        imprimirLista(arbolProfesion.enlistarIndices());
+
     }
 
-    private void generarArbolPromedios(Arbol arbol) {
-
-        for (int i = 1; i < alumnos.length; i++) {
-            arbol.insertar(i);
+    private void imprimirLista(ArrayList<Integer> a) {
+        for (int i = 0; i < a.size(); i++) {
+            System.out.println(egresados[a.get(i)]);
         }
-        arbol.recorrerArbol();
+    }
+
+    public void buscarPorNombre(String Nombre) {
+        ArrayList<Integer> d = arbolNombres.buscar(Nombre);
+        for (int i = 0; i < d.size(); i++) {
+            System.out.println(egresados[d.get(i)]);
+        }
+
+    }
+
+    public void buscarPorPromedioYProfesion(Double Promedio, String Profesion) throws ItemNotFoundException {
+        ArrayList<Integer> d = arbolPromedios.buscar(Promedio);
+        ArrayList<Integer> y = arbolProfesion.buscar(Profesion);
+        boolean encontrado = false;
+        for (int i = 0; i < d.size(); i++) {
+            for (int j = 0; j < y.size(); j++) {
+                if (d.get(i) == y.get(j)) {
+                    System.out.println(egresados[d.get(i)]);
+                    encontrado = true;
+                }
+            }
+        }
+        if (!encontrado) {
+            throw new ItemNotFoundException("Dato no encontrado");
+        }
+    }
+
+    public void buscarPorNombreYProfesion(String nombre, String Profesion) throws ItemNotFoundException {
+        ArrayList<Integer> d = arbolNombres.buscar(nombre);
+        ArrayList<Integer> y = arbolProfesion.buscar(Profesion);
+        boolean encontrado = false;
+        for (int i = 0; i < d.size(); i++) {
+            for (int j = 0; j < y.size(); j++) {
+                if (d.get(i) == y.get(j)) {
+                    System.out.println(egresados[d.get(i)]);
+                    encontrado = true;
+                }
+            }
+        }
+        if (!encontrado) {
+            throw new ItemNotFoundException("Dato no encontrado");
+        }
+    }
+
+    public void buscarPorNombreYPromedio(String nombre, Double Promedio) throws ItemNotFoundException {
+        ArrayList<Integer> d = arbolNombres.buscar(nombre);
+        ArrayList<Integer> y = arbolPromedios.buscar(Promedio);
+        boolean encontrado = false;
+        for (int i = 0; i < d.size(); i++) {
+            for (int j = 0; j < y.size(); j++) {
+                if (d.get(i) == y.get(j)) {
+                    System.out.println(egresados[d.get(i)]);
+                    encontrado = true;
+                }
+            }
+        }
+        if (!encontrado) {
+            throw new ItemNotFoundException("Dato no encontrado");
+        }
+    }
+
+    public void buscarPorNombreProfesionPromedio(String nombre, String profesion, Double promedio) throws ItemNotFoundException {
+        ArrayList<Integer> d = arbolNombres.buscar(nombre);
+        ArrayList<Integer> f = arbolProfesion.buscar(profesion);
+        ArrayList<Integer> y = arbolPromedios.buscar(promedio);
+        boolean encontrado = false;
+        for (int i = 0; i < d.size(); i++) {
+            for (int j = 0; j < y.size(); j++) {
+                for (int k = 0; k < f.size(); k++) {
+                    if (d.get(i) == y.get(j) && d.get(i) == f.get(k)) {
+                        System.out.println(egresados[d.get(i)]);
+                        encontrado = true;
+                    }
+
+                }
+            }
+        }
+        if (!encontrado) {
+            throw new ItemNotFoundException("Dato no encontrado");
+        }
+    }
+
+    public void buscarPorPromedio(Double Promedio) {
+        try {
+
+            ArrayList<Integer> d = arbolPromedios.buscar(Promedio);
+            for (int i = 0; i < d.size(); i++) {
+                System.out.println(egresados[d.get(i)]);
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public void buscarPorProfesion(String profesion) {
+        ArrayList<Integer> d = arbolProfesion.buscar(profesion);
+        for (int i = 0; i < d.size(); i++) {
+            System.out.println(egresados[d.get(i)]);
+        }
     }
 
     private void generarArbol(Arbol arbol) {
-        for (int i = 0; i < alumnos.length; i++) {
+        for (int i = 0; i < egresados.length; i++) {
             arbol.insertar(i);
         }
         arbol.recorrerArbol();
-    }
-
-    public Alumno[] getPromedios(Double promedio) {
-        ArrayList<Alumno> alumnosConPromedio = new ArrayList<>();
-        Alumno[] alumnos = lector.obtenerDatos();
-        for (int i = 0; i < alumnos.length; i++) {
-            if (alumnos[i].getPromedio() == promedio) {
-                alumnosConPromedio.add(alumnos[i]);
-            }
-        }
-        alumnos = alumnosConPromedio.toArray(alumnos);
-        return alumnos;
-    }
-
-    public Alumno[] getLicenciatura(String profesion) {
-        ArrayList<Alumno> alumnosConProfesion = new ArrayList<>();
-        Alumno[] alumnos = lector.obtenerDatos();
-        for (int i = 0; i < alumnos.length; i++) {
-
-            if (alumnos[i].getProfesion().equals(profesion)) {
-                System.out.println("F");
-                alumnosConProfesion.add(alumnos[i]);
-            }
-        }
-
-        return alumnosConProfesion.toArray(alumnos);
     }
 
     public static void main(String[] args) {
         ControlAlumnos a = new ControlAlumnos();
         a.generarArboles();
+        System.out.println("Busqueda por nombre");
+        a.buscarPorNombre("Emmanuel Chable");
+        System.out.println("Busqueda por porfesion");
+        a.buscarPorProfesion("LIS");
+        System.out.println("----Busqueda por promedio---");
+        a.buscarPorPromedio(9.0);
+
+        System.out.println("--------------------------------------");
+        System.out.println("--Listas----------------");
+        a.listar();
+        System.out.println("Busqueda con dos parametros");
+        a.buscarPorNombreProfesionPromedio("Charly Alvares", "LIC", 8.0);
+        a.buscarPorNombreYProfesion("Em Chable", "LIS");
+        a.buscarPorNombreYPromedio("d Chable", 8.0);
+        a.buscarPorPromedioYProfesion(7.0, "ACT");
+
     }
 
 }

@@ -5,17 +5,22 @@
  */
 package Estructuras;
 
+import Estructuras.Exceptions.ItemNotFoundException;
+import java.util.ArrayList;
+
 /**
  *
  * @author emman
  */
 public interface Arbol<T extends Comparable<T>> {
 
-    public void buscar(T elemento);
+    public ArrayList<Integer> buscar(T elemento) throws ItemNotFoundException;
 
-    public void borrar(T elemento);
+    public void borrar(T elemento) throws ItemNotFoundException;
 
     public void insertar(int index);
+
+    public ArrayList<Integer> enlistarIndices();
 
     public void recorrerArbol();
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class NodoA<T extends Comparable<T>> {
 
     private T elemento;
-    private ArrayList<Integer> indiceAlumnos;
+    private ArrayList<Integer> indiceEgresados;
     private NodoA<T> derecha;
     private NodoA<T> izquierda;
 
@@ -22,11 +22,11 @@ public class NodoA<T extends Comparable<T>> {
         this.elemento = elemento;
         this.derecha = derecha;
         this.izquierda = izquierda;
-        indiceAlumnos = new ArrayList<>();
+        indiceEgresados = new ArrayList<>();
     }
 
-    public ArrayList<Integer> getAlumnos() {
-        return indiceAlumnos;
+    public ArrayList<Integer> getEgresados() {
+        return indiceEgresados;
     }
 
     public NodoA() {

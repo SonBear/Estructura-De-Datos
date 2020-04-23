@@ -5,8 +5,9 @@
  */
 package Estructuras;
 
-import Close.Alumno;
+import Close.Egresado;
 import Estructuras.Exceptions.ItemNotFoundException;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,7 +16,7 @@ import Estructuras.Exceptions.ItemNotFoundException;
 public class ArbolABBANombres implements Arbol<String> {
 
     private NodoA<String> raiz;
-    private Alumno[] alumnos;
+    private Egresado[] alumnos;
 
     public ArbolABBANombres() {
         raiz = null;
@@ -27,7 +28,7 @@ public class ArbolABBANombres implements Arbol<String> {
 
     }
 
-    public ArbolABBANombres(Alumno[] alumnos) {
+    public ArbolABBANombres(Egresado[] alumnos) {
         raiz = null;
         this.alumnos = alumnos;
     }
@@ -36,9 +37,9 @@ public class ArbolABBANombres implements Arbol<String> {
         if (n == null) {
             throw new ItemNotFoundException("Elemento no encontrado");
         } else {
-            if (o.compareTo(n.getElemento()) > 0) {
+            if (o.toLowerCase().compareTo(n.getElemento()) > 0) {
                 n.setDerecha(borrar(n.getDerecha(), o));
-            } else if (o.compareTo(n.getElemento()) < 0) {
+            } else if (o.toLowerCase().compareTo(n.getElemento()) < 0) {
                 n.setIzquierda(borrar(n.getIzquierda(), o));
             } else {//Ya encontré el elemento a eliminar!!
                 if (n.getDerecha() != null && n.getIzquierda() != null)//Aquí aplicamos los criterios cuando hay 2 hijos
@@ -74,47 +75,50 @@ public class ArbolABBANombres implements Arbol<String> {
 
     private void insertarOrdenado(NodoA<String> n, String o, int index) {
 
-        if (o.compareTo(n.getElemento()) < 0) {
+        if (o.toLowerCase().compareTo(n.getElemento().toLowerCase()) < 0) {
             if (n.getIzquierda() == null) {
                 n.setIzquierda(new NodoA<>(o));
-                n.getIzquierda().getAlumnos().add(index);
+                n.getIzquierda().getEgresados().add(index);
 
             } else {
                 insertarOrdenado(n.getIzquierda(), o, index);
             }
-        } else if (o.compareTo(n.getElemento()) > 0) {
+        } else if (o.toLowerCase().compareTo(n.getElemento().toLowerCase()) > 0) {
 
             if (n.getDerecha() == null) {
                 n.setDerecha(new NodoA<>(o));
-                n.getDerecha().getAlumnos().add(index);
+                n.getDerecha().getEgresados().add(index);
 
             } else {
                 insertarOrdenado(n.getDerecha(), o, index);
             }
         } else {
             //repetidos
-            n.getAlumnos().add(index);
+            n.getEgresados().add(index);
         }
     }
 
-    private void buscar(NodoA<String> n, String o) throws ItemNotFoundException {
-        if (o.compareTo(n.getElemento()) < 0) {
+    private void buscar(NodoA<String> n, String o, ArrayList<Integer> indices) throws ItemNotFoundException {
+        if (o.toLowerCase().compareTo(n.getElemento().toLowerCase()) < 0) {
             if (n.getIzquierda() == null) {
                 throw new ItemNotFoundException("No está el dato :(");
             } else {
-                buscar(n.getIzquierda(), o);
+                buscar(n.getIzquierda(), o, indices);
             }
         } else {
-            if (o.compareTo(n.getElemento()) > 0) {
+            if (o.toLowerCase().compareTo(n.getElemento().toLowerCase()) > 0) {
                 if (n.getDerecha() == null) {
                     throw new ItemNotFoundException("No está el dato :(");
                 } else {
-                    buscar(n.getDerecha(), o);
+                    buscar(n.getDerecha(), o, indices);
                 }
             } else {
+
                 System.out.println("El dato si está en el árbol");
+                indices.addAll(n.getEgresados());
             }
         }
+
     }
 
     /**
@@ -125,8 +129,10 @@ public class ArbolABBANombres implements Arbol<String> {
     }
 
     @Override
-    public void buscar(String elemento) {
-        buscar(raiz, elemento);
+    public ArrayList<Integer> buscar(String elemento) throws ItemNotFoundException {
+        ArrayList<Integer> indices = new ArrayList<>();
+        buscar(raiz, elemento, indices);
+        return indices;
     }
 
     @Override
@@ -134,7 +140,7 @@ public class ArbolABBANombres implements Arbol<String> {
         borrar(raiz, elemento);
     }
 
-    public void setAlumnos(Alumno[] alumnos) {
+    public void setAlumnos(Egresado[] alumnos) {
         this.alumnos = alumnos;
     }
 
@@ -148,10 +154,6 @@ public class ArbolABBANombres implements Arbol<String> {
         insertarOrdenado(raiz, elemento, index);
     }
 
-    public void imprimirArbol() {
-        inOrder(raiz);
-    }
-
     /**
      * Imprime en inorden el arbol generado a partir de una raíz El resultado es la manera inicial de la expresion pero sin parentesis
      *
@@ -162,16 +164,35 @@ public class ArbolABBANombres implements Arbol<String> {
             inOrder(t.getIzquierda());
             System.out.println(t.getElemento() + " ");
             System.out.println("\\");
-            for (int i = 0; i < t.getAlumnos().size(); i++) {
-                System.out.println("  -" + t.getAlumnos().get(i));
+            for (int i = 0; i < t.getEgresados().size(); i++) {
+                System.out.println("  -" + t.getEgresados().get(i));
             }
             inOrder(t.getDerecha());
         }
     }
 
+    private void inOrder(NodoA<String> t, ArrayList<Integer> indices) {
+        if (t != null) {
+            inOrder(t.getIzquierda(), indices);
+
+            for (int i = 0; i < t.getEgresados().size(); i++) {
+                indices.add(t.getEgresados().get(i));
+            }
+            inOrder(t.getDerecha(), indices);
+        }
+    }
+
     @Override
     public void recorrerArbol() {
-        imprimirArbol();
+        inOrder(raiz);
+    }
+
+    @Override
+    public ArrayList<Integer> enlistarIndices() {
+        ArrayList<Integer> indices = new ArrayList<>();
+        inOrder(raiz, indices);
+        return indices;
+
     }
 
 }

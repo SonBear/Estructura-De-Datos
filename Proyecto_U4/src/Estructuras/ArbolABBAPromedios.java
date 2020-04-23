@@ -5,8 +5,9 @@
  */
 package Estructuras;
 
-import Close.Alumno;
+import Close.Egresado;
 import Estructuras.Exceptions.ItemNotFoundException;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,7 +16,7 @@ import Estructuras.Exceptions.ItemNotFoundException;
 public class ArbolABBAPromedios implements Arbol<Double> {
 
     private NodoA<Double> raiz;
-    private Alumno[] alumnos;
+    private Egresado[] alumnos;
 
     public ArbolABBAPromedios() {
         raiz = null;
@@ -27,7 +28,7 @@ public class ArbolABBAPromedios implements Arbol<Double> {
 
     }
 
-    public ArbolABBAPromedios(Alumno[] alumnos) {
+    public ArbolABBAPromedios(Egresado[] alumnos) {
         raiz = null;
         this.alumnos = alumnos;
     }
@@ -77,7 +78,7 @@ public class ArbolABBAPromedios implements Arbol<Double> {
         if (o.compareTo(n.getElemento()) < 0) {
             if (n.getIzquierda() == null) {
                 n.setIzquierda(new NodoA<>(o));
-                n.getIzquierda().getAlumnos().add(index);
+                n.getIzquierda().getEgresados().add(index);
 
             } else {
                 insertarOrdenado(n.getIzquierda(), o, index);
@@ -86,35 +87,39 @@ public class ArbolABBAPromedios implements Arbol<Double> {
 
             if (n.getDerecha() == null) {
                 n.setDerecha(new NodoA<>(o));
-                n.getDerecha().getAlumnos().add(index);
+                n.getDerecha().getEgresados().add(index);
 
             } else {
                 insertarOrdenado(n.getDerecha(), o, index);
             }
         } else {
             //repetidos
-            n.getAlumnos().add(index);
+            n.getEgresados().add(index);
         }
     }
 
-    private void buscar(NodoA<Double> n, Double o) throws ItemNotFoundException {
+    private void buscar(NodoA<Double> n, Double o, ArrayList<Integer> indices) throws ItemNotFoundException {
         if (o.compareTo(n.getElemento()) < 0) {
             if (n.getIzquierda() == null) {
                 throw new ItemNotFoundException("No está el dato :(");
             } else {
-                buscar(n.getIzquierda(), o);
+                buscar(n.getIzquierda(), o, indices);
             }
         } else {
             if (o.compareTo(n.getElemento()) > 0) {
                 if (n.getDerecha() == null) {
                     throw new ItemNotFoundException("No está el dato :(");
                 } else {
-                    buscar(n.getDerecha(), o);
+                    buscar(n.getDerecha(), o, indices);
                 }
             } else {
                 System.out.println("El dato si está en el árbol");
+                indices.addAll(n.getEgresados());
+
             }
+
         }
+
     }
 
     /**
@@ -125,8 +130,10 @@ public class ArbolABBAPromedios implements Arbol<Double> {
     }
 
     @Override
-    public void buscar(Double elemento) {
-        buscar(raiz, elemento);
+    public ArrayList<Integer> buscar(Double elemento) throws ItemNotFoundException {
+        ArrayList<Integer> indices = new ArrayList<>();
+        buscar(raiz, elemento, indices);
+        return indices;
     }
 
     @Override
@@ -158,16 +165,34 @@ public class ArbolABBAPromedios implements Arbol<Double> {
             inOrder(t.getIzquierda());
             System.out.println(t.getElemento() + " ");
             System.out.println("\\");
-            for (int i = 0; i < t.getAlumnos().size(); i++) {
-                System.out.println("  -" + t.getAlumnos().get(i));
+            for (int i = 0; i < t.getEgresados().size(); i++) {
+                System.out.println("  -" + t.getEgresados().get(i));
             }
             inOrder(t.getDerecha());
+        }
+    }
+
+    private void inOrder(NodoA<Double> t, ArrayList<Integer> indices) {
+        if (t != null) {
+            inOrder(t.getIzquierda(), indices);
+
+            for (int i = 0; i < t.getEgresados().size(); i++) {
+                indices.add(t.getEgresados().get(i));
+            }
+            inOrder(t.getDerecha(), indices);
         }
     }
 
     @Override
     public void recorrerArbol() {
         imprimirArbol();
+    }
+
+    @Override
+    public ArrayList<Integer> enlistarIndices() {
+        ArrayList<Integer> indices = new ArrayList<>();
+        inOrder(raiz, indices);
+        return indices;
     }
 
 }

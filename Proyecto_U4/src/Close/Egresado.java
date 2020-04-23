@@ -9,13 +9,13 @@ package Close;
  *
  * @author emman
  */
-public class Alumno {
+public class Egresado {
 
     private String nombre;
     private String profesion;
     private double promedio;
 
-    public Alumno(String nombre, String profesion, double promedio) {
+    public Egresado(String nombre, String profesion, double promedio) {
         this.nombre = nombre;
         this.profesion = profesion;
         this.promedio = promedio;
@@ -47,7 +47,7 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return "Alumno{" + "nombre=" + nombre + ", profesion=" + profesion + ", promedio=" + promedio + '}';
+        return "Egresado{" + "nombre=" + nombre + ", profesion=" + profesion + ", promedio=" + promedio + '}';
     }
 
 }

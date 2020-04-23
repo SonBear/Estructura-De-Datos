@@ -5,7 +5,7 @@
  */
 package Utilidades;
 
-import Close.Alumno;
+import Close.Egresado;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.Scanner;
  *
  * @author emman
  */
-public class LectorCVS implements Lector<Alumno> {
+public class LectorCVS implements Lector<Egresado> {
 
     private File cvs;
     private Scanner scanner;
@@ -36,23 +36,23 @@ public class LectorCVS implements Lector<Alumno> {
     }
 
     @Override
-    public Alumno[] obtenerDatos() {
-        ArrayList<Alumno> alumnos = new ArrayList<>();
+    public Egresado[] obtenerDatos() {
+        ArrayList<Egresado> alumnos = new ArrayList<>();
         while (scanner.hasNext()) {
             String[] datos = scanner.nextLine().split(",");
 
-            alumnos.add(new Alumno(datos[0], datos[1], Double.parseDouble(datos[2])));
+            alumnos.add(new Egresado(datos[0], datos[1], Double.parseDouble(datos[2])));
         }
-        return alumnos.toArray(new Alumno[alumnos.size()]);
+        return alumnos.toArray(new Egresado[alumnos.size()]);
     }
 
     @Override
-    public void insertarDato(Alumno elemento) {
+    public void insertarDato(Egresado elemento) {
 
     }
 
     @Override
-    public void eliminar(Alumno elemento) {
+    public void eliminar(Egresado elemento) {
     }
 
 }
