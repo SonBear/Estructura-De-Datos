@@ -44,8 +44,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         tablaPrincipal = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnIniciar = new javax.swing.JButton();
+        listar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Lista de Egresados");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(txtRuta, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 251, -1));
 
@@ -93,13 +95,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaPrincipal);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 320, 330));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 320, 340));
 
         jLabel1.setText("Ruta de la lista de egresados");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
 
-        btnIniciar.setText("iniciar");
-        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, -1, -1));
+        btnIniciar.setText("Listar por parametros");
+        btnIniciar.setActionCommand("iniciar");
+        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, -1, -1));
+
+        listar.setText("Listar Todo");
+        listar.setActionCommand("listar");
+        getContentPane().add(listar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -152,6 +159,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         return btnIniciar;
     }
 
+    public JButton getListar() {
+        return listar;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -163,6 +174,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkProfesion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton listar;
     private javax.swing.JTable tablaPrincipal;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtProfesion;
