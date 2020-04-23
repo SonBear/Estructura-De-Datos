@@ -27,6 +27,18 @@ public class ControlAlumnos {
     private Arbol<String> arbolNombres = new ArbolABBANombres(egresados);
     private Arbol<String> arbolProfesion = new ArbolABBAProfesion(egresados);
 
+    public void setEgresados() {
+        this.egresados = lector.obtenerDatos();
+    }
+
+    public void actualizarDatos(String ruta) {
+        arbolProfesion = new ArbolABBAProfesion(egresados);
+        arbolPromedios = new ArbolABBAPromedios(egresados);
+        arbolNombres = new ArbolABBANombres(egresados);
+        this.lector = new LectorCVS(ruta);
+        egresados = lector.obtenerDatos();
+    }
+
     public void f() {
 
     }
@@ -38,6 +50,15 @@ public class ControlAlumnos {
         generarArbol(arbolProfesion);
         System.out.println("Arbol de Nombres");
         generarArbol(arbolNombres);
+    }
+
+    public ArrayList<Egresado> listarPorNombre() {
+        ArrayList<Egresado> egresados = new ArrayList<>();
+        ArrayList<Integer> indiceNombres = arbolNombres.enlistarIndices();
+        for (int i = 0; i < indiceNombres.size(); i++) {
+            egresados.add(this.egresados[indiceNombres.get(i)]);
+        }
+        return egresados;
     }
 
     public void listar() {

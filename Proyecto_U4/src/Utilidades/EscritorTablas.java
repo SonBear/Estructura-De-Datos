@@ -6,6 +6,7 @@
 package Utilidades;
 
 import Close.Egresado;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -17,13 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EscritorTablas {
 
-    public static void escribirTablas(JTable tabla, Egresado[] datos) {
+    public static void escribirTablas(JTable tabla, ArrayList<Egresado> datos) {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Nombre");
         model.addColumn("Profesion");
         model.addColumn("Promedio");
-        for (int i = 0; i < datos.length; i++) {
-            model.addRow(new String[]{datos[i].getNombre(), datos[i].getProfesion(), datos[i].getPromedio() + ""});
+        for (int i = 0; i < datos.size(); i++) {
+            model.addRow(new String[]{datos.get(i).getNombre(), datos.get(i).getProfesion(), datos.get(i).getPromedio() + ""});
         }
 
         tabla.setModel(model);

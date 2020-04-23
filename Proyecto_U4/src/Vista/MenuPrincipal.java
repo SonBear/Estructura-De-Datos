@@ -5,6 +5,13 @@
  */
 package Vista;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 /**
  *
  * @author emman
@@ -25,57 +32,141 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        txtRuta = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        checkNombre = new javax.swing.JCheckBox();
+        checkProfesion = new javax.swing.JCheckBox();
+        CheckPromedio = new javax.swing.JCheckBox();
+        txtNombre = new javax.swing.JTextField();
+        txtProfesion = new javax.swing.JTextField();
+        txtPromedio = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaPrincipal = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        btnIniciar = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(txtRuta, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 251, -1));
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.setActionCommand("buscar");
+        getContentPane().add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
+
+        checkNombre.setText("Nombre");
+        getContentPane().add(checkNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+
+        checkProfesion.setText("Profesion");
+        getContentPane().add(checkProfesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+
+        CheckPromedio.setText("Promedio");
+        getContentPane().add(CheckPromedio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 120, 20));
+        getContentPane().add(txtProfesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, 120, 20));
+        getContentPane().add(txtPromedio, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 170, 120, 20));
+
+        tablaPrincipal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Profesion", "Promedio"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaPrincipal);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, 320, 330));
+
+        jLabel1.setText("Ruta de la lista de egresados");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+
+        btnIniciar.setText("iniciar");
+        getContentPane().add(btnIniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public JTextField getTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getTxtProfesion() {
+        return txtProfesion;
+    }
+
+    public JTextField getTxtPromedio() {
+        return txtPromedio;
+    }
+
+    public JCheckBox getCheckPromedio() {
+        return CheckPromedio;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
+    public JCheckBox getCheckNombre() {
+        return checkNombre;
+    }
+
+    public JCheckBox getCheckProfesion() {
+        return checkProfesion;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public JTable getTablaPrincipal() {
+        return tablaPrincipal;
+    }
+
+    public JTextField getTxtRuta() {
+        return txtRuta;
+    }
+
+    public JButton getBtnIniciar() {
+        return btnIniciar;
+    }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MenuPrincipal().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox CheckPromedio;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnIniciar;
+    private javax.swing.JCheckBox checkNombre;
+    private javax.swing.JCheckBox checkProfesion;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tablaPrincipal;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtProfesion;
+    private javax.swing.JTextField txtPromedio;
+    private javax.swing.JTextField txtRuta;
     // End of variables declaration//GEN-END:variables
 }
