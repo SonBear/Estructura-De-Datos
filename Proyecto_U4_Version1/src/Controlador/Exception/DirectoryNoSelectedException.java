@@ -6,6 +6,7 @@
 package Controlador.Exception;
 
 /**
+ * Excepciones correspondientes a la parte grafica y logica del programa
  *
  * @author emman
  */

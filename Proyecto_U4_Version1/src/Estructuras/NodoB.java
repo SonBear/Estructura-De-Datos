@@ -8,8 +8,10 @@ package Estructuras;
 import java.util.ArrayList;
 
 /**
+ * Nodo para la estructura de arbol binario
  *
  * @author emman
+ * @param <T> cualquierl elemento que implemente una interfaz Comparable
  */
 public class NodoB<T extends Comparable<T>> {
 

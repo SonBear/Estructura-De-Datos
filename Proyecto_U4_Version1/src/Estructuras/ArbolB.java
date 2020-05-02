@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * @see <a href="https://en.wikipedia.org/wiki/B-tree">B-Tree (Wikipedia)</a>
  * <br>
  * @author Justin Wetherell <phishman3579@gmail.com>
+ * Codigo modificado para fines del proyecto, el codigo original puede visitarse en el repositorio <phishman> en GitHub
  */
 @SuppressWarnings("unchecked")
 public class ArbolB<T extends Comparable<T>> implements ArbolIB<T> {
@@ -669,6 +670,9 @@ public class ArbolB<T extends Comparable<T>> implements ArbolIB<T> {
 
     @Override
     public ArrayList<Integer> enlistarIndices() throws NoDatosException {
+        if (root == null) {
+            throw new NoDatosException("No se encontraron datos");
+        }
         ArrayList<Integer> indices = new ArrayList<>();
         recorrerArbol(root, indices);
         return indices;
@@ -695,6 +699,9 @@ public class ArbolB<T extends Comparable<T>> implements ArbolIB<T> {
 
     @Override
     public ArrayList<T> enlistarElementos() throws NoDatosException {
+        if (root == null) {
+            throw new NoDatosException("No se encontraron datos");
+        }
         ArrayList<T> elementos = new ArrayList<>();
         recorrerArbolElementos(root, elementos);
         if (size() == 0) {

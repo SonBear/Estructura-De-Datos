@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Estructuras;
 
 import Close.Egresado;
@@ -31,46 +26,13 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
         raiz = null;
     }
 
-    private NodoB<T> borrar(NodoB<T> n, T o) throws ItemNotFoundException {
-        if (n == null) {
-            throw new ItemNotFoundException("Elemento no encontrado");
-        } else {
-            if (o.compareTo(n.getElemento()) > 0) {
-                n.setDerecha(borrar(n.getDerecha(), o));
-            } else if (o.compareTo(n.getElemento()) < 0) {
-                n.setIzquierda(borrar(n.getIzquierda(), o));
-            } else {//Ya encontré el elemento a eliminar!!
-                if (n.getDerecha() != null && n.getIzquierda() != null)//Aquí aplicamos los criterios cuando hay 2 hijos
-                //Aplicamos el criterio del hijo más izquierdo del lado derecho
-                {
-                    NodoB<T> minimo = buscarMin(n.getDerecha());
-                    n.setElemento(minimo.getElemento());
-                    n.setDerecha(borrarMin(n.getDerecha()));
-                } else //Los criterios cuando se tienen 1 de los 2 hijos o es hoja
-                {
-                    n = (n.getIzquierda() != null) ? n.getIzquierda() : n.getDerecha();
-                }
-            }
-        }
-        return n;
-    }
-
-    private NodoB<T> buscarMin(NodoB<T> n) {
-        while (n.getIzquierda() != null) {
-            n = n.getIzquierda();
-        }
-        return n;
-    }
-
-    private NodoB<T> borrarMin(NodoB<T> n) {
-        if (n.getIzquierda() != null) {
-            n.setIzquierda(borrarMin(n.getIzquierda()));
-            return n;
-        } else {
-            return n.getDerecha();
-        }
-    }
-
+    /**
+     * Inserta de manera ordenado los datos en el arbol
+     *
+     * @param n nodo inicial
+     * @param o elemento a agregar
+     * @param index indice del elemento a agregar
+     */
     private void insertarOrdenado(NodoB<T> n, T o, int index) {
 
         if (o.compareTo(n.getElemento()) < 0) {
@@ -96,6 +58,13 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
         }
     }
 
+    /**
+     * busca el nodo que corresponde al objeto "o" y guarda la lista de indices en "indices"
+     *
+     * @param n nodo de inicio
+     * @param o elemento a encontrar (nodo)
+     * @param indices estructura a guardar las coicidencias
+     */
     private void buscar(NodoB<T> n, T o, ArrayList<Integer> indices) throws ItemNotFoundException {
         if (o.compareTo(n.getElemento()) < 0) {
             if (n.getIzquierda() == null) {
@@ -126,6 +95,13 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
         return raiz;
     }
 
+    /**
+     * sirve para buscar la lista de indices que coicidan con los parametros
+     *
+     * @param elemento elemento a encontrar
+     * @return lista de indices que coicidan con el "elemento"
+     * @throws ItemNotFoundException
+     */
     @Override
     public ArrayList<Integer> buscar(T elemento) throws ItemNotFoundException {
         ArrayList<Integer> indices = new ArrayList<>();
@@ -150,6 +126,13 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
         }
     }
 
+    /**
+     * Funcion que se encarga de guardar los indices de todos los datos de manera ordenada, guardandolos en una estructura ArrayList
+     *
+     * @param t nodo de inicial
+     * @param indices estructura a guardar las coicidencias
+     *
+     */
     private void inOrder(NodoB<T> t, ArrayList<Integer> indices) {
         if (t != null) {
             inOrder(t.getIzquierda(), indices);
@@ -161,6 +144,13 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
         }
     }
 
+    /**
+     * Funcion que se encarga de guardar los elementos de los nodos de todos los datos de manera ordenada, guardandolos en una estructura ArrayList
+     *
+     * @param t nodo de inicial
+     * @param elementos estructura a guardar las coicidencias
+     *
+     */
     private void inOrderElementos(NodoB<T> t, ArrayList<T> elementos) {
         if (t != null) {
             inOrderElementos(t.getIzquierda(), elementos);
@@ -186,21 +176,23 @@ public class ArbolABB<T extends Comparable<T>> implements ArbolIB<T> {
 
     @Override
     public ArrayList<Integer> enlistarIndices() throws NoDatosException {
-        ArrayList<Integer> indices = new ArrayList<>();
-        inOrder(raiz, indices);
-        if (indices.size() == 0) {
+        if (raiz == null) {
             throw new NoDatosException("No se encontraron datos");
         }
+        ArrayList<Integer> indices = new ArrayList<>();
+        inOrder(raiz, indices);
+
         return indices;
     }
 
     @Override
     public ArrayList<T> enlistarElementos() throws NoDatosException {
-        ArrayList<T> elementos = new ArrayList<>();
-        inOrderElementos(raiz, elementos);
-        if (elementos.size() == 0) {
+        if (raiz == null) {
             throw new NoDatosException("No se encontraron datos");
         }
+        ArrayList<T> elementos = new ArrayList<>();
+        inOrderElementos(raiz, elementos);
+
         return elementos;
     }
 }

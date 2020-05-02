@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Estructuras.Exceptions;
 
 /**
+ * Excepcion por si los datos no se encuantran en el arbol
  *
- * @author jorge.reyes
+ * @author emman
  */
 public class ItemNotFoundException extends RuntimeException {
 

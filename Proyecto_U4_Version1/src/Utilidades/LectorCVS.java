@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utilidades;
 
 import Close.Egresado;
@@ -13,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * Clase que funciona como un lector de archivos CVS
  *
  * @author emman
  */
@@ -22,9 +18,13 @@ public class LectorCVS implements Lector<Egresado> {
     private Scanner scanner;
 
     public LectorCVS(String path) throws FileNotFoundException, IOException {
+        if (!path.equals("")) {
 
-        cvs = new File(path);
-        scanner = new Scanner(cvs);
+            cvs = new File(path);
+            scanner = new Scanner(cvs);
+        } else {
+            throw new FileNotFoundException("Archivo no encontrado");
+        }
 
     }
 

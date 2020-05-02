@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Estructuras;
 
 import Estructuras.Exceptions.ItemNotFoundException;
@@ -26,6 +21,13 @@ public class ArbolAVL<T extends Comparable<T>> implements ArbolIB<T> {
 
     }
 
+    /**
+     * Inserta de manera ordenado los datos en el arbol
+     *
+     * @param n nodo inicial
+     * @param o elemento a agregar
+     * @param index indice del elemento a agregar
+     */
     private void insertarOrdenado(NodoBAVL<T> n, T o, int index) {
         if (o.compareTo(n.getElemento()) < 0) {
             if (n.getIzquierda() == null) {
@@ -320,6 +322,13 @@ public class ArbolAVL<T extends Comparable<T>> implements ArbolIB<T> {
         return indices;
     }
 
+    /**
+     * Inserta de manera ordenado los datos en el arbol
+     *
+     *
+     * @param elemento elemento a agregar, para comparar
+     * @param index indice del elemento a agregar
+     */
     @Override
     public void insertar(int index, T elemento) {
         if (raiz == null) {
@@ -328,13 +337,18 @@ public class ArbolAVL<T extends Comparable<T>> implements ArbolIB<T> {
         insertarOrdenado(raiz, elemento, index);
     }
 
+    /**
+     *
+     * @return @throws NoDatosException
+     */
     @Override
     public ArrayList<Integer> enlistarIndices() throws NoDatosException {
-        ArrayList<Integer> indices = new ArrayList<>();
-        inOrder((NodoBAVL<String>) raiz, indices);
-        if (indices.size() == 0) {
+        if (raiz == null) {
             throw new NoDatosException("No se encontraron datos");
         }
+        ArrayList<Integer> indices = new ArrayList<>();
+        inOrder((NodoBAVL<String>) raiz, indices);
+
         return indices;
     }
 
@@ -349,11 +363,12 @@ public class ArbolAVL<T extends Comparable<T>> implements ArbolIB<T> {
 
     @Override
     public ArrayList<T> enlistarElementos() throws NoDatosException {
-        ArrayList<T> elementos = new ArrayList<>();
-        inOrderElementos(raiz, elementos);
-        if (elementos.size() == 0) {
+        if (raiz == null) {
             throw new NoDatosException("No se encontraron datos");
         }
+        ArrayList<T> elementos = new ArrayList<>();
+        inOrderElementos(raiz, elementos);
+
         return elementos;
     }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import Close.Egresado;
@@ -110,6 +105,12 @@ public class Controlador implements ActionListener {
         }
     }
 
+    /**
+     * Encuentra el radio button seleccionado, correspondiente a los arboles
+     *
+     * @return actionCommand de los respectivos, checks del grupo de arboles
+     * @throws ArbolNoSeleccionadoException
+     */
     private String actionArbol() throws ArbolNoSeleccionadoException {
         ButtonGroup f = menu.getGrupoArboles();
 
@@ -122,6 +123,11 @@ public class Controlador implements ActionListener {
         return actionCommand;
     }
 
+    /**
+     * Añade las profesiones al menu desplegable de la parte de busqueda
+     *
+     * @throws NoDatosException
+     */
     private void obtenerProfesiones() throws NoDatosException {
         ArrayList<String> profesiones = alumnos.listaProfesiones();
         JComboBox profe = menu.getBoxProfesion();
@@ -132,6 +138,11 @@ public class Controlador implements ActionListener {
         }
     }
 
+    /**
+     * Encuentra la profesion seleccionada del menu desplegable de la parte de busqueda
+     *
+     * @return
+     */
     private String getProfesion() {
         JComboBox profe = menu.getBoxProfesion();
         System.out.println(profe.getSelectedItem());
@@ -141,7 +152,6 @@ public class Controlador implements ActionListener {
     /**
      * encargada de obtener la ruta de un directorio a travez de un objeto File Chooser.
      *
-     * @param type indica el tipo de FileChooser DIRECTORIES_ONLY, FILES_ONLY, etc.
      * @return ruta del directorio
      * @throws DirectoryNoSelectedException
      */
@@ -189,6 +199,11 @@ public class Controlador implements ActionListener {
 
     }
 
+    /**
+     * Funcion que presenta una advertencia en pantalla
+     *
+     * @param mensaje texto a mostrar en la ventana de advertencia
+     */
     private void mensajeAlerta(String mensaje) {
         JOptionPane.showMessageDialog(menu, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
     }

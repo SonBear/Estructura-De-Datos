@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utilidades;
 
 import Close.Egresado;
@@ -18,6 +13,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EscritorTablas {
 
+    /**
+     * Funcion escritora de tablas
+     *
+     * @param tabla JTable donde los datos serán escritos
+     * @param datos ArrayList de los egresados que van a ser escritos en la tabla
+     */
     public static void escribirTablas(JTable tabla, ArrayList<Egresado> datos) {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Nombre");

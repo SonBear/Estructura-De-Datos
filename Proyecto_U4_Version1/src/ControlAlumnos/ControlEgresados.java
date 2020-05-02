@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ControlAlumnos;
 
 import Close.Egresado;
@@ -23,7 +18,6 @@ import java.util.ArrayList;
  * @author emman
  */
 public class ControlEgresados {
-    //Error desconocido F
 
     private Lector<Egresado> lector;
     private Egresado[] egresados;
@@ -59,6 +53,11 @@ public class ControlEgresados {
         this.egresados = egresados;
     }
 
+    /**
+     *
+     * Revisa si los arboles ya están generados
+     *
+     */
     private boolean estanGeneradoLosArboles() {
         if (arbolNombres == null || arbolProfesion == null || arbolPromedios == null) {
             return false;
@@ -66,12 +65,17 @@ public class ControlEgresados {
         return true;
     }
 
+    /**
+     *
+     * @param ruta direccion del archivo a leer
+     * @param command comando a comparar para crear los arboles para cada tipo
+     * @throws IOException Error en el archivo
+     * @throws NoDatosException Si los datos no existen ó no pueden ser creados
+     * @throws FileNotFoundException Error en el archivo
+     */
     public void actualizarDatos(String ruta, String command) throws IOException, NoDatosException, FileNotFoundException {
         lector = new LectorCVS(ruta);
         egresados = lector.obtenerDatos();
-        if (egresados == null) {
-            throw new NoDatosException("F");
-        }
 
         switch (command) {
             case "ArbolAVL":
@@ -99,6 +103,13 @@ public class ControlEgresados {
 
     }
 
+    /**
+     *
+     *
+     * Inicializa los arboles de nombres, profesion y promedio, almacenando los indices y los datos a ordenar
+     *
+     * @return retorna true si no ocurre ningun error al generar los tres arboles
+     */
     public boolean generarArboles() {
 
         for (int i = 0; i < egresados.length; i++) {
@@ -113,6 +124,12 @@ public class ControlEgresados {
         return true;
     }
 
+    /**
+     *
+     * @param arbol cualquier arbol de tipo ArbolIB
+     * @return regresa un ArrayList de tipo Egresado, el cual contendra todos los datos ordenados.
+     * @throws NoDatosException
+     */
     public ArrayList<Egresado> listar(ArbolIB arbol) throws NoDatosException {
 
         ArrayList<Egresado> egresados = new ArrayList<>();
@@ -126,10 +143,24 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Para esta funcion lista las profesiones del arbol de profesiones
+     *
+     * @return ArrayList de tipo String retorna los elementos principales de los arboles (nodos) y los enlista
+     * @throws NoDatosException
+     */
     public ArrayList<String> listaProfesiones() throws NoDatosException {
         return arbolProfesion.enlistarElementos();
     }
 
+    /**
+     * Busca por promedio y profesion
+     *
+     * @param Promedio
+     * @param Profesion
+     * @return lista de coicidencias entre los indices de los arboles
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorPromedioYProfesion(Double Promedio, String Profesion) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -153,6 +184,14 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Busca por Nombre y profesion
+     *
+     * @param nombre
+     * @param Profesion
+     * @return
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorNombreYProfesion(String nombre, String Profesion) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -176,6 +215,14 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Busca por nombre y profesion
+     *
+     * @param nombre
+     * @param Promedio
+     * @return lista de coicidencias entre los indices de los arboles
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorNombreYPromedio(String nombre, Double Promedio) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -199,6 +246,14 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Busca por nombre, profesion y promedio
+     *
+     * @param nombre
+     * @param Promedio
+     * @return lista de coicidencias entre los indices de los arboles
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorNombreProfesionPromedio(String nombre, String profesion, Double promedio) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -226,6 +281,13 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Busca indices que coicidan con el promedio propuesto
+     *
+     * @param Promedio
+     * @return lista de egresado que coiciden con los indices de la busqueda
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorPromedio(Double Promedio) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -240,6 +302,13 @@ public class ControlEgresados {
         return egresados;
     }
 
+    /**
+     * Busca indices que coicidan con la profesion propuesta
+     *
+     * @param profesion
+     * @return lista de egresado que coiciden con los indices de la busqueda
+     * @throws ItemNotFoundException
+     */
     public ArrayList<Egresado> buscarPorProfesion(String profesion) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
@@ -253,11 +322,18 @@ public class ControlEgresados {
         return egresados;
     }
 
-    public ArrayList<Egresado> buscarPorNombre(String Nombre) throws ItemNotFoundException {
+    /**
+     * Busca indices que coicidan con el nombre propuesto
+     *
+     * @param nombre
+     * @return lista de egresado que coiciden con los indices de la busqueda
+     * @throws ItemNotFoundException
+     */
+    public ArrayList<Egresado> buscarPorNombre(String nombre) throws ItemNotFoundException {
         if (!estanGeneradoLosArboles()) {
             throw new ItemNotFoundException("Arboles no generados");
         }
-        ArrayList<Integer> d = arbolNombres.buscar(Nombre);
+        ArrayList<Integer> d = arbolNombres.buscar(nombre);
         ArrayList<Egresado> egresados = new ArrayList<>();
         for (int i = 0; i < d.size(); i++) {
             egresados.add(this.egresados[d.get(i)]);

@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utilidades;
 
 /**
  *
  * @author emman
+ * @param <T> objetos a crearse y enlistarse
  */
 public interface Lector<T> {
 
+    /**
+     * funcion encargada de listar los datos de un archivo creando objetos de tipo T
+     *
+     * @return Array de los datos a generar
+     */
     public T[] obtenerDatos();
 
     public void insertarDato(T elemento);

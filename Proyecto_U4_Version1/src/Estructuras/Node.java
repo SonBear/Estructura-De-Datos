@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
+ * Nodo para la estructura de ArbolB
  *
  * @author emman
  */
