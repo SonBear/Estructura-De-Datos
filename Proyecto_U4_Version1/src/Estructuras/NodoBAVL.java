@@ -1,7 +1,7 @@
 package Estructuras;
 
 /**
- * Nodo para la estructura de arbol binario
+ * Nodo para la estructura de arbol binario AVL
  *
  * @author emman
  * @param <T> cualquierl elemento que implemente una interfaz Comparable<T>

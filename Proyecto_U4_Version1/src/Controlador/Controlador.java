@@ -17,6 +17,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -66,7 +68,7 @@ public class Controlador implements ActionListener {
 
                     break;
                 case "buscarParametros":
-                    String nombre = menu.getTxtNombre().getText();
+                    String nombre = menu.getTxtNombre().getText().toLowerCase();
                     String profesion = getProfesion();
                     String promedioS = menu.getTxtPromedio().getText();
                     if (!promedioS.equals("")) {
@@ -99,8 +101,6 @@ public class Controlador implements ActionListener {
             mensajeAlerta("Error el campo promedio solo van numeros");
         } catch (Exception ex) {
             mensajeAlerta(ex.getMessage());
-            ex.printStackTrace();
-
             System.out.println(ex.getMessage());
         }
     }
@@ -158,6 +158,8 @@ public class Controlador implements ActionListener {
     private String obtenerRuta() throws DirectoryNoSelectedException {
         JFileChooser ch = new JFileChooser();
         ch.setFileSelectionMode(0);
+        FileFilter filter = new FileNameExtensionFilter("*.cvs, *.txt", "txt", "cvs");
+        ch.setFileFilter(filter);
         ch.showOpenDialog(menu);
         File dsa = ch.getSelectedFile();
         if (dsa == null) {

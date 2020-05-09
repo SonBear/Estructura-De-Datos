@@ -34,7 +34,7 @@ public class LectorCVS implements Lector<Egresado> {
         while (scanner.hasNext()) {
             String[] datos = scanner.nextLine().split(",");
 
-            alumnos.add(new Egresado(datos[0], datos[1], Double.parseDouble(datos[2])));
+            alumnos.add(new Egresado(datos[0], datos[1].toUpperCase(), Double.parseDouble(datos[2])));
         }
         return alumnos.toArray(new Egresado[alumnos.size()]);
     }

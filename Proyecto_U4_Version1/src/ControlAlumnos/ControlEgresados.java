@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
+ * Clase para tener un manejo de los datos en los arboles
  *
  * @author emman
  */
@@ -113,7 +114,7 @@ public class ControlEgresados {
     public boolean generarArboles() {
 
         for (int i = 0; i < egresados.length; i++) {
-            arbolNombres.insertar(i, egresados[i].getNombre());
+            arbolNombres.insertar(i, egresados[i].getNombre().toLowerCase());
         }
         for (int i = 0; i < egresados.length; i++) {
             arbolProfesion.insertar(i, egresados[i].getProfesion());
