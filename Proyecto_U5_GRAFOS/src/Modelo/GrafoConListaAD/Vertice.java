@@ -15,27 +15,20 @@ import java.util.Objects;
 public class Vertice<T> {
 
     private T elemento;
-    private int numVertice;
     private ArrayList<Vertice> listaAdayacencia; //Cambiar esta mierdaaaaaa, por vertices y eliminar arco
 
     public Vertice(T elemento) {
         this.elemento = elemento;
-        numVertice = -1;
         listaAdayacencia = new ArrayList<>();
 
     }
 
     public Vertice(int numeroVertice, T elemento) {
         this.elemento = elemento;
-        numVertice = numeroVertice;
     }
 
     public T getElemento() {
         return elemento;
-    }
-
-    public int getNumVertice() {
-        return numVertice;
     }
 
     public ArrayList<Vertice> getListaAdayacencia() {
@@ -44,10 +37,6 @@ public class Vertice<T> {
 
     public void setElemento(T elemento) {
         this.elemento = elemento;
-    }
-
-    public void setNumVertice(int numVertice) {
-        this.numVertice = numVertice;
     }
 
     public void setListaAdayacencia(ArrayList<Vertice> listaAdayacencia) {
@@ -77,7 +66,7 @@ public class Vertice<T> {
 
     @Override
     public String toString() {
-        return elemento + " #" + numVertice;
+        return elemento + " ";
     }
 
 }

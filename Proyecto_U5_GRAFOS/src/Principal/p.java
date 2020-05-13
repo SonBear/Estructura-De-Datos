@@ -27,21 +27,19 @@ public class p {
         g.nuevoVertice("B");
         g.nuevoVertice("C");
         g.nuevoVertice("D");
-        g.nuevoVertice("E");
-        g.nuevoVertice("F");
+        g.nuevoVertice("H");
+        g.nuevoVertice("R");
         g.nuevoVertice("T");
-        g.nuevoVertice("P");
-        g.nuevoVertice("X");
-        g.nuevoVertice("Y");
-        g.nuevoVertice("Z");
 
-        g.union("A", "B");
-        g.union("B", "F");
-        g.union("F", "C");
-        g.union("C", "E");
-        g.union("C", "D");
-        g.union("C", "T");
-        g.union("T", "P");
+        g.union("D", "B");
+        g.union("D", "C");
+        g.union("B", "H");
+        g.union("C", "R");
+        g.union("R", "H");
+        g.union("H", "A");
+        g.union("H", "T");
+        g.union("H", "D");
+        System.out.println(g.buscarAmplitud("B"));;
 
         System.out.println(g);
 
@@ -67,10 +65,11 @@ public class p {
         g2.union("C", "T");
         g2.union("T", "P");
 
-        g2.borrarVertice("C");
+        g.recorrerProfundidad();
 
-        DibujadorGrafo f = new DibujadorGrafo(g);
         DibujadorGrafo f2 = new DibujadorGrafo(g2);
+        f2.repaint();
+
         JFrame frame = new JFrame("FFF");
         frame.setSize(new Dimension(900, 900));
         frame.setLocationRelativeTo(null);

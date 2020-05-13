@@ -12,6 +12,7 @@ import Modelo.Grafo;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -39,6 +40,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
         this(MAXVERTICES);
     }
 
+    //Reparar array sale de rango
     @Override
     public boolean adyacente(int num1, int num2) throws VerticeNoExisteException {
         if (num1 < 0 || num2 < 0) {
@@ -119,7 +121,6 @@ public class GrafoMatriz<T> implements Grafo<T> {
             throw new VerticeExisteException("El vertice existe");
         }
         Vertice<T> v = new Vertice(elemento);
-        v.setNumVertice(numeroVertices);
         vertices[numeroVertices++] = v;
     }
 
@@ -166,7 +167,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
         //Manejando grafos no dirigidos
         matrizAdyacencia[va][vb] = 1;
-        matrizAdyacencia[vb][va] = 1;
+        // matrizAdyacencia[vb][va] = 1;
     }
 
     @Override
@@ -192,6 +193,11 @@ public class GrafoMatriz<T> implements Grafo<T> {
         while (!colaNumVertices.isEmpty()) {
             //paso 4 visitar el vertice del frente de la cola
             int verticeActual = colaNumVertices.remove();
+            if (verticeActual == vb) {
+                encontrado = true;
+                break;
+            }
+
             if (verticeActual == vb) {
                 encontrado = true;
                 break;
@@ -244,9 +250,43 @@ public class GrafoMatriz<T> implements Grafo<T> {
         }
     }
 
+    //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
+    private void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
+        //Vertice inicial
+        int vi = v;
+
+        //Se marca como procesado y se mete a la pila
+        procesados[vi] = true;
+        pila.push(vi);
+
+        //paso 4 visitar el vertice de la pila
+        int verticeActual = pila.pop();
+
+        //Impresion en pantalla de la visita de vertices
+        System.out.println(vertices[verticeActual]);
+
+        //Ingresar a la pila los vertices adyacentes a v
+        for (int i = 0; i < numeroVertices; i++) {
+            if (adyacente(verticeActual, i) && !procesados[i]) {
+                pila.push(i);
+            }
+        }
+        System.out.println(pila);
+        //recorrer en profundidad todos los vertices adyacentes a v
+        for (int i = 0; i < pila.size(); i++) {
+            recorrerProfundidad(pila.pop(), pila, procesados);
+        }
+
+    }
+
+    //Debo testear esto
     @Override
     public void recorrerProfundidad() throws VerticeNoExisteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Boolean procesados[] = new Boolean[numeroVertices];
+        Arrays.fill(procesados, false);
+        Stack<Integer> pila = new Stack<>();
+        //Desde el vertice D del ejemplo de la presentacion
+        recorrerProfundidad(3, pila, procesados);
     }
 
     @Override

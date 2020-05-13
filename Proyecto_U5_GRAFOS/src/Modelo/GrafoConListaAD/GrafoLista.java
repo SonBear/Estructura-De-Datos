@@ -7,6 +7,7 @@ import Modelo.Grafo;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -22,7 +23,6 @@ public class GrafoLista<T> implements Grafo<T> {
         }
 
         Vertice<T> nuevoVertice = new Vertice<>(elemento);
-        nuevoVertice.setNumVertice(numeroVertices);
         vertices[numeroVertices++] = nuevoVertice;
 
     }
@@ -39,7 +39,7 @@ public class GrafoLista<T> implements Grafo<T> {
         }
 
         vertices[va].getListaAdayacencia().remove(vb);
-        vertices[vb].getListaAdayacencia().remove(va);
+        //vertices[vb].getListaAdayacencia().remove(va);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GrafoLista<T> implements Grafo<T> {
             throw new VerticeNoExisteException("Vertice no exite");
         }
 
-        return vertices[va].getListaAdayacencia().contains(vb);
+        return vertices[va].getListaAdayacencia().contains(vertices[vb]);
     }
 
     @Override
@@ -92,31 +92,44 @@ public class GrafoLista<T> implements Grafo<T> {
             if (va < 0 || vb < 0) {
                 throw new VerticeNoExisteException("Vertice no exite");
             }
-            Vertice ver = vertices[vb]; //Cambiar esto por buscar el vertices
+            Vertice ver = vertices[vb];
             vertices[va].getListaAdayacencia().add(ver);
-            Vertice ver2 = vertices[va];
-            vertices[vb].getListaAdayacencia().add(ver2);
+            //Vertice ver2 = vertices[va];
+            //vertices[vb].getListaAdayacencia().add(ver2);
 
         }
     }
 
     @Override
     public boolean buscarProfundidad(T elemento) throws VerticeNoExisteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Boolean procesados[] = new Boolean[numeroVertices];
+        Arrays.fill(procesados, false);
+        Stack<Integer> pila = new Stack<>();
+        recorrerProfundidad(3, pila, procesados);
+        return procesados[getNumeroVertice(elemento)];
+
     }
 
     @Override
     public boolean buscarAmplitud(T elemento) throws VerticeNoExisteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Boolean procesados[] = new Boolean[numeroVertices];
+        Arrays.fill(procesados, false);
+        recorrerAmplitud(0, procesados);
+
+        return procesados[getNumeroVertice(elemento)];
     }
 
     @Override
     public void recorrerAmplitud() throws VerticeNoExisteException {
-        //numero del vertice inicial
-        int vi = 0;
-        //Estructuras para el algortimo
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
+        recorrerAmplitud(0, procesados);
+    }
+
+    public void recorrerAmplitud(int v, Boolean[] procesados) throws VerticeNoExisteException {
+        //numero del vertice inicial
+        int vi = v;
+        //Estructuras para el algortimo
         Queue<Integer> colaNumVertices = new ArrayDeque<>();
         //Paso 1 Marcar como prodesado el vertice inicial
         procesados[vi] = true;
@@ -142,8 +155,41 @@ public class GrafoLista<T> implements Grafo<T> {
     }
 
     @Override
-    public void recorrerProfundidad() {
-        System.out.println("Todavia no papá");
+    public void recorrerProfundidad() throws VerticeNoExisteException {
+        Boolean procesados[] = new Boolean[numeroVertices];
+        Arrays.fill(procesados, false);
+        Stack<Integer> pila = new Stack<>();
+        recorrerProfundidad(3, pila, procesados);
+    }
+
+    //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
+    public void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
+        //Vertice inicial
+        int vi = v;
+
+        //Se marca como procesado y se mete a la pila
+        procesados[vi] = true;
+        pila.push(vi);
+
+        //paso 4 visitar el vertice de la pila
+        int verticeActual = pila.pop();
+
+        //Impresion en pantalla de la visita de vertices
+        System.out.println(vertices[verticeActual]);
+        System.out.println(Arrays.toString(procesados));
+
+        //Ingresar a la pila los vertices adyacentes a v
+        for (int i = 0; i < numeroVertices; i++) {
+            if (adyacente(verticeActual, i) && !procesados[i]) {
+                pila.push(i);
+            }
+        }
+        System.out.println(pila);
+        //recorrer en profundidad todos los vertices adyacentes a v
+        for (int i = 0; i < pila.size(); i++) {
+            recorrerProfundidad(pila.pop(), pila, procesados);
+        }
+
     }
 
     private int numeroVertices;
@@ -174,17 +220,6 @@ public class GrafoLista<T> implements Grafo<T> {
     }
 
     @Override
-    public String toString() {
-        String e = "";
-        for (int i = 0; i < numeroVertices; i++) {
-            System.out.println(vertices[i]);
-            System.out.println(vertices[i].getListaAdayacencia());
-        }
-
-        return e;
-    }
-
-    @Override
     public int getNumeroVertices() {
         return numeroVertices;
     }
@@ -202,6 +237,18 @@ public class GrafoLista<T> implements Grafo<T> {
     @Override
     public T getElemento(int vertice) throws VerticeNoExisteException {
         return vertices[vertice].getElemento();
+    }
+
+    @Override
+    public String toString() {
+        String e = "";
+        for (int i = 0; i < numeroVertices; i++) {
+            e += vertices[i] + " ";
+            e += vertices[i].getListaAdayacencia();
+
+        }
+
+        return e;
     }
 
 }

@@ -14,27 +14,17 @@ import java.util.Objects;
 public class Vertice<T> {
 
     private T elemento;
-    private int numVertice;
 
     public Vertice(T elemento) {
         this.elemento = elemento;
-        this.numVertice = -1;
     }
 
     public T getElemento() {
         return elemento;
     }
 
-    public int getNumVertice() {
-        return numVertice;
-    }
-
     public void setElemento(T elemento) {
         this.elemento = elemento;
-    }
-
-    public void setNumVertice(int numVertice) {
-        this.numVertice = numVertice;
     }
 
     @Override
@@ -54,7 +44,7 @@ public class Vertice<T> {
 
     @Override
     public String toString() {
-        return "Nombre: " + elemento + " numero de vertices: " + numVertice;
+        return "Nombre: " + elemento;
     }
 
 }
