@@ -70,15 +70,6 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                              <Component id="btnDibujar" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnRecorridoAnchura" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                              <Component id="btnProfundidad" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -102,12 +93,27 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
+                              <Component id="btnRecorridoAnchura" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnProfundidad" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtEliminarU1" min="-2" pref="93" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtBuscarProfundidad" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtBuscarAnchura" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtEliminarU1" alignment="0" pref="93" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtEliminarU2" min="-2" pref="92" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnEliminarUnion" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="txtEliminarU2" min="-2" pref="92" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnEliminarUnion" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="btnBuscarAnchura" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnBuscarProfundidad" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace pref="29" max="32767" attributes="0"/>
@@ -168,14 +174,22 @@
                           <Component id="txtEliminarU2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEliminarUnion" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtBuscarAnchura" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBuscarAnchura" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtBuscarProfundidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBuscarProfundidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnRecorridoAnchura" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnProfundidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="103" max="32767" attributes="0"/>
-                      <Component id="btnDibujar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -252,11 +266,6 @@
         <Property name="text" type="java.lang.String" value="Lista"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnDibujar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Dibujar"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="txtGenerar">
     </Component>
     <Component class="javax.swing.JButton" name="btnGenerar">
@@ -292,6 +301,26 @@
     <Component class="javax.swing.JButton" name="btnEliminarUnion">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar Union"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtBuscarAnchura">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscarAnchura">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar Anchura"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtBuscarProfundidad">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jTextField2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBuscarProfundidad">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar Profundidad"/>
       </Properties>
     </Component>
   </SubComponents>

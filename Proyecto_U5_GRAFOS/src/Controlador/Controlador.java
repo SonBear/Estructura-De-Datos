@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -47,7 +48,7 @@ public class Controlador implements ActionListener, Runnable {
         //  Evitar que se generen nuevos objetos.........
         dibGrafo = new DibujadorGrafo(grafo, panel.getWidth(), panel.getHeight());
         panel.add(dibGrafo);
-        menu.repaint();
+        panel.repaint();
     }
 
     private void generar(int maximoVertices, String command) {
@@ -82,6 +83,24 @@ public class Controlador implements ActionListener, Runnable {
         String nombre = menu.getTxtEliminarVertice().getText();
         System.out.println(nombre);
         grafo.borrarVertice(nombre);
+    }
+
+    private void buscarElementoAnchura() throws VerticeNoExisteException {
+        String elemento = menu.getTxtBuscarAnchura().getText();
+        boolean encontrado = grafo.buscarAmplitud(elemento);
+        if (!encontrado) {
+            throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
+        }
+
+    }
+
+    private void buscarElementoProfundidad() throws VerticeNoExisteException {
+        String elemento = menu.getTxtBuscarProfundidad().getText();
+        boolean encontrado = grafo.buscarProfundidad(elemento);
+        if (!encontrado) {
+            throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
+        }
+
     }
 
     @Override
@@ -122,6 +141,12 @@ public class Controlador implements ActionListener, Runnable {
                 case "Eliminar Vertice":
                     eliminarVertice();
                     break;
+                case "Buscar Anchura":
+                    buscarElementoAnchura();
+                    break;
+                case "Buscar Profundidad":
+                    buscarElementoProfundidad();
+                    break;
                 default:
                     throw new AssertionError();
             }
@@ -129,20 +154,26 @@ public class Controlador implements ActionListener, Runnable {
         } catch (Exception ex) {
             dibujar();
             ex.getStackTrace();
+            mensaje(ex.getMessage());
             System.out.println(ex.getMessage());
 
         }
     }
 
+    private void mensaje(String txt) {
+        JOptionPane.showMessageDialog(menu, txt, "OK", JOptionPane.WARNING_MESSAGE);
+    }
+
     private void iniciarComponente() {
         menu.getBtnAgragarEnlace().addActionListener(this);
         menu.getBtnAgregarVertice().addActionListener(this);
-        menu.getBtnDibujar().addActionListener(this);
         menu.getBtnGenerar().addActionListener(this);
         menu.getBtnRecorridoAnchura().addActionListener(this);
         menu.getBtnProfundidad().addActionListener(this);
         menu.getBtnEliminarUnion().addActionListener(this);
         menu.getBtnEliminarVertice().addActionListener(this);
+        menu.getBtnBuscarAnchura().addActionListener(this);
+        menu.getBtnBuscarProfundidad().addActionListener(this);
 
     }
 

@@ -56,6 +56,8 @@ public class DibujadorGrafo extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        numeroVertices = grafo.getNumeroVertices();
+        puntos = new Punto[numeroVertices];
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
 
         int angulo = 0;
@@ -134,7 +136,7 @@ public class DibujadorGrafo extends JPanel {
 
     }
 
-    public void recorridoAnchura(Graphics g) throws VerticeNoExisteException, InterruptedException {
+    private void recorridoAnchura(Graphics g) throws VerticeNoExisteException, InterruptedException {
 
         //numero del vertice inicial
         int vi = 0;
@@ -166,6 +168,14 @@ public class DibujadorGrafo extends JPanel {
         }
         sleep(1000);
         repaint();
+
+    }
+
+    public void buscarAnchura() {
+
+    }
+
+    public void buscarProfundida() {
 
     }
 

@@ -43,7 +43,6 @@ public class Menu extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         bMatriz = new javax.swing.JRadioButton();
         bLista = new javax.swing.JRadioButton();
-        btnDibujar = new javax.swing.JButton();
         txtGenerar = new javax.swing.JTextField();
         btnGenerar = new javax.swing.JButton();
         btnRecorridoAnchura = new javax.swing.JButton();
@@ -53,6 +52,10 @@ public class Menu extends javax.swing.JFrame {
         txtEliminarU1 = new javax.swing.JTextField();
         txtEliminarU2 = new javax.swing.JTextField();
         btnEliminarUnion = new javax.swing.JButton();
+        txtBuscarAnchura = new javax.swing.JTextField();
+        btnBuscarAnchura = new javax.swing.JButton();
+        txtBuscarProfundidad = new javax.swing.JTextField();
+        btnBuscarProfundidad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1200, 720));
@@ -92,8 +95,6 @@ public class Menu extends javax.swing.JFrame {
 
         bLista.setText("Lista");
 
-        btnDibujar.setText("Dibujar");
-
         btnGenerar.setText("Generar Grafo");
         btnGenerar.setActionCommand("Generar");
 
@@ -110,6 +111,14 @@ public class Menu extends javax.swing.JFrame {
         btnEliminarVertice.setText("Eliminar Vertice");
 
         btnEliminarUnion.setText("Eliminar Union");
+
+        txtBuscarAnchura.setText("jTextField1");
+
+        btnBuscarAnchura.setText("Buscar Anchura");
+
+        txtBuscarProfundidad.setText("jTextField2");
+
+        btnBuscarProfundidad.setText("Buscar Profundidad");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,13 +157,6 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(btnDibujar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnRecorridoAnchura)
-                                .addGap(31, 31, 31)
-                                .addComponent(btnProfundidad))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -172,12 +174,23 @@ public class Menu extends javax.swing.JFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(btnGenerar)))))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRecorridoAnchura)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnProfundidad))
+                            .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(txtEliminarU1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtBuscarProfundidad, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtBuscarAnchura, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEliminarU1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtEliminarU2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEliminarUnion)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtEliminarU2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnEliminarUnion))
+                                    .addComponent(btnBuscarAnchura)
+                                    .addComponent(btnBuscarProfundidad))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)))
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -224,13 +237,19 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(txtEliminarU1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEliminarU2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEliminarUnion))
-                        .addGap(39, 39, 39)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscarAnchura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarAnchura))
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscarProfundidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscarProfundidad))
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRecorridoAnchura)
                             .addComponent(btnProfundidad))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(btnDibujar)
-                        .addGap(52, 52, 52))))
+                        .addGap(80, 80, 80))))
         );
 
         pack();
@@ -243,6 +262,22 @@ public class Menu extends javax.swing.JFrame {
     private void txtEliminarVerticeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEliminarVerticeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEliminarVerticeActionPerformed
+
+    public JButton getBtnBuscarAnchura() {
+        return btnBuscarAnchura;
+    }
+
+    public JButton getBtnBuscarProfundidad() {
+        return btnBuscarProfundidad;
+    }
+
+    public JTextField getTxtBuscarAnchura() {
+        return txtBuscarAnchura;
+    }
+
+    public JTextField getTxtBuscarProfundidad() {
+        return txtBuscarProfundidad;
+    }
 
     public JButton getBtnEliminarUnion() {
         return btnEliminarUnion;
@@ -262,10 +297,6 @@ public class Menu extends javax.swing.JFrame {
 
     public JButton getBtnAgregarVertice() {
         return btnAgregarVertice;
-    }
-
-    public JButton getBtnDibujar() {
-        return btnDibujar;
     }
 
     public JTextField getTxtNombre() {
@@ -330,7 +361,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JRadioButton bMatriz;
     private javax.swing.JButton btnAgragarEnlace;
     private javax.swing.JButton btnAgregarVertice;
-    private javax.swing.JButton btnDibujar;
+    private javax.swing.JButton btnBuscarAnchura;
+    private javax.swing.JButton btnBuscarProfundidad;
     private javax.swing.JButton btnEliminarUnion;
     private javax.swing.JButton btnEliminarVertice;
     private javax.swing.JButton btnGenerar;
@@ -341,6 +373,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtBuscarAnchura;
+    private javax.swing.JTextField txtBuscarProfundidad;
     private javax.swing.JTextField txtEliminarU1;
     private javax.swing.JTextField txtEliminarU2;
     private javax.swing.JTextField txtEliminarVertice;

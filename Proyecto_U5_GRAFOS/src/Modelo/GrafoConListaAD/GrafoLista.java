@@ -18,8 +18,8 @@ public class GrafoLista<T> implements Grafo<T> {
     @Override
     public void nuevoVertice(T elemento) throws VerticeExisteException {
         boolean esta = getNumeroVertice(elemento) >= 0;
-        if (esta) {
-            throw new VerticeExisteException("El Vertice ya existe");
+        if (esta | numeroVertices >= MAXVERTICES) {
+            throw new VerticeExisteException("El Vertice ya existe o tamaño sobrepasado");
         }
 
         Vertice<T> nuevoVertice = new Vertice<>(elemento);
@@ -60,26 +60,24 @@ public class GrafoLista<T> implements Grafo<T> {
         if (va < 0) {
             throw new VerticeNoExisteException("Vertice no exite");
         }
+        System.out.println(va + "---");
 
         //Borro los arcos adyacentes
         for (int i = 0; i < numeroVertices; i++) {
-            if (adyacente(va, i)) {
-                try {
-
+            try {
+                if (adyacente(va, i)) {
                     borrarArco(elemento, getElemento(i));
-                    System.out.println("Arco de " + elemento + " a " + getElemento(i) + " ->Eliminado");
-                } catch (ArcoNoExisteException ex) {
-
-                    System.out.println(ex.getMessage());
+                } else if (adyacente(i, va)) {
+                    borrarArco(getElemento(i), elemento);
                 }
+            } catch (Exception ex) {
             }
         }
-        //Corre todos los vertices
 
-        for (int i = va; i < numeroVertices; i++) {
+        //Corre todos los vertices
+        for (int i = va; i < numeroVertices - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
-        vertices[numeroVertices] = null;
 
         numeroVertices--;
     }
@@ -163,7 +161,7 @@ public class GrafoLista<T> implements Grafo<T> {
     }
 
     //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
-    public void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
+    private void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
         //Vertice inicial
         int vi = v;
 
@@ -193,18 +191,18 @@ public class GrafoLista<T> implements Grafo<T> {
     }
 
     private int numeroVertices;
-    private final int MAXVERTICES = 20;
+    private static int MAXVERTICES = 20;
     private Vertice<T>[] vertices;
 
     public GrafoLista(int maxVer) {
         vertices = new Vertice[maxVer];
+        MAXVERTICES = maxVer;
         numeroVertices = 0;
 
     }
 
     public GrafoLista() {
-        vertices = new Vertice[MAXVERTICES];
-        numeroVertices = 0;
+        this(MAXVERTICES);
 
     }
 

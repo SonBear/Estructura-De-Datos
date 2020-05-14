@@ -21,13 +21,14 @@ import java.util.Stack;
 public class GrafoMatriz<T> implements Grafo<T> {
 
     private int numeroVertices;
-    private static final int MAXVERTICES = 20;
+    private static int MAXVERTICES = 20;
     private Vertice<T>[] vertices;
     private int[][] matrizAdyacencia;
 
     public GrafoMatriz(int maximoVertices) {
         matrizAdyacencia = new int[maximoVertices][maximoVertices];
         vertices = new Vertice[maximoVertices];
+        MAXVERTICES = maximoVertices;
         for (int i = 0; i < maximoVertices; i++) {
             for (int j = 0; j < maximoVertices; j++) {
                 matrizAdyacencia[i][j] = 0;
@@ -100,7 +101,6 @@ public class GrafoMatriz<T> implements Grafo<T> {
         }
 
         matrizAdyacencia[va][vb] = 0;
-        matrizAdyacencia[vb][va] = 0;
     }
 
     @Override
@@ -117,11 +117,12 @@ public class GrafoMatriz<T> implements Grafo<T> {
     @Override
     public void nuevoVertice(T elemento) throws VerticeExisteException {
         boolean esta = getNumeroVertice(elemento) >= 0;
-        if (esta) {
-            throw new VerticeExisteException("El vertice existe");
+        if (esta | (numeroVertices >= MAXVERTICES)) {
+            throw new VerticeExisteException("El vertice existe o tamaño sobrepsado");
         }
         Vertice<T> v = new Vertice(elemento);
         vertices[numeroVertices++] = v;
+
     }
 
     @Override
@@ -133,26 +134,24 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
         //Borro los arcos adyacentes
         for (int i = 0; i < numeroVertices; i++) {
-            if (adyacente(va, i)) {
-                try {
-
+            try {
+                if (adyacente(va, i)) {
                     borrarArco(elemento, getElemento(i));
-                    System.out.println("Arco de " + elemento + " a " + getElemento(i) + " ->Eliminado");
-                } catch (ArcoNoExisteException ex) {
-
-                    System.out.println(ex.getMessage());
+                } else if (adyacente(i, va)) {
+                    borrarArco(getElemento(i), elemento);
                 }
+            } catch (Exception ex) {
+
             }
         }
 
-        for (int i = va; i < numeroVertices; i++) {
+        for (int i = va; i < numeroVertices - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
+        //FFFFFF
+        numeroVertices--;
         moverColumnas(va);
         moverfilas(va);
-        System.out.println(this);
-
-        numeroVertices--;
 
     }
 
@@ -172,18 +171,27 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
     @Override
     public boolean buscarProfundidad(T elemento) throws VerticeNoExisteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Boolean procesados[] = new Boolean[numeroVertices];
+        Arrays.fill(procesados, false);
+        Stack<Integer> pila = new Stack<>();
+        //Desde el vertice D del ejemplo de la presentacion
+        recorrerProfundidad(0, pila, procesados);
+        return procesados[getNumeroVertice(elemento)];
     }
 
     @Override
     public boolean buscarAmplitud(T elemento) throws VerticeNoExisteException {
-        //numero del vertice inicial y vertice a buscar
-        int vi = 0;
-        int vb = getNumeroVertice(elemento);
-        boolean encontrado = false;
-        //Estructuras para el algortimo
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
+        recorrerAmplitud(0, procesados);
+
+        return procesados[getNumeroVertice(elemento)];
+    }
+
+    public void recorrerAmplitud(int v, Boolean[] procesados) throws VerticeNoExisteException {
+        //numero del vertice inicial
+        int vi = v;
+        //Estructuras para el algortimo
         Queue<Integer> colaNumVertices = new ArrayDeque<>();
         //Paso 1 Marcar como prodesado el vertice inicial
         procesados[vi] = true;
@@ -193,15 +201,6 @@ public class GrafoMatriz<T> implements Grafo<T> {
         while (!colaNumVertices.isEmpty()) {
             //paso 4 visitar el vertice del frente de la cola
             int verticeActual = colaNumVertices.remove();
-            if (verticeActual == vb) {
-                encontrado = true;
-                break;
-            }
-
-            if (verticeActual == vb) {
-                encontrado = true;
-                break;
-            }
 
             //Impresion en pantalla de la visita de vertices
             System.out.println(vertices[verticeActual]);
@@ -215,39 +214,14 @@ public class GrafoMatriz<T> implements Grafo<T> {
             }
 
         }
-
-        return encontrado;
     }
 
     @Override
     public void recorrerAmplitud() throws VerticeNoExisteException {
-        //numero del vertice inicial
-        int vi = 0;
-        //Estructuras para el algortimo
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        Queue<Integer> colaNumVertices = new ArrayDeque<>();
-        //Paso 1 Marcar como prodesado el vertice inicial
-        procesados[vi] = true;
-        //Pasa 2 meter el vertice inicial a la cola
-        colaNumVertices.add(vi);
-        //Paso repetir paso 4 y paso 5 mientras la cola no este vacía
-        while (!colaNumVertices.isEmpty()) {
-            //paso 4 visitar el vertice del frente de la cola
-            int verticeActual = colaNumVertices.remove();
+        recorrerAmplitud(0, procesados);
 
-            //Impresion en pantalla de la visita de vertices
-            System.out.println(vertices[verticeActual]);
-
-            //paso 5 agregar todos los vertices adyacentes y que no esten procesados a la cola y marcarlos como procesados
-            for (int i = 0; i < numeroVertices; i++) {
-                if (adyacente(verticeActual, i) && !procesados[i]) {
-                    colaNumVertices.add(i);
-                    procesados[i] = true;
-                }
-            }
-
-        }
     }
 
     //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
