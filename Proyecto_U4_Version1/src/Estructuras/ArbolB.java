@@ -111,7 +111,7 @@ public class ArbolB<T extends Comparable<T>> implements ArbolIB<T> {
         } else {
             Node<T> node = root;
             while (node != null) {
-                //Search for a repetid key
+                //Search for a repited key
                 boolean repitKey = false;
                 for (int i = 0; i < node.numberOfKeys(); i++) {
                     if (node.getKey(i).getElemento().compareTo(value) == 0) {

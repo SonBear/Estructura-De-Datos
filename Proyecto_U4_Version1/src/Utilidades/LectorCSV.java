@@ -12,16 +12,16 @@ import java.util.Scanner;
  *
  * @author emman
  */
-public class LectorCVS implements Lector<Egresado> {
+public class LectorCSV implements Lector<Egresado> {
 
-    private File cvs;
+    private File csv;
     private Scanner scanner;
 
-    public LectorCVS(String path) throws FileNotFoundException, IOException {
+    public LectorCSV(String path) throws FileNotFoundException, IOException {
         if (!path.equals("")) {
 
-            cvs = new File(path);
-            scanner = new Scanner(cvs);
+            csv = new File(path);
+            scanner = new Scanner(csv);
         } else {
             throw new FileNotFoundException("Archivo no encontrado");
         }
@@ -30,13 +30,15 @@ public class LectorCVS implements Lector<Egresado> {
 
     @Override
     public Egresado[] obtenerDatos() {
-        ArrayList<Egresado> alumnos = new ArrayList<>();
+        ArrayList<Egresado> egresados = new ArrayList<>();
+        //La primera linea sirve para representar las columnas
+        System.out.println(scanner.nextLine());
         while (scanner.hasNext()) {
             String[] datos = scanner.nextLine().split(",");
 
-            alumnos.add(new Egresado(datos[0], datos[1].toUpperCase(), Double.parseDouble(datos[2])));
+            egresados.add(new Egresado(datos[0], datos[1].toUpperCase(), Double.parseDouble(datos[2])));
         }
-        return alumnos.toArray(new Egresado[alumnos.size()]);
+        return egresados.toArray(new Egresado[egresados.size()]);
     }
 
     @Override

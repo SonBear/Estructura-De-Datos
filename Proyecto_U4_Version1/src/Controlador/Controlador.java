@@ -1,7 +1,7 @@
 package Controlador;
 
 import Close.Egresado;
-import ControlAlumnos.ControlEgresados;
+import ControlEgresados.ControlEgresados;
 import Controlador.Exception.ArbolNoSeleccionadoException;
 import Controlador.Exception.DirectoryNoSelectedException;
 import Estructuras.Exceptions.ItemNotFoundException;
@@ -158,7 +158,7 @@ public class Controlador implements ActionListener {
     private String obtenerRuta() throws DirectoryNoSelectedException {
         JFileChooser ch = new JFileChooser();
         ch.setFileSelectionMode(0);
-        FileFilter filter = new FileNameExtensionFilter("*.cvs, *.txt", "txt", "cvs");
+        FileFilter filter = new FileNameExtensionFilter("*.csv, *.txt", "txt", "csv");
         ch.setFileFilter(filter);
         ch.showOpenDialog(menu);
         File dsa = ch.getSelectedFile();

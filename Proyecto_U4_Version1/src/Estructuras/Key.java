@@ -3,7 +3,7 @@ package Estructuras;
 import java.util.ArrayList;
 
 /**
- * Clase que representa los elementos agregados en los arboles
+ * Clase que representa los elementos agregados en los arboles (nodos)
  *
  * @author emman
  */

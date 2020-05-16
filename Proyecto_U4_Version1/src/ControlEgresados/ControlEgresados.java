@@ -1,4 +1,4 @@
-package ControlAlumnos;
+package ControlEgresados;
 
 import Close.Egresado;
 import Estructuras.ArbolABB;
@@ -8,7 +8,7 @@ import Estructuras.ArbolIB;
 import Estructuras.Exceptions.ItemNotFoundException;
 import Estructuras.Exceptions.NoDatosException;
 import Utilidades.Lector;
-import Utilidades.LectorCVS;
+import Utilidades.LectorCSV;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ControlEgresados {
         return egresados;
     }
 
-    public void setLector(LectorCVS lector) {
+    public void setLector(LectorCSV lector) {
         this.lector = lector;
     }
 
@@ -75,7 +75,7 @@ public class ControlEgresados {
      * @throws FileNotFoundException Error en el archivo
      */
     public void actualizarDatos(String ruta, String command) throws IOException, NoDatosException, FileNotFoundException {
-        lector = new LectorCVS(ruta);
+        lector = new LectorCSV(ruta);
         egresados = lector.obtenerDatos();
 
         switch (command) {
