@@ -132,15 +132,12 @@ public class GrafoMatriz<T> implements Grafo<T> {
             throw new VerticeNoExisteException("Vertice no exite");
         }
 
-        //Borro los arcos adyacentes
+        //Borro los arcos adyacentes A EL
         for (int i = 0; i < numeroVertices; i++) {
             try {
-                if (adyacente(va, i)) {
-                    borrarArco(elemento, getElemento(i));
-                } else if (adyacente(i, va)) {
-                    borrarArco(getElemento(i), elemento);
-                }
+                borrarArco(getElemento(i), elemento);
             } catch (Exception ex) {
+                System.out.println("Grafo Matriz: " + ex.getMessage());
 
             }
         }
@@ -149,9 +146,10 @@ public class GrafoMatriz<T> implements Grafo<T> {
             vertices[i] = vertices[i + 1];
         }
         //FFFFFF
-        numeroVertices--;
+        vertices[numeroVertices - 1] = null;
         moverColumnas(va);
         moverfilas(va);
+        numeroVertices--;
 
     }
 
@@ -171,20 +169,45 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
     @Override
     public boolean buscarProfundidad(T elemento) throws VerticeNoExisteException {
+        int verticeBuscar = getNumeroVertice(elemento);
+        if (verticeBuscar < 0) {
+            throw new VerticeNoExisteException("Vertice No existe");
+        }
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
         Stack<Integer> pila = new Stack<>();
         //Desde el vertice D del ejemplo de la presentacion
-        recorrerProfundidad(0, pila, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return procesados[getNumeroVertice(elemento)];
+
+            }
+        }
+        recorrerProfundidad(vi, pila, procesados);
         return procesados[getNumeroVertice(elemento)];
     }
 
     @Override
     public boolean buscarAmplitud(T elemento) throws VerticeNoExisteException {
+        int vi = 0;
+        int verticeBuscar = getNumeroVertice(elemento);
+        if (verticeBuscar < 0) {
+            throw new VerticeNoExisteException("Vertice No existe");
+        }
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        recorrerAmplitud(0, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente, marcamos como visitados los que pasemos
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return procesados[getNumeroVertice(elemento)];
 
+            }
+        }
+        recorrerAmplitud(vi, procesados);
         return procesados[getNumeroVertice(elemento)];
     }
 
@@ -218,13 +241,22 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
     @Override
     public void recorrerAmplitud() throws VerticeNoExisteException {
+
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        recorrerAmplitud(0, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente, marcamos como visitados los que pasemos
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return;
+
+            }
+        }
+        recorrerAmplitud(vi, procesados);
 
     }
 
-    //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
     private void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
         //Vertice inicial
         int vi = v;
@@ -242,6 +274,8 @@ public class GrafoMatriz<T> implements Grafo<T> {
         //Ingresar a la pila los vertices adyacentes a v
         for (int i = 0; i < numeroVertices; i++) {
             if (adyacente(verticeActual, i) && !procesados[i]) {
+                //Marco los vertices como procesados para evitar errores
+                procesados[i] = true;
                 pila.push(i);
             }
         }
@@ -256,11 +290,30 @@ public class GrafoMatriz<T> implements Grafo<T> {
     //Debo testear esto
     @Override
     public void recorrerProfundidad() throws VerticeNoExisteException {
+
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
         Stack<Integer> pila = new Stack<>();
         //Desde el vertice D del ejemplo de la presentacion
-        recorrerProfundidad(3, pila, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return;
+
+            }
+        }
+        recorrerProfundidad(vi, pila, procesados);
+    }
+
+    private boolean tieneAdyacentes(int vertice) throws VerticeNoExisteException {
+        for (int i = 0; i < numeroVertices; i++) {
+            if (adyacente(vertice, i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -276,18 +329,24 @@ public class GrafoMatriz<T> implements Grafo<T> {
     //Debemo correr las columnas y filas
     private void moverColumnas(int columna) {
         for (int i = 0; i < numeroVertices; i++) {
-            for (int j = columna; j < numeroVertices; j++) {
+            for (int j = columna; j < numeroVertices - 1; j++) {
                 matrizAdyacencia[i][j] = matrizAdyacencia[i][j + 1];
             }
+        }
+        for (int i = 0; i < numeroVertices; i++) {
+            matrizAdyacencia[i][numeroVertices - 1] = 0;
         }
 
     }
 
     private void moverfilas(int fila) {
-        for (int i = fila; i < numeroVertices; i++) {
+        for (int i = fila; i < numeroVertices - 1; i++) {
             for (int j = 0; j < numeroVertices; j++) {
                 matrizAdyacencia[i][j] = matrizAdyacencia[i + 1][j];
             }
+        }
+        for (int i = 0; i < numeroVertices; i++) {
+            matrizAdyacencia[numeroVertices - 1][i] = 0;
         }
 
     }

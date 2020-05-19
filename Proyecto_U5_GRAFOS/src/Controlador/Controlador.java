@@ -90,6 +90,8 @@ public class Controlador implements ActionListener, Runnable {
         boolean encontrado = grafo.buscarAmplitud(elemento);
         if (!encontrado) {
             throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
+        } else {
+            JOptionPane.showMessageDialog(menu, "El vertice esta");
         }
 
     }
@@ -98,7 +100,9 @@ public class Controlador implements ActionListener, Runnable {
         String elemento = menu.getTxtBuscarProfundidad().getText();
         boolean encontrado = grafo.buscarProfundidad(elemento);
         if (!encontrado) {
-            throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
+            throw new VerticeNoExisteException("Elemento no existe");
+        } else {
+            JOptionPane.showMessageDialog(menu, "El vertice esta");
         }
 
     }
@@ -126,11 +130,13 @@ public class Controlador implements ActionListener, Runnable {
                     dibujar();
                     break;
                 case "Recorrido Anchura":
+                    grafo.recorrerAmplitud();
                     Thread tr = new Thread(this);
                     tipoDeRecorrido = "Anchura";
                     tr.start();
                     break;
                 case "Recorrido Profundidad":
+                    grafo.recorrerProfundidad();
                     tr = new Thread(this);
                     tipoDeRecorrido = "Profundidad";
                     tr.start();

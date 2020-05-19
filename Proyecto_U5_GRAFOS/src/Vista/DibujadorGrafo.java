@@ -26,13 +26,15 @@ import javax.swing.JPanel;
 public class DibujadorGrafo extends JPanel {
 
     private Grafo<?> grafo;
-    private final int DISTANCIAINICIAL = 150;
+    private int DISTANCIAINICIAL = 150;
     private int IX, IY;
-    private final int RADIO = 30;
+    private int RADIO = 30;
     private final int NUMEROVERTICESANILLO = 10;
     private int numeroVertices;
     private Punto[] puntos;
     private final int ARR_SIZE = 4;
+    private int WIDHT_PANEL, HEIGHTPANEL;
+    private int GRADOS_DIFERENCIA = 20;
 
     public DibujadorGrafo(Grafo<?> grafo) {
         this.grafo = grafo;
@@ -52,10 +54,13 @@ public class DibujadorGrafo extends JPanel {
         this.setSize(new Dimension(widht, height));
         IX = widht / 2;
         IY = height / 2;
+        WIDHT_PANEL = widht;
+        HEIGHTPANEL = height;
     }
 
     @Override
     public void paint(Graphics g) {
+
         numeroVertices = grafo.getNumeroVertices();
         puntos = new Punto[numeroVertices];
         super.paint(g); //To change body of generated methods, choose Tools | Templates.
@@ -63,7 +68,7 @@ public class DibujadorGrafo extends JPanel {
         int angulo = 0;
         int x, y;
         int DISTANCIA = DISTANCIAINICIAL;
-        int GradoDiferencia = 20;
+        int GradoDiferencia = GRADOS_DIFERENCIA;
 
         //Calculamos la posicion de los vertices en el panel
         for (int i = 0; i < numeroVertices; i++) {
@@ -79,6 +84,7 @@ public class DibujadorGrafo extends JPanel {
             angulo += 360 / NUMEROVERTICESANILLO;
 
         }
+        redimendionar();
         //Dibujamos los arcos para los vertices que son adyacentes
         g.setColor(new Color(255, 255, 255));
         for (int i = 0; i < numeroVertices; i++) {
@@ -140,6 +146,14 @@ public class DibujadorGrafo extends JPanel {
 
         //numero del vertice inicial
         int vi = 0;
+        while (!tieneAdyacentes(vi) && vi < grafo.getNumeroVertices()) {
+            vi++;
+            if (vi >= grafo.getNumeroVertices()) {
+                return;
+
+            }
+        }
+
         //Estructuras para el algortimo
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
@@ -171,19 +185,29 @@ public class DibujadorGrafo extends JPanel {
 
     }
 
-    public void buscarAnchura() {
-
-    }
-
-    public void buscarProfundida() {
-
+    private boolean tieneAdyacentes(int vertice) throws VerticeNoExisteException {
+        for (int i = 0; i < numeroVertices; i++) {
+            if (grafo.adyacente(vertice, i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void recorrerProfundidad() throws VerticeNoExisteException, InterruptedException {
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
         Stack<Integer> pila = new Stack<>();
-        recorrerProfundidad(getGraphics(), 0, pila, procesados);
+        //numero del vertice inicial
+        while (!tieneAdyacentes(vi) && vi < grafo.getNumeroVertices()) {
+            vi++;
+            if (vi >= grafo.getNumeroVertices()) {
+                return;
+
+            }
+        }
+        recorrerProfundidad(getGraphics(), vi, pila, procesados);
         sleep(1000);
         repaint();
     }
@@ -217,6 +241,34 @@ public class DibujadorGrafo extends JPanel {
             recorrerProfundidad(g, pila.pop(), pila, procesados);
         }
 
+    }
+
+    private boolean estaSobrepasado() {
+        for (int i = 0; i < puntos.length; i++) {
+            if (puntos[i].getX() > WIDHT_PANEL || puntos[i].getX() < 0) {
+                return true;
+            }
+            if (puntos[i].getY() > HEIGHTPANEL || puntos[i].getY() < 0) {
+                return true;
+
+            }
+        }
+        return false;
+    }
+
+    private void redimendionar() {
+        if (estaSobrepasado()) {
+            DISTANCIAINICIAL -= RADIO;
+            RADIO -= 2;
+            if (RADIO < 5) {
+                RADIO = 5;
+
+            }
+            if (DISTANCIAINICIAL < 5) {
+                DISTANCIAINICIAL = 5;
+            }
+            repaint();
+        }
     }
 
     public void setGrafo(Grafo<?> grafo) {

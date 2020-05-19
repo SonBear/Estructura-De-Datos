@@ -15,6 +15,22 @@ import java.util.Stack;
  */
 public class GrafoLista<T> implements Grafo<T> {
 
+    private int numeroVertices;
+    private static int MAXVERTICES = 20;
+    private Vertice<T>[] vertices;
+
+    public GrafoLista(int maxVer) {
+        vertices = new Vertice[maxVer];
+        MAXVERTICES = maxVer;
+        numeroVertices = 0;
+
+    }
+
+    public GrafoLista() {
+        this(MAXVERTICES);
+
+    }
+
     @Override
     public void nuevoVertice(T elemento) throws VerticeExisteException {
         boolean esta = getNumeroVertice(elemento) >= 0;
@@ -60,17 +76,13 @@ public class GrafoLista<T> implements Grafo<T> {
         if (va < 0) {
             throw new VerticeNoExisteException("Vertice no exite");
         }
-        System.out.println(va + "---");
 
-        //Borro los arcos adyacentes
+        //Borrar los vertices que son adyacentes a el
         for (int i = 0; i < numeroVertices; i++) {
             try {
-                if (adyacente(va, i)) {
-                    borrarArco(elemento, getElemento(i));
-                } else if (adyacente(i, va)) {
-                    borrarArco(getElemento(i), elemento);
-                }
-            } catch (Exception ex) {
+                borrarArco(getElemento(i), elemento);
+            } catch (ArcoNoExisteException ex) {
+                System.out.println("Grafo Lista: " + ex.getMessage());
             }
         }
 
@@ -78,7 +90,7 @@ public class GrafoLista<T> implements Grafo<T> {
         for (int i = va; i < numeroVertices - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
-
+        vertices[numeroVertices - 1] = null;
         numeroVertices--;
     }
 
@@ -90,38 +102,71 @@ public class GrafoLista<T> implements Grafo<T> {
             if (va < 0 || vb < 0) {
                 throw new VerticeNoExisteException("Vertice no exite");
             }
-            Vertice ver = vertices[vb];
-            vertices[va].getListaAdayacencia().add(ver);
-            //Vertice ver2 = vertices[va];
-            //vertices[vb].getListaAdayacencia().add(ver2);
+            vertices[va].getListaAdayacencia().add(vertices[vb]);
+            //vertices[vb].getListaAdayacencia().add(vertices[va]);
 
         }
     }
 
     @Override
     public boolean buscarProfundidad(T elemento) throws VerticeNoExisteException {
+        int vi = 0;
+        int verticeBuscar = getNumeroVertice(elemento);
+        if (verticeBuscar < 0) {
+            throw new VerticeNoExisteException("Vertice No existe");
+        }
+        Stack<Integer> pila = new Stack<>();
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        Stack<Integer> pila = new Stack<>();
-        recorrerProfundidad(3, pila, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente, marcamos como visitados los que pasemos
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return procesados[getNumeroVertice(elemento)];
+
+            }
+        }
+        recorrerProfundidad(vi, pila, procesados);
         return procesados[getNumeroVertice(elemento)];
 
     }
 
     @Override
     public boolean buscarAmplitud(T elemento) throws VerticeNoExisteException {
+        int vi = 0;
+        int verticeBuscar = getNumeroVertice(elemento);
+        if (verticeBuscar < 0) {
+            throw new VerticeNoExisteException("Vertice No existe");
+        }
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        recorrerAmplitud(0, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente, marcamos como visitados los que pasemos
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return procesados[getNumeroVertice(elemento)];
 
+            }
+        }
+        recorrerAmplitud(vi, procesados);
         return procesados[getNumeroVertice(elemento)];
     }
 
     @Override
     public void recorrerAmplitud() throws VerticeNoExisteException {
+
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
-        recorrerAmplitud(0, procesados);
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente, marcamos como visitados los que pasemos
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return;
+
+            }
+        }
+        recorrerAmplitud(vi, procesados);
     }
 
     public void recorrerAmplitud(int v, Boolean[] procesados) throws VerticeNoExisteException {
@@ -154,16 +199,34 @@ public class GrafoLista<T> implements Grafo<T> {
 
     @Override
     public void recorrerProfundidad() throws VerticeNoExisteException {
+        int vi = 0;
         Boolean procesados[] = new Boolean[numeroVertices];
         Arrays.fill(procesados, false);
         Stack<Integer> pila = new Stack<>();
-        recorrerProfundidad(3, pila, procesados);
+        //Desde el vertice D del ejemplo de la presentacion
+        while (!tieneAdyacentes(vi) && vi < numeroVertices) {
+            //Si esl vertice origen no tiene adyacente pasamos al siguiente
+            procesados[vi++] = true;
+            if (vi >= numeroVertices) {
+                return;
+
+            }
+        }
+        recorrerProfundidad(vi, pila, procesados);
+
+    }
+
+    private boolean tieneAdyacentes(int vertice) throws VerticeNoExisteException {
+        for (int i = 0; i < numeroVertices; i++) {
+            if (adyacente(vertice, i)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
-    private void recorrerProfundidad(int v, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
-        //Vertice inicial
-        int vi = v;
+    private void recorrerProfundidad(int vi, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
 
         //Se marca como procesado y se mete a la pila
         procesados[vi] = true;
@@ -174,35 +237,20 @@ public class GrafoLista<T> implements Grafo<T> {
 
         //Impresion en pantalla de la visita de vertices
         System.out.println(vertices[verticeActual]);
-        System.out.println(Arrays.toString(procesados));
 
         //Ingresar a la pila los vertices adyacentes a v
         for (int i = 0; i < numeroVertices; i++) {
             if (adyacente(verticeActual, i) && !procesados[i]) {
                 pila.push(i);
+                //Marco los vertices como procesados para evitar errores
+                procesados[i] = true;
             }
         }
-        System.out.println(pila);
-        //recorrer en profundidad todos los vertices adyacentes a v
+
+        //recorrer en profundidad todos los vertices adyacentes a v que no esten procesados
         for (int i = 0; i < pila.size(); i++) {
             recorrerProfundidad(pila.pop(), pila, procesados);
         }
-
-    }
-
-    private int numeroVertices;
-    private static int MAXVERTICES = 20;
-    private Vertice<T>[] vertices;
-
-    public GrafoLista(int maxVer) {
-        vertices = new Vertice[maxVer];
-        MAXVERTICES = maxVer;
-        numeroVertices = 0;
-
-    }
-
-    public GrafoLista() {
-        this(MAXVERTICES);
 
     }
 
