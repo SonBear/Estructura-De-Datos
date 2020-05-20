@@ -28,11 +28,11 @@ public class DibujadorGrafo extends JPanel {
     private Grafo<?> grafo;
     private int DISTANCIAINICIAL = 150;
     private int IX, IY;
-    private int RADIO = 30;
+    private int RADIO = 40;
     private final int NUMEROVERTICESANILLO = 10;
     private int numeroVertices;
     private Punto[] puntos;
-    private final int ARR_SIZE = 4;
+    private int ARR_SIZE = 8;
     private int WIDHT_PANEL, HEIGHTPANEL;
     private int GRADOS_DIFERENCIA = 20;
 
@@ -73,9 +73,9 @@ public class DibujadorGrafo extends JPanel {
         //Calculamos la posicion de los vertices en el panel
         for (int i = 0; i < numeroVertices; i++) {
             if (angulo >= 360) {
-                angulo = GradoDiferencia;
+                angulo = angulo % 360 + GRADOS_DIFERENCIA;
                 GradoDiferencia += GradoDiferencia;
-                DISTANCIA += DISTANCIA / 2;
+                DISTANCIA += DISTANCIAINICIAL;
             }
             x = (int) (DISTANCIA * Math.sin(Math.toRadians(angulo)));
             y = (int) (DISTANCIA * Math.cos(Math.toRadians(angulo)));
@@ -245,10 +245,10 @@ public class DibujadorGrafo extends JPanel {
 
     private boolean estaSobrepasado() {
         for (int i = 0; i < puntos.length; i++) {
-            if (puntos[i].getX() > WIDHT_PANEL || puntos[i].getX() < 0) {
+            if (puntos[i].getX() > WIDHT_PANEL - RADIO / 2 || puntos[i].getX() < RADIO / 2) {
                 return true;
             }
-            if (puntos[i].getY() > HEIGHTPANEL || puntos[i].getY() < 0) {
+            if (puntos[i].getY() > HEIGHTPANEL - RADIO / 2 || puntos[i].getY() < RADIO / 2) {
                 return true;
 
             }
@@ -258,8 +258,12 @@ public class DibujadorGrafo extends JPanel {
 
     private void redimendionar() {
         if (estaSobrepasado()) {
-            DISTANCIAINICIAL -= RADIO;
+            DISTANCIAINICIAL -= RADIO / 3;
             RADIO -= 2;
+            ARR_SIZE -= 1;
+            if (ARR_SIZE < 3) {
+                ARR_SIZE = 3;
+            }
             if (RADIO < 5) {
                 RADIO = 5;
 
