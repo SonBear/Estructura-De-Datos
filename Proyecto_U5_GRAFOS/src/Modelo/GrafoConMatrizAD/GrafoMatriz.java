@@ -99,6 +99,10 @@ public class GrafoMatriz<T> implements Grafo<T> {
         if (va < 0 || vb < 0) {
             throw new VerticeNoExisteException("Vertice no existe");
         }
+        if (!adyacente(va, vb)) {
+            throw new ArcoNoExisteException("Los vertices no son adyacentes");
+
+        }
 
         matrizAdyacencia[va][vb] = 0;
     }
@@ -118,7 +122,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
     public void nuevoVertice(T elemento) throws VerticeExisteException {
         boolean esta = getNumeroVertice(elemento) >= 0;
         if (esta | (numeroVertices >= MAXVERTICES)) {
-            throw new VerticeExisteException("El vertice existe o tamaño sobrepsado");
+            throw new VerticeExisteException("El vertice existe o tamaño sobrepasado");
         }
         Vertice<T> v = new Vertice(elemento);
         vertices[numeroVertices++] = v;

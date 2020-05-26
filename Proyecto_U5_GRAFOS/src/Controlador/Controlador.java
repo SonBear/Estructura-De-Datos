@@ -14,8 +14,6 @@ import Vista.DibujadorGrafo;
 import Vista.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -45,15 +43,16 @@ public class Controlador implements ActionListener, Runnable {
 
         JPanel panel = menu.getjPanel1();
         panel.removeAll();
-        //  Evitar que se generen nuevos objetos.........
+
         dibGrafo = new DibujadorGrafo(grafo, panel.getWidth(), panel.getHeight());
+
         panel.add(dibGrafo);
-        panel.repaint();
+        panel.repaint(100);
     }
 
     private void generar(int maximoVertices, String command) {
         grafo = factory.generarGrafo(command, maximoVertices);
-        System.out.println(grafo.getNumeroVertices());
+        mensajeInformacion("Grafo generado con un maximo de " + maximoVertices + " vertices con una " + command);
     }
 
     private void agregarEnlace(String verticeA, String verticeB) throws VerticeNoExisteException {
@@ -65,10 +64,14 @@ public class Controlador implements ActionListener, Runnable {
         System.out.println(grafo.getNumeroVertices());
     }
 
-    private String getCommand() {
+    private String getCommand() throws CommandNoSelectionExcecption {
         String command = "";
         command = menu.getButtonGroup().getSelection().getActionCommand();
-        System.out.println(command);
+        if (command.equals("")) {
+            throw new CommandNoSelectionExcecption("No selecciono tipo de estructura");
+
+        }
+
         return command;
     }
 
@@ -91,7 +94,7 @@ public class Controlador implements ActionListener, Runnable {
         if (!encontrado) {
             throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
         } else {
-            JOptionPane.showMessageDialog(menu, "El vertice esta");
+            JOptionPane.showMessageDialog(menu, "El vertice con elemento: " + elemento + " está en el grafo");
         }
 
     }
@@ -100,16 +103,20 @@ public class Controlador implements ActionListener, Runnable {
         String elemento = menu.getTxtBuscarProfundidad().getText();
         boolean encontrado = grafo.buscarProfundidad(elemento);
         if (!encontrado) {
-            throw new VerticeNoExisteException("Elemento no existe");
+            throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
         } else {
             JOptionPane.showMessageDialog(menu, "El vertice esta");
         }
 
     }
 
+    private Thread recorrido = new Thread(this);
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (recorrido.isAlive()) {
+            recorrido.interrupt();
+        }
         try {
             switch (e.getActionCommand()) {
                 case "Generar":
@@ -126,22 +133,20 @@ public class Controlador implements ActionListener, Runnable {
                     String nombre2 = menu.getTxtNombre2().getText();
                     agregarEnlace(nombre, nombre2);
                     break;
-                case "Dibujar":
-                    dibujar();
-                    break;
+
                 case "Recorrido Anchura":
                     grafo.recorrerAmplitud();
-                    Thread tr = new Thread(this);
+                    recorrido = new Thread(this);
                     tipoDeRecorrido = "Anchura";
-                    tr.start();
+                    recorrido.start();
                     break;
                 case "Recorrido Profundidad":
                     grafo.recorrerProfundidad();
-                    tr = new Thread(this);
+                    recorrido = new Thread(this);
                     tipoDeRecorrido = "Profundidad";
-                    tr.start();
+                    recorrido.start();
                     break;
-                case "Eliminar Union":
+                case "Eliminar Enlace":
                     eliminarUnion();
                     break;
                 case "Eliminar Vertice":
@@ -157,17 +162,25 @@ public class Controlador implements ActionListener, Runnable {
                     throw new AssertionError();
             }
             dibujar();
+        } catch (NumberFormatException ex1) {
+            mensajeError("Tamaño no valido");
+
+        } catch (NullPointerException ex) {
+            mensajeError("Grafo no generado");
         } catch (Exception ex) {
             dibujar();
-            ex.getStackTrace();
-            mensaje(ex.getMessage());
-            System.out.println(ex.getMessage());
+
+            mensajeError(ex.getMessage());
 
         }
     }
 
-    private void mensaje(String txt) {
-        JOptionPane.showMessageDialog(menu, txt, "OK", JOptionPane.WARNING_MESSAGE);
+    private void mensajeError(String txt) {
+        JOptionPane.showMessageDialog(menu, txt, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void mensajeInformacion(String txt) {
+        JOptionPane.showMessageDialog(menu, txt, "Grafo generado", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void iniciarComponente() {
@@ -181,10 +194,6 @@ public class Controlador implements ActionListener, Runnable {
         menu.getBtnBuscarAnchura().addActionListener(this);
         menu.getBtnBuscarProfundidad().addActionListener(this);
 
-    }
-
-    private String getRecorridoBusqueda() {
-        return "Recorrido Anchura";
     }
 
     @Override
@@ -201,7 +210,7 @@ public class Controlador implements ActionListener, Runnable {
                     System.out.println("Error");
             }
         } catch (Exception ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 

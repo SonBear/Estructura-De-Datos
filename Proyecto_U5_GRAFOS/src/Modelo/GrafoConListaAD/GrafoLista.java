@@ -35,7 +35,7 @@ public class GrafoLista<T> implements Grafo<T> {
     public void nuevoVertice(T elemento) throws VerticeExisteException {
         boolean esta = getNumeroVertice(elemento) >= 0;
         if (esta | numeroVertices >= MAXVERTICES) {
-            throw new VerticeExisteException("El Vertice ya existe o tamaño sobrepasado");
+            throw new VerticeExisteException("El vertice ya existe o tamaño sobrepasado");
         }
 
         Vertice<T> nuevoVertice = new Vertice<>(elemento);
@@ -47,11 +47,12 @@ public class GrafoLista<T> implements Grafo<T> {
     public void borrarArco(T elemento1, T elemento2) throws VerticeNoExisteException, ArcoNoExisteException {
         int va = getNumeroVertice(elemento1);
         int vb = getNumeroVertice(elemento2);
+
         if (va < 0 || vb < 0) {
             throw new VerticeNoExisteException("Vertice no exite");
         }
-        if (!adyacente(elemento1, elemento2)) {
-            throw new ArcoNoExisteException("Arco no existe");
+        if (!adyacente(va, vb)) {
+            throw new ArcoNoExisteException("Los vertices no son adyacentes");
         }
 
         vertices[va].getListaAdayacencia().remove(vb);
