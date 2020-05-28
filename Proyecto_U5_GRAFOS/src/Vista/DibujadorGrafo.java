@@ -270,7 +270,6 @@ public class DibujadorGrafo extends JPanel {
                 pila.push(i);
             }
         }
-        System.out.println(pila);
         //recorrer en profundidad todos los vertices adyacentes a v
         for (int i = 0; i < pila.size(); i++) {
             recorrerProfundidad(g, pila.pop(), pila, procesados);

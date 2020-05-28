@@ -28,6 +28,7 @@ public class Controlador implements ActionListener, Runnable {
     private FactoryGrafo<String> factory = new FactoryGrafo<>();
     private Menu menu;
     private String tipoDeRecorrido = "";
+    private Thread recorrido = new Thread(this);
 
     public Controlador() {
         menu = new Menu();
@@ -108,8 +109,6 @@ public class Controlador implements ActionListener, Runnable {
 
     }
 
-    private Thread recorrido = new Thread(this);
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (recorrido.isAlive()) {
@@ -133,16 +132,18 @@ public class Controlador implements ActionListener, Runnable {
                     break;
 
                 case "Recorrido Anchura":
-                    grafo.recorrerAmplitud();
                     recorrido = new Thread(this);
                     tipoDeRecorrido = "Anchura";
                     recorrido.start();
+                    grafo.recorrerAmplitud();
+
                     break;
                 case "Recorrido Profundidad":
-                    grafo.recorrerProfundidad();
-                    recorrido = new Thread(this);
                     tipoDeRecorrido = "Profundidad";
+                    recorrido = new Thread(this);
                     recorrido.start();
+                    grafo.recorrerProfundidad();
+
                     break;
                 case "Eliminar Enlace":
                     eliminarUnion();

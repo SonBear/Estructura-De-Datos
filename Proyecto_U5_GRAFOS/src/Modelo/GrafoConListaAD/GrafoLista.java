@@ -56,7 +56,6 @@ public class GrafoLista<T> implements Grafo<T> {
         }
 
         vertices[va].getListaAdayacencia().remove(vb);
-        //vertices[vb].getListaAdayacencia().remove(va);
     }
 
     @Override
@@ -104,7 +103,6 @@ public class GrafoLista<T> implements Grafo<T> {
                 throw new VerticeNoExisteException("Vertice no exite");
             }
             vertices[va].getListaAdayacencia().add(vertices[vb]);
-            //vertices[vb].getListaAdayacencia().add(vertices[va]);
 
         }
     }
