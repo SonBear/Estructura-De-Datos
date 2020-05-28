@@ -20,6 +20,8 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -29,15 +31,15 @@ import javax.swing.JPanel;
 public class DibujadorGrafo extends JPanel {
 
     private Grafo<?> grafo;
-    private int DISTANCIAINICIAL = 150;
+    private int DISTANCIAINICIAL = 170;
     private int IX, IY;
-    private int RADIO = 30;
-    private final int NUMEROVERTICESANILLO = 4;
+    private int RADIO = 40;
+    private final int NUMEROVERTICESANILLO = 5;
     private int numeroVertices;
     private Punto[] puntos;
-    private int ARR_SIZE = 6;
+    private int ARR_SIZE = 7;
     private int WIDHT_PANEL, HEIGHTPANEL;
-    private int GRADOS_DIFERENCIA = 20;
+    private int GRADOS_DIFERENCIA = 30;
 
     public DibujadorGrafo(Grafo<?> grafo) {
         this.grafo = grafo;
@@ -70,16 +72,17 @@ public class DibujadorGrafo extends JPanel {
         puntos = new Punto[numeroVertices];
         int angulo = 0;
         int x, y;
-        int DISTANCIA = DISTANCIAINICIAL;
-        int GradoDiferencia = GRADOS_DIFERENCIA;
+        int DISTANCIA = 0;
 
+        int cont = 0;
         //Calculamos la posicion de los vertices en el panel
         for (int i = 0; i < numeroVertices; i++) {
-            if (angulo >= 360) {
+            if (i % NUMEROVERTICESANILLO == 0) {
                 angulo = angulo % 360 + GRADOS_DIFERENCIA;
-                GradoDiferencia += GradoDiferencia;
-                DISTANCIA += DISTANCIAINICIAL;
+                DISTANCIA += DISTANCIAINICIAL + (cont * 5);
+                cont++;
             }
+
             x = (int) (DISTANCIA * Math.sin(Math.toRadians(angulo)));
             y = (int) (DISTANCIA * Math.cos(Math.toRadians(angulo)));
             puntos[i] = new Punto(x + IX, y + IY);
@@ -87,7 +90,6 @@ public class DibujadorGrafo extends JPanel {
             angulo += 360 / NUMEROVERTICESANILLO;
 
         }
-        redimendionar();
 
         //Dibujamos los arcos para los vertices que son adyacentes
         g.setColor(new Color(255, 255, 255));
@@ -106,14 +108,22 @@ public class DibujadorGrafo extends JPanel {
         }
 
         //DIBUJAMOS LOS VERTICES EN EL PANEL
-        for (int i = 0; i < numeroVertices; i++) {
+        if (puntos.length > 0) {
             try {
-                g.setColor(new Color(186, 78, 219)); //Color de los vertices
-                dibujarVertice((Graphics2D) g, grafo.getElemento(i) + "", puntos[i].getX(), puntos[i].getY());
-            } catch (VerticeNoExisteException ex) {
-                System.out.println(ex.getMessage());
-            }
+                g.setColor(new Color(255, 78, 219)); //Color de los vertices
+                dibujarVertice((Graphics2D) g, grafo.getElemento(0) + "", puntos[0].getX(), puntos[0].getY());
+                for (int i = 1; i < numeroVertices; i++) {
 
+                    g.setColor(new Color(186, 78, 219)); //Color de los vertices
+                    dibujarVertice((Graphics2D) g, grafo.getElemento(i) + "", puntos[i].getX(), puntos[i].getY());
+
+                }
+            } catch (VerticeNoExisteException ex) {
+                Logger.getLogger(DibujadorGrafo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (redimendionar()) {
+            repaint(1000);
         }
 
     }
@@ -126,9 +136,16 @@ public class DibujadorGrafo extends JPanel {
         g.setColor(Color.WHITE);
 
         double dx = x2 - x1, dy = y2 - y1;
+
         double angle = Math.atan2(dy, dx);
-        int len = (int) (Math.sqrt(dx * dx + dy * dy) - (RADIO / 2 + 5));
-        AffineTransform at = AffineTransform.getTranslateInstance(x1, y1);
+
+        int y = (int) ((RADIO / 2 + 7) * Math.sin(angle));
+        int x = (int) ((RADIO / 2 + 7) * Math.cos(angle));
+        dx = x2 - (x + x1);
+        dy = y2 - (y + y1);
+        int len = (int) (Math.sqrt(dx * dx + dy * dy)) - (RADIO / 2 + 7);
+
+        AffineTransform at = AffineTransform.getTranslateInstance(x + x1, y + y1);
         at.concatenate(AffineTransform.getRotateInstance(angle));
         g.transform(at);
 
@@ -146,9 +163,8 @@ public class DibujadorGrafo extends JPanel {
         Ellipse2D circulo = new Ellipse2D.Double(x - RADIO / 2, y - RADIO / 2, RADIO, RADIO);
         g.fill(circulo);
         g.draw(circuloAp);
-        //g.fillOval(x - RADIO / 2, y - RADIO / 2, RADIO, RADIO);
         g.setColor(new Color(255, 255, 255));
-        g.drawString(elemento, x - 2, y + RADIO / 2 + 17);
+        g.drawString(elemento, x - 2, y + RADIO / 2 + 18);
     }
 
     public void recorridoAnchura() throws VerticeNoExisteException, InterruptedException {
@@ -281,8 +297,8 @@ public class DibujadorGrafo extends JPanel {
             DISTANCIAINICIAL -= RADIO / 3;
             RADIO -= 2;
             ARR_SIZE -= 1;
-            if (ARR_SIZE < 3) {
-                ARR_SIZE = 3;
+            if (ARR_SIZE < 4) {
+                ARR_SIZE = 4;
             }
             if (RADIO < 5) {
                 RADIO = 5;
@@ -291,7 +307,6 @@ public class DibujadorGrafo extends JPanel {
             if (DISTANCIAINICIAL < 5) {
                 DISTANCIAINICIAL = 5;
             }
-            repaint(100);
             return true;
 
         }

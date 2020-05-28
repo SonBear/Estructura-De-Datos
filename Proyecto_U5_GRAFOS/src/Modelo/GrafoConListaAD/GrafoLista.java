@@ -167,6 +167,7 @@ public class GrafoLista<T> implements Grafo<T> {
 
             }
         }
+        System.out.println("Recorrido en amplitud");
         recorrerAmplitud(vi, procesados);
     }
 
@@ -185,7 +186,7 @@ public class GrafoLista<T> implements Grafo<T> {
             int verticeActual = colaNumVertices.remove();
 
             //Impresion en pantalla de la visita de vertices
-            System.out.println(vertices[verticeActual]);
+            System.out.println("Vertice: " + vertices[verticeActual]);
 
             //paso 5 agregar todos los vertices adyacentes y que no esten procesados a la cola y marcarlos como procesados
             for (int i = 0; i < numeroVertices; i++) {
@@ -213,6 +214,7 @@ public class GrafoLista<T> implements Grafo<T> {
 
             }
         }
+        System.out.println("Recorrido en profundidad");
         recorrerProfundidad(vi, pila, procesados);
 
     }
@@ -226,7 +228,6 @@ public class GrafoLista<T> implements Grafo<T> {
         return false;
     }
 
-    //Aun falla, en grafos no dirigidos, asi que que los problame es que solo menejemos grafos dirigidos
     private void recorrerProfundidad(int vi, Stack<Integer> pila, Boolean[] procesados) throws VerticeNoExisteException {
 
         //Se marca como procesado y se mete a la pila
@@ -237,7 +238,7 @@ public class GrafoLista<T> implements Grafo<T> {
         int verticeActual = pila.pop();
 
         //Impresion en pantalla de la visita de vertices
-        System.out.println(vertices[verticeActual]);
+        System.out.println("Vertice : " + vertices[verticeActual]);
 
         //Ingresar a la pila los vertices adyacentes a v
         for (int i = 0; i < numeroVertices; i++) {

@@ -149,7 +149,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
         for (int i = va; i < numeroVertices - 1; i++) {
             vertices[i] = vertices[i + 1];
         }
-        //FFFFFF
+
         vertices[numeroVertices - 1] = null;
         moverColumnas(va);
         moverfilas(va);
@@ -166,9 +166,8 @@ public class GrafoMatriz<T> implements Grafo<T> {
             throw new VerticeNoExisteException("Vertice no existe");
         }
 
-        //Manejando grafos no dirigidos
         matrizAdyacencia[va][vb] = 1;
-        // matrizAdyacencia[vb][va] = 1;
+
     }
 
     @Override
@@ -230,7 +229,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
             int verticeActual = colaNumVertices.remove();
 
             //Impresion en pantalla de la visita de vertices
-            System.out.println(vertices[verticeActual]);
+            System.out.println("Vertice: " + vertices[verticeActual]);
 
             //paso 5 agregar todos los vertices adyacentes y que no esten procesados a la cola y marcarlos como procesados
             for (int i = 0; i < numeroVertices; i++) {
@@ -257,6 +256,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
             }
         }
+        System.out.println("Recorrido en amplitud");
         recorrerAmplitud(vi, procesados);
 
     }
@@ -273,7 +273,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
         int verticeActual = pila.pop();
 
         //Impresion en pantalla de la visita de vertices
-        System.out.println(vertices[verticeActual]);
+        System.out.println("Vertice: " + vertices[verticeActual]);
 
         //Ingresar a la pila los vertices adyacentes a v
         for (int i = 0; i < numeroVertices; i++) {
@@ -308,6 +308,7 @@ public class GrafoMatriz<T> implements Grafo<T> {
 
             }
         }
+        System.out.println("Recorrido en profundidad");
         recorrerProfundidad(vi, pila, procesados);
     }
 

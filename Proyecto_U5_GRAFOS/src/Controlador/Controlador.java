@@ -55,7 +55,10 @@ public class Controlador implements ActionListener, Runnable {
         mensajeInformacion("Grafo generado con un maximo de " + maximoVertices + " vertices con una " + command);
     }
 
-    private void agregarEnlace(String verticeA, String verticeB) throws VerticeNoExisteException {
+    private void agregarEnlace(String verticeA, String verticeB) throws VerticeNoExisteException, VerticeExisteException {
+        if (verticeA.equals(verticeB)) {
+            throw new VerticeExisteException("El vertice es el mismo");
+        }
         grafo.union(verticeA, verticeB);
     }
 
@@ -64,14 +67,9 @@ public class Controlador implements ActionListener, Runnable {
         System.out.println(grafo.getNumeroVertices());
     }
 
-    private String getCommand() throws CommandNoSelectionExcecption {
+    private String getCommand() {
         String command = "";
         command = menu.getButtonGroup().getSelection().getActionCommand();
-        if (command.equals("")) {
-            throw new CommandNoSelectionExcecption("No selecciono tipo de estructura");
-
-        }
-
         return command;
     }
 
@@ -105,7 +103,7 @@ public class Controlador implements ActionListener, Runnable {
         if (!encontrado) {
             throw new VerticeNoExisteException("Elemento no existe o es inalcanzable");
         } else {
-            JOptionPane.showMessageDialog(menu, "El vertice esta");
+            JOptionPane.showMessageDialog(menu, "El vertice con elemento: " + elemento + " está en el grafo");
         }
 
     }
