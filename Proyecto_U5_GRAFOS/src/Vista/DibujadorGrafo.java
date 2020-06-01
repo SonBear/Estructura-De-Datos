@@ -31,21 +31,51 @@ import javax.swing.JPanel;
 public class DibujadorGrafo extends JPanel {
 
     private Grafo<?> grafo;
-    private int DISTANCIAINICIAL = 170;
+
     private int IX, IY;
-    private int RADIO = 40;
-    private final int NUMEROVERTICESANILLO = 5;
+
     private int numeroVertices;
     private Punto[] puntos;
     private int ARR_SIZE = 7;
     private int WIDHT_PANEL, HEIGHTPANEL;
     private int GRADOS_DIFERENCIA = 30;
 
+    private Color colorVertice = new Color(200, 78, 219);
+    private Color colorPanel = new Color(0, 0, 0);
+    private Color colorEnlace = new Color(255, 255, 255);
+    private int NUMEROVERTICESANILLO = 5;
+    private int DISTANCIAINICIAL = 170;
+    private int RADIO = 40;
+
+    public void setColorVertice(Color colorVertice) {
+        this.colorVertice = colorVertice;
+    }
+
+    public void setColorPanel(Color colorPanel) {
+        this.colorPanel = colorPanel;
+    }
+
+    public void setColorEnlace(Color colorEnlace) {
+        this.colorEnlace = colorEnlace;
+    }
+
+    public void setDISTANCIAINICIAL(int DISTANCIAINICIAL) {
+        this.DISTANCIAINICIAL = DISTANCIAINICIAL;
+    }
+
+    public void setRADIO(int RADIO) {
+        this.RADIO = RADIO;
+    }
+
+    public void setNUMEROVERTICESANILLO(int NUMEROVERTICESANILLO) {
+        this.NUMEROVERTICESANILLO = NUMEROVERTICESANILLO;
+    }
+
     public DibujadorGrafo(Grafo<?> grafo) {
         this.grafo = grafo;
         numeroVertices = grafo.getNumeroVertices();
         puntos = new Punto[numeroVertices];
-        this.setBackground(new Color(0, 0, 0));
+        this.setBackground(colorPanel);
         this.setSize(new Dimension(800, 800));
         IX = this.getWidth() / 2;
         IY = this.getHeight() / 2;
@@ -55,7 +85,7 @@ public class DibujadorGrafo extends JPanel {
         this.grafo = grafo;
         numeroVertices = grafo.getNumeroVertices();
         puntos = new Punto[numeroVertices];
-        this.setBackground(new Color(0, 0, 0));
+        this.setBackground(colorPanel);
         this.setSize(new Dimension(widht, height));
         IX = widht / 2;
         IY = height / 2;
@@ -92,7 +122,7 @@ public class DibujadorGrafo extends JPanel {
         }
 
         //Dibujamos los arcos para los vertices que son adyacentes
-        g.setColor(new Color(255, 255, 255));
+        g.setColor(colorEnlace);
         for (int i = 0; i < numeroVertices; i++) {
 
             for (int j = 0; j < numeroVertices; j++) {
@@ -114,7 +144,7 @@ public class DibujadorGrafo extends JPanel {
                 dibujarVertice((Graphics2D) g, grafo.getElemento(0) + "", puntos[0].getX(), puntos[0].getY());
                 for (int i = 1; i < numeroVertices; i++) {
 
-                    g.setColor(new Color(186, 78, 219)); //Color de los vertices
+                    g.setColor(colorVertice); //Color de los vertices
                     dibujarVertice((Graphics2D) g, grafo.getElemento(i) + "", puntos[i].getX(), puntos[i].getY());
 
                 }
@@ -133,7 +163,7 @@ public class DibujadorGrafo extends JPanel {
         Graphics2D g = (Graphics2D) g1.create();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.WHITE);
+        g.setColor(colorEnlace);
 
         double dx = x2 - x1, dy = y2 - y1;
 
@@ -163,7 +193,7 @@ public class DibujadorGrafo extends JPanel {
         Ellipse2D circulo = new Ellipse2D.Double(x - RADIO / 2, y - RADIO / 2, RADIO, RADIO);
         g.fill(circulo);
         g.draw(circuloAp);
-        g.setColor(new Color(255, 255, 255));
+        g.setColor(colorEnlace);
         g.drawString(elemento, x - 2, y + RADIO / 2 + 18);
     }
 

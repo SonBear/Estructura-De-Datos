@@ -41,7 +41,6 @@ public class GrafoMatriz<T> implements Grafo<T> {
         this(MAXVERTICES);
     }
 
-    //Reparar array sale de rango
     @Override
     public boolean adyacente(int num1, int num2) throws VerticeNoExisteException {
         if (num1 < 0 || num2 < 0) {

@@ -55,7 +55,7 @@ public class GrafoLista<T> implements Grafo<T> {
             throw new ArcoNoExisteException("Los vertices no son adyacentes");
         }
 
-        vertices[va].getListaAdayacencia().remove(vb);
+        vertices[va].getListaAdayacencia().remove(vertices[vb]);
     }
 
     @Override
@@ -81,7 +81,8 @@ public class GrafoLista<T> implements Grafo<T> {
         for (int i = 0; i < numeroVertices; i++) {
             try {
                 borrarArco(getElemento(i), elemento);
-            } catch (ArcoNoExisteException ex) {
+
+            } catch (Exception ex) {
                 System.out.println("Grafo Lista: " + ex.getMessage());
             }
         }

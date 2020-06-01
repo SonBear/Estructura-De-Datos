@@ -93,6 +93,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setOpaque(true);
 
         jPanel2.setBackground(new java.awt.Color(182, 111, 204));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Funciones"));
 
         btnGenerar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/btnGenerar.png"))); // NOI18N
         btnGenerar.setActionCommand("Generar");
@@ -351,7 +352,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRecorridoAnchura)
                     .addComponent(btnProfundidad))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

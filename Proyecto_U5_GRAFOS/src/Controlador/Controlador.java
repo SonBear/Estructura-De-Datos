@@ -48,7 +48,7 @@ public class Controlador implements ActionListener, Runnable {
         dibGrafo = new DibujadorGrafo(grafo, panel.getWidth(), panel.getHeight());
 
         panel.add(dibGrafo);
-        panel.repaint(100);
+        dibGrafo.repaint(100);
     }
 
     private void generar(int maximoVertices, String command) {
@@ -209,7 +209,7 @@ public class Controlador implements ActionListener, Runnable {
                     System.out.println("Error");
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+
         }
     }
 

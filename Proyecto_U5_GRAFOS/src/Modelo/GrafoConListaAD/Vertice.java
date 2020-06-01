@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Vertice<T> {
 
     private T elemento;
-    private ArrayList<Vertice> listaAdayacencia; //Cambiar esta mierdaaaaaa, por vertices y eliminar arco
+    private ArrayList<Vertice> listaAdayacencia;
 
     public Vertice(T elemento) {
         this.elemento = elemento;
