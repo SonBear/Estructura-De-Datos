@@ -49,6 +49,9 @@ public class BTree<T extends Comparable<T>> implements Serializable {
      * {@inheritDoc}
      */
     public boolean add(T value) {
+        if (contains(value)) {
+            return false;
+        }
         if (root == null) {
             root = new Node<T>(null, maxKeySize, maxChildrenSize);
             root.addKey(value);

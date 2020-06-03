@@ -13,12 +13,12 @@ import javax.swing.JTextField;
  *
  * @author emman
  */
-public class MenuCreateAco extends javax.swing.JFrame {
+public class MenuNuevo extends javax.swing.JFrame {
 
     /**
      * Creates new form MenuCreateAco
      */
-    public MenuCreateAco() {
+    public MenuNuevo() {
         initComponents();
     }
 
@@ -40,7 +40,7 @@ public class MenuCreateAco extends javax.swing.JFrame {
         btnCrear = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre");
 
