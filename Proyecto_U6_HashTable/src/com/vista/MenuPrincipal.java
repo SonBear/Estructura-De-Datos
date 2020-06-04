@@ -5,6 +5,10 @@
  */
 package com.vista;
 
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author emman
@@ -27,18 +31,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        labelUsuario = new javax.swing.JLabel();
+        labelCorreo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         MenuArchivo = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        ItemListarContactos = new javax.swing.JMenuItem();
+        ItemListarTodos = new javax.swing.JMenuItem();
         menuEditar = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        ItemBuscar = new javax.swing.JMenuItem();
+        ItemEliminarCon = new javax.swing.JMenuItem();
+        ItemBorrarCuenta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,9 +49,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("MINIFACEBOOK");
 
-        jLabel2.setText("Usuario: ");
+        labelUsuario.setText("Usuario: ");
 
-        jLabel3.setText("Correo: ");
+        labelCorreo.setText("Correo: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -57,8 +60,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
+                    .addComponent(labelCorreo)
+                    .addComponent(labelUsuario))
                 .addGap(72, 72, 72)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -69,53 +72,45 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(29, 29, 29)
-                .addComponent(jLabel2)
+                .addComponent(labelUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addComponent(labelCorreo)
                 .addGap(31, 31, 31))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Iniciar sesión");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jButton1)
-                .addContainerGap(162, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jButton1)
-                .addContainerGap(27, Short.MAX_VALUE))
+            .addGap(0, 71, Short.MAX_VALUE)
         );
 
         MenuArchivo.setText("Archivo");
 
-        jMenuItem1.setText("Listar mis contactos");
-        MenuArchivo.add(jMenuItem1);
+        ItemListarContactos.setText("Listar mis contactos");
+        MenuArchivo.add(ItemListarContactos);
 
-        jMenuItem2.setText("Listar todos");
-        MenuArchivo.add(jMenuItem2);
+        ItemListarTodos.setText("Listar todos");
+        MenuArchivo.add(ItemListarTodos);
 
         menuBar.add(MenuArchivo);
 
         menuEditar.setText("Editar");
 
-        jMenuItem3.setText("Buscar");
-        menuEditar.add(jMenuItem3);
+        ItemBuscar.setText("Buscar");
+        menuEditar.add(ItemBuscar);
 
-        jMenuItem4.setText("Eliminar contacto");
-        menuEditar.add(jMenuItem4);
+        ItemEliminarCon.setText("Eliminar contacto");
+        menuEditar.add(ItemEliminarCon);
 
-        jMenuItem5.setText("Borrar mi cuenta");
-        menuEditar.add(jMenuItem5);
+        ItemBorrarCuenta.setText("Borrar mi cuenta");
+        menuEditar.add(ItemBorrarCuenta);
 
         menuBar.add(menuEditar);
 
@@ -140,19 +135,54 @@ public class MenuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public JMenuItem getItemListarContactos() {
+        return ItemListarContactos;
+    }
+
+    public JMenuItem getItemListarTodos() {
+        return ItemListarTodos;
+    }
+
+    public JMenuItem getItemBorrarCuenta() {
+        return ItemBorrarCuenta;
+    }
+
+    public JMenuItem getItemBuscar() {
+        return ItemBuscar;
+    }
+
+    public JMenuItem getItemEliminarCon() {
+        return ItemEliminarCon;
+    }
+
+    public JLabel getLabelCorreo() {
+        return labelCorreo;
+    }
+
+    public JLabel getLabelUsuario() {
+        return labelUsuario;
+    }
+
+    public void error(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void mensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ItemBorrarCuenta;
+    private javax.swing.JMenuItem ItemBuscar;
+    private javax.swing.JMenuItem ItemEliminarCon;
+    private javax.swing.JMenuItem ItemListarContactos;
+    private javax.swing.JMenuItem ItemListarTodos;
     private javax.swing.JMenu MenuArchivo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel labelCorreo;
+    private javax.swing.JLabel labelUsuario;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuEditar;
     // End of variables declaration//GEN-END:variables

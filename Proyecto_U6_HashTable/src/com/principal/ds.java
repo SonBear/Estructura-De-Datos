@@ -6,7 +6,6 @@
 package com.principal;
 
 import com.controladores.ControllerLogin;
-import com.modelo.Administrador;
 import com.modelo.ArbolB.Exception.NoDatosException;
 import com.modelo.ContraseñaIncorrectaException;
 import com.modelo.CorreoAsociadoException;
@@ -23,7 +22,7 @@ public class ds {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws NoDatosException, UsuarioIncorrectoException, ContraseñaIncorrectaException, UsuarioNoLoginException, CorreoAsociadoException {
-        ControllerLogin lo = new ControllerLogin(new Administrador());
+        ControllerLogin lo = new ControllerLogin();
         lo.iniciar();
     }
 

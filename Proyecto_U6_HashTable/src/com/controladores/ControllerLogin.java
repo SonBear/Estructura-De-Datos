@@ -17,10 +17,11 @@ public class ControllerLogin {
 
     private Login menu = new Login();
     private ControllerNuevo contNuevo;
-    private Administrador admi;
+    private ControllerMenuPrincipal contPrincipal;
+    private Administrador admi = new Administrador();
 
-    public ControllerLogin(Administrador admi) {
-        this.admi = admi;
+    public ControllerLogin() {
+        contPrincipal = new ControllerMenuPrincipal(admi);
         initComponents();
     }
 
@@ -41,9 +42,13 @@ public class ControllerLogin {
         String contraseña = menu.getTxtContraseña().getText();
         try {
             admi.login(correo, contraseña);
+            menu.dispose();
+            contPrincipal.iniciar();
         } catch (Exception ex) {
             menu.error(ex.getMessage());
+
         }
+
     }
 
     public void iniciarNuevo() {

@@ -41,6 +41,7 @@ public class ControllerNuevo {
         String contraseña = menu.getTxtContr().getText();
         contRuta.setValores(correo, nombre, correo, contraseña, edad);
         contRuta.inciar();
+        menu.dispose();
 
     }
 

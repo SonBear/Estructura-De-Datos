@@ -59,6 +59,7 @@ public class ControllerRuta {
         } catch (Exception ex) {
             menu.error(ex.getMessage());
         }
+        menu.dispose();
 
     }
 
