@@ -47,6 +47,7 @@ public class ControllerBusqueda {
             menu.getLabelCorreo().setText("Correo: " + contactoActual.getCorreo());
             menu.getLabelEdad().setText("Edad: " + contactoActual.getEdad());
             menu.getLabelNombre().setText("Nombre: " + contactoActual.getNombre());
+            menu.getBtnAgregarContac().setText("Agregar contactos de: " + contactoActual.getNombre());
 
         } catch (Exception ex) {
             menu.error(ex.getMessage());

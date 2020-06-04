@@ -69,7 +69,7 @@ public class ControllerMenuPrincipal {
     private void listarMisContactos(ActionEvent e) {
         try {
             Contacto usuario = admi.getUsuario();
-            List<Contacto> contactos = admi.listarContactoDe(usuario);
+            List<Contacto> contactos = admi.enlistarContactos();
             contListado.iniciar(contactos, "Mis contactos", usuario.getNombre(), usuario.getCorreo());
         } catch (Exception ex) {
             menu.error(ex.getMessage());

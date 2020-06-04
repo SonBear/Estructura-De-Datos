@@ -95,14 +95,17 @@ public class Administrador {
 
     }
 
-    public void agregarContactosUsuario(List<Contacto> contactos) throws NoDatosException, UsuarioNoLoginException {
+    public void agregarContactosUsuario(List<Contacto> contactos) throws NoDatosException, UsuarioNoLoginException, Exception {
         for (int i = 0; i < contactos.size(); i++) {
             agregarContactoUsuario(contactos.get(i));
         }
     }
 
-    public void agregarContactoUsuario(Contacto contacto) throws NoDatosException, UsuarioNoLoginException {
+    public void agregarContactoUsuario(Contacto contacto) throws NoDatosException, UsuarioNoLoginException, Exception {
         if (usuarioLogeado) {
+            if (contacto.getCorreo().equals(usuario.getCorreo())) {
+                throw new Exception("No se puede agregar a si mismo");
+            }
             String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
 
             BTree<Contacto> arbol = DAOBTree.getData(directorio);
@@ -160,7 +163,19 @@ public class Administrador {
             HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
             usuarios.remove(usuario.getCorreo());
             DAOHashTable.saveData(usuarios, RutaContactos);
+            eliminarContactoDeTodos(usuario);
+        }
+    }
 
+    public void eliminarContactoDeTodos(Contacto contactoEliminar) {
+        List<Contacto> contactos = listarTodos();
+        for (int i = 0; i < contactos.size(); i++) {
+            Contacto contacto = contactos.get(i);
+            String directorio = contacto.getRutaContacto() + "/" + contacto.getCorreo() + ".txt";
+
+            BTree<Contacto> arbol = DAOBTree.getData(directorio);
+            System.out.println(arbol.remove(contactoEliminar));
+            DAOBTree.saveData(arbol, directorio);
         }
     }
 
