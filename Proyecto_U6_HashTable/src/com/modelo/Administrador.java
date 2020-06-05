@@ -86,6 +86,7 @@ public class Administrador {
     }
 
     public Contacto buscar(String correo) throws NoDatosException {
+
         HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
         if (usuarios.containsKey(correo)) {
             return usuarios.get(correo);
@@ -97,7 +98,10 @@ public class Administrador {
 
     public void agregarContactosUsuario(List<Contacto> contactos) throws NoDatosException, UsuarioNoLoginException, Exception {
         for (int i = 0; i < contactos.size(); i++) {
-            agregarContactoUsuario(contactos.get(i));
+            if (!contactos.get(i).getCorreo().equals(usuario.getCorreo())) {
+                agregarContactoUsuario(contactos.get(i));
+            }
+
         }
     }
 
@@ -142,8 +146,11 @@ public class Administrador {
         return arbol.enlistarElementos();
     }
 
-    public void eliminarContactoUsuario(Contacto contacto) throws UsuarioNoLoginException {
+    public void eliminarContactoUsuario(Contacto contacto) throws UsuarioNoLoginException, UsuarioIncorrectoException {
         if (usuarioLogeado) {
+            if (contacto.getCorreo().equals(usuario.getCorreo())) {
+                throw new UsuarioIncorrectoException("No se puede eliminar a si mismo");
+            }
             String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
 
             BTree<Contacto> arbol = DAOBTree.getData(directorio);

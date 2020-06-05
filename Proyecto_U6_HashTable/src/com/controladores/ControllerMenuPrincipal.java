@@ -7,6 +7,7 @@ package com.controladores;
 
 import com.modelo.Administrador;
 import com.modelo.Contacto;
+import com.modelo.UsuarioNoLoginException;
 import com.vista.MenuPrincipal;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -46,6 +47,21 @@ public class ControllerMenuPrincipal {
         menu.getItemBorrarCuenta().addActionListener(this::borrarCuenta);
         menu.getItemBuscar().addActionListener(this::buscar);
         menu.getItemEliminarCon().addActionListener(this::eliminarCont);
+        menu.getItemLogOut().addActionListener(this::logOut);
+    }
+
+    private void logOut(ActionEvent e) {
+        if (JOptionPane.showConfirmDialog(menu, "¿Desea cerrar la sesión actual?") == 0) {
+            try {
+                admi.logOut();
+                menu.dispose();
+                contLogin = new ControllerLogin();
+                contLogin.iniciar();
+
+            } catch (UsuarioNoLoginException ex) {
+                menu.error(ex.getMessage());
+            }
+        }
     }
 
     private void eliminarCont(ActionEvent e) {

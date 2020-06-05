@@ -53,20 +53,27 @@ public class ControllerRuta {
     }
 
     public void aceptar(ActionEvent e) {
-        ruta = menu.getTxtRuta().getText();
-        try {
-            admi.crearUsuario(nombre, edad, correo, contraseña, ruta);
-        } catch (Exception ex) {
-            menu.error(ex.getMessage());
+        if (rutaEncontrada) {
+            ruta = menu.getTxtRuta().getText();
+            try {
+                admi.crearUsuario(nombre, edad, correo, contraseña, ruta);
+            } catch (Exception ex) {
+                menu.error(ex.getMessage());
+            }
+            menu.dispose();
+        } else {
+            menu.error("Selecciona la ruta con el boton buscar");
         }
-        menu.dispose();
 
     }
+
+    private boolean rutaEncontrada = false;
 
     public void buscar(ActionEvent e) {
         chooser.showOpenDialog(menu);
         File file = chooser.getSelectedFile();
         menu.getTxtRuta().setText(file.getAbsolutePath());
+        rutaEncontrada = true;
     }
 
 }

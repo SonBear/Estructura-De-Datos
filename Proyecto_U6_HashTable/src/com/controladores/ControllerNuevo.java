@@ -35,14 +35,19 @@ public class ControllerNuevo {
     }
 
     public void crear(ActionEvent e) {
-        String nombre = menu.getTxtNombre().getText();
-        String correo = menu.getTxtCorreo().getText();
-        int edad = Integer.parseInt(menu.getTxtEdad().getText());
-        String contraseña = menu.getTxtContr().getText();
-        contRuta.setValores(correo, nombre, correo, contraseña, edad);
-        contRuta.inciar();
-        menu.dispose();
-
+        try {
+            String nombre = menu.getTxtNombre().getText();
+            String correo = menu.getTxtCorreo().getText();
+            int edad = Integer.parseInt(menu.getTxtEdad().getText());
+            String contraseña = menu.getTxtContr().getText();
+            contRuta.setValores(correo, nombre, correo, contraseña, edad);
+            contRuta.inciar();
+            menu.dispose();
+        } catch (NumberFormatException ex) {
+            menu.error("Datos incorrectos");
+        } catch (Exception ex) {
+            menu.error(ex.getMessage());
+        }
     }
 
 }

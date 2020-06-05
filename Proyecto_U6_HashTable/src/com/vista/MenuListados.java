@@ -39,7 +39,7 @@ public class MenuListados extends javax.swing.JFrame {
         labelCorreo = new javax.swing.JLabel();
         labelContactos = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(102, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista contactos"));

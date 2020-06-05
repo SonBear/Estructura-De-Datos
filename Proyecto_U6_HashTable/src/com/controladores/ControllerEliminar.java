@@ -7,7 +7,6 @@ package com.controladores;
 
 import com.modelo.Administrador;
 import com.modelo.Contacto;
-import com.modelo.UsuarioNoLoginException;
 import com.vista.MenuEliminar;
 import java.awt.event.ActionEvent;
 
@@ -46,7 +45,10 @@ public class ControllerEliminar {
             menu.getLabelEdad().setText("Edad: " + contactoActual.getEdad());
             menu.getLabelNombre().setText("Nombre: " + contactoActual.getNombre());
 
+        } catch (NullPointerException ex) {
+            menu.error("Contacto no encontrado");
         } catch (Exception ex) {
+            ex.getStackTrace();
             menu.error(ex.getMessage());
         }
 
@@ -66,7 +68,10 @@ public class ControllerEliminar {
     private void eliminar(ActionEvent e) {
         try {
             admi.eliminarContactoUsuario(contactoActual);
-        } catch (UsuarioNoLoginException ex) {
+
+        } catch (NullPointerException ex) {
+            menu.error("Contacto no encontrado");
+        } catch (Exception ex) {
             menu.error(ex.getMessage());
         }
 

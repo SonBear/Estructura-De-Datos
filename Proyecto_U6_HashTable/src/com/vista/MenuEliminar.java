@@ -45,7 +45,7 @@ public class MenuEliminar extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuario encontrado"));
 
         btnEliminar.setText("Eliminar");
 

@@ -49,6 +49,8 @@ public class ControllerBusqueda {
             menu.getLabelNombre().setText("Nombre: " + contactoActual.getNombre());
             menu.getBtnAgregarContac().setText("Agregar contactos de: " + contactoActual.getNombre());
 
+        } catch (NullPointerException ex) {
+            menu.error("Contacto no encontrado");
         } catch (Exception ex) {
             menu.error(ex.getMessage());
         }
@@ -58,6 +60,9 @@ public class ControllerBusqueda {
     private void agregar(ActionEvent e) {
         try {
             admi.agregarContactoUsuario(contactoActual);
+
+        } catch (NullPointerException ex) {
+            menu.error("Contacto no encontrado");
         } catch (Exception ex) {
             menu.error(ex.getMessage());
         }
@@ -67,6 +72,8 @@ public class ControllerBusqueda {
         try {
             List<Contacto> contactos = admi.listarContactoDe(contactoActual);
             admi.agregarContactosUsuario(contactos);
+        } catch (NullPointerException ex) {
+            menu.error("Contacto no encontrado");
         } catch (Exception ex) {
             menu.error(ex.getMessage());
         }
@@ -74,13 +81,13 @@ public class ControllerBusqueda {
     }
 
     private void cancelarBusqueda(ActionEvent e) {
-        contactoActual = null;
         menu.getTxtCorreo().setText("");
 
     }
 
     private void cancelarEncontrado(ActionEvent e) {
         contactoActual = null;
+
         menu.getLabelCorreo().setText("Correo: ");
         menu.getLabelEdad().setText("Edad: ");
         menu.getLabelNombre().setText("Nombre: ");
