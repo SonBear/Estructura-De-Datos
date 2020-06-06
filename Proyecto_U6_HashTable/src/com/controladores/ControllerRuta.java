@@ -70,10 +70,14 @@ public class ControllerRuta {
     private boolean rutaEncontrada = false;
 
     public void buscar(ActionEvent e) {
-        chooser.showOpenDialog(menu);
-        File file = chooser.getSelectedFile();
-        menu.getTxtRuta().setText(file.getAbsolutePath());
-        rutaEncontrada = true;
+        try {
+            chooser.showOpenDialog(menu);
+            File file = chooser.getSelectedFile();
+            menu.getTxtRuta().setText(file.getAbsolutePath());
+            rutaEncontrada = true;
+        } catch (NullPointerException ex) {
+            menu.error("Directorio no seleccionado");
+        }
     }
 
 }

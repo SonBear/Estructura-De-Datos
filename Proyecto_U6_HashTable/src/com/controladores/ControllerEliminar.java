@@ -67,7 +67,7 @@ public class ControllerEliminar {
 
     private void eliminar(ActionEvent e) {
         try {
-            admi.eliminarContactoUsuario(contactoActual);
+            admi.eliminarContactoAUsuario(contactoActual);
 
         } catch (NullPointerException ex) {
             menu.error("Contacto no encontrado");

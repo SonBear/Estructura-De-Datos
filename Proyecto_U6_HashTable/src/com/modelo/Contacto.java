@@ -5,6 +5,7 @@
  */
 package com.modelo;
 
+import com.modelo.ArbolB.BTreeComparable;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,13 +13,12 @@ import java.util.Objects;
  *
  * @author emman
  */
-public class Contacto implements Comparable<Contacto>, Serializable {
+public class Contacto implements BTreeComparable, Serializable {
 
     private String nombre;
     private int edad;
     private String correo;
     private String contraseña;
-    private String rutaContacto = "";
 
     public Contacto(String nombre, int edad, String correo, String contraseña) {
         this.nombre = nombre;
@@ -32,20 +32,6 @@ public class Contacto implements Comparable<Contacto>, Serializable {
         this.edad = edad;
         this.correo = correo;
         this.contraseña = contraseña;
-        this.rutaContacto = rutaContacto;
-    }
-
-    public String getRutaContacto() {
-        return rutaContacto;
-    }
-
-    public void setRutaContacto(String rutaContacto) {
-        this.rutaContacto = rutaContacto;
-    }
-
-    @Override
-    public int compareTo(Contacto o) {
-        return getNombre().toUpperCase().compareTo(o.getNombre().toUpperCase());
     }
 
     public String getNombre() {
@@ -98,6 +84,11 @@ public class Contacto implements Comparable<Contacto>, Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(BTreeComparable other) {
+        return getNombre().compareTo(((Contacto) other).getNombre());
     }
 
 }

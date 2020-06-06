@@ -5,45 +5,48 @@
  */
 package com.modelo.DAO;
 
-import com.modelo.HasTable.HashTable;
+import com.modelo.Contacto;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 /**
  *
  * @author emman
  */
-public class DAOHashTable {
+public class DAOUsuarios {
 
-    private final static String directorio = "archivos/" + "DirectorioCorreos" + ".txt";
+    private final static String directorio = "archivos/" + "Usuarios" + ".txt";
 
-    public static <T> HashTable<String, T> getData() {
+    public static ArrayList<Contacto> getData() {
         try {
             File file = new File(directorio);
             if (!file.exists()) {
                 file.createNewFile();
             }
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-                return (HashTable<String, T>) in.readObject();
+                return (ArrayList<Contacto>) in.readObject();
             }
 
         } catch (Exception ex) {
-            return new HashTable<>();
+            System.out.println(ex.getMessage());
         }
+
+        return new ArrayList<>();
 
     }
 
-    public static <T> void saveData(HashTable<String, T> hashTable) {
+    public static void saveData(ArrayList<Contacto> usuarios) {
         try {
             File file = new File(directorio);
             if (!file.exists()) {
                 file.createNewFile();
             }
             ObjectOutputStream ou = new ObjectOutputStream(new FileOutputStream(file));
-            ou.writeObject(hashTable);
+            ou.writeObject(usuarios);
             ou.close();
 
         } catch (Exception ex) {
@@ -51,4 +54,5 @@ public class DAOHashTable {
         }
 
     }
+
 }

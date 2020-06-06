@@ -6,7 +6,6 @@
 package com.modelo.DAO;
 
 import com.modelo.ArbolB.BTree;
-import com.modelo.Contacto;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,24 +18,24 @@ import java.io.ObjectOutputStream;
  */
 public class DAOBTree {
 
-    public static BTree<Contacto> getData(String directorio) {
+    public static BTree getData(String directorio) {
         try {
             File file = new File(directorio);
             if (!file.exists()) {
                 file.createNewFile();
             }
             try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-                return (BTree<Contacto>) in.readObject();
+                return (BTree) in.readObject();
             }
 
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            return new BTree(3);
+
         }
 
-        return new BTree<>(3);
     }
 
-    public static void saveData(BTree<Contacto> arbol, String directorio) {
+    public static void saveData(BTree arbol, String directorio) {
         try {
             File file = new File(directorio);
             if (!file.exists()) {

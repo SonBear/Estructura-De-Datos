@@ -5,760 +5,348 @@
  */
 package com.modelo.ArbolB;
 
-import com.modelo.ArbolB.Exception.NoDatosException;
+import com.modelo.Contacto;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  *
  * @author emman
  */
-public class BTree<T extends Comparable<T>> implements Serializable {
+public class BTree implements Serializable {
 
-    // Default to 2-3 Tree
-    private int minKeySize = 1;
-    private int minChildrenSize = minKeySize + 1; // 2
-    private int maxKeySize = 2 * minKeySize; // 2
-    private int maxChildrenSize = maxKeySize + 1; // 3
+    protected BTreeNode root;
+    private int order;
 
-    private Node<T> root = null;
-    private int size = 0;
-
-    /**
-     * Constructor for B-Tree which defaults to a 2-3 B-Tree.
-     */
-    public BTree() {
-    }
-
-    /**
-     * Constructor for B-Tree of ordered parameter. Order here means minimum number of keys in a non-root node.
-     *
-     * @param order of the B-Tree.
-     */
     public BTree(int order) {
-        this.minKeySize = order / 2 - 1;
-        this.minChildrenSize = 1;
-        this.maxKeySize = order - 1;
-        this.maxChildrenSize = order;
+        if (order < 1) {
+            order = 1;
+        }
+
+        this.order = order;
+        this.root = new BTreeNode(order, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean add(T value) {
-        if (contains(value)) {
-            return false;
-        }
-        if (root == null) {
-            root = new Node<T>(null, maxKeySize, maxChildrenSize);
-            root.addKey(value);
-        } else {
-            Node<T> node = root;
-            while (node != null) {
-                if (node.numberOfChildren() == 0) {
-                    node.addKey(value);
-                    if (node.numberOfKeys() <= maxKeySize) {
-                        // A-OK
-                        break;
-                    }
-                    // Need to split up
-                    split(node);
-                    break;
-                }
-                // Navigate
-
-                // Lesser or equal
-                T lesser = node.getKey(0);
-                if (value.compareTo(lesser) <= 0) {
-                    node = node.getChild(0);
-                    continue;
-                }
-
-                // Greater
-                int numberOfKeys = node.numberOfKeys();
-                int last = numberOfKeys - 1;
-                T greater = node.getKey(last);
-                if (value.compareTo(greater) > 0) {
-                    node = node.getChild(numberOfKeys);
-                    continue;
-                }
-
-                // Search internal nodes
-                for (int i = 1; i < node.numberOfKeys(); i++) {
-                    T prev = node.getKey(i - 1);
-                    T next = node.getKey(i);
-                    if (value.compareTo(prev) > 0 && value.compareTo(next) <= 0) {
-                        node = node.getChild(i);
-                        break;
-                    }
-                }
-            }
+    public BTreeComparable find(BTreeComparable paramBTreeComparable) {
+        if (this.root == null) {
+            throw new IllegalStateException();
         }
 
-        size++;
-
-        return true;
-    }
-
-    /**
-     * The node's key size is greater than maxKeySize, split down the middle.
-     *
-     * @param nodeToSplit to split.
-     */
-    private void split(Node<T> nodeToSplit) {
-        Node<T> node = nodeToSplit;
-        int numberOfKeys = node.numberOfKeys();
-        int medianIndex = numberOfKeys / 2;
-        T medianValue = node.getKey(medianIndex);
-
-        Node<T> left = new Node<T>(null, maxKeySize, maxChildrenSize);
-        for (int i = 0; i < medianIndex; i++) {
-            left.addKey(node.getKey(i));
-        }
-        if (node.numberOfChildren() > 0) {
-            for (int j = 0; j <= medianIndex; j++) {
-                Node<T> c = node.getChild(j);
-                left.addChild(c);
-            }
-        }
-
-        Node<T> right = new Node<T>(null, maxKeySize, maxChildrenSize);
-        for (int i = medianIndex + 1; i < numberOfKeys; i++) {
-            right.addKey(node.getKey(i));
-        }
-        if (node.numberOfChildren() > 0) {
-            for (int j = medianIndex + 1; j < node.numberOfChildren(); j++) {
-                Node<T> c = node.getChild(j);
-                right.addChild(c);
-            }
-        }
-
-        if (node.parent == null) {
-            // new root, height of tree is increased
-            Node<T> newRoot = new Node<T>(null, maxKeySize, maxChildrenSize);
-            newRoot.addKey(medianValue);
-            node.parent = newRoot;
-            root = newRoot;
-            node = root;
-            node.addChild(left);
-            node.addChild(right);
-        } else {
-            // Move the median value up to the parent
-            Node<T> parent = node.parent;
-            parent.addKey(medianValue);
-            parent.removeChild(node);
-            parent.addChild(left);
-            parent.addChild(right);
-
-            if (parent.numberOfKeys() > maxKeySize) {
-                split(parent);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public T remove(T value) {
-        T removed = null;
-        Node<T> node = this.getNode(value);
-        removed = remove(value, node);
-        return removed;
-    }
-
-    /**
-     * Remove the value from the Node and check invariants
-     *
-     * @param value T to remove from the tree
-     * @param node Node to remove value from
-     * @return True if value was removed from the tree.
-     */
-    private T remove(T value, Node<T> node) {
-        if (node == null) {
+        if (this.root.isEmpty()) {
             return null;
         }
 
-        T removed = null;
-        int index = node.indexOf(value);
-        removed = node.removeKey(value);
-        if (node.numberOfChildren() == 0) {
-            // leaf node
-            if (node.parent != null && node.numberOfKeys() < minKeySize) {
-                this.combined(node);
-            } else if (node.parent == null && node.numberOfKeys() == 0) {
-                // Removing root node with no keys or children
-                root = null;
+        BTreeNode localBTreeNode = findNode(paramBTreeComparable);
+
+        if (localBTreeNode == null) {
+            throw new IllegalStateException();
+        }
+
+        int i = localBTreeNode.findKeyPosition(paramBTreeComparable);
+
+        if ((i & 0x1) != 1) {
+            return null;
+        }
+
+        return localBTreeNode.getKey(i >> 1);
+    }
+
+    public void add(BTreeComparable paramBTreeComparable) {
+        if (find(paramBTreeComparable) != null) {
+            return;
+        }
+
+        BTreeNode localBTreeNode = findLeaf(paramBTreeComparable);
+        addHere(localBTreeNode, paramBTreeComparable, null, null);
+    }
+
+    public void insert(BTreeComparable paramBTreeComparable) {
+        add(paramBTreeComparable);
+    }
+
+    public void delete(BTreeComparable paramBTreeComparable) {
+        if (find(paramBTreeComparable) == null) {
+            return;
+        }
+        BTreeNode localBTreeNode = findNode(paramBTreeComparable);
+        int i = localBTreeNode.findKeyPosition(paramBTreeComparable) >> 1;
+        if (localBTreeNode.isLeaf() == false) {
+            localBTreeNode = swapWithLeaf(localBTreeNode, i);
+            i = 0;
+        }
+
+        removeOne(localBTreeNode, i);
+
+        if (localBTreeNode == this.root) {
+            return;
+        }
+
+        notEnoughKeys(localBTreeNode);
+    }
+
+    public void remove(BTreeComparable paramBTreeComparable) {
+        delete(paramBTreeComparable);
+    }
+
+    private BTreeNode findNode(BTreeComparable paramBTreeComparable) {
+        if ((this.root == null) || (this.root.isEmpty())) {
+            throw new IllegalStateException();
+        }
+
+        BTreeNode localBTreeNode = this.root;
+
+        while (localBTreeNode != null) {
+            int i = localBTreeNode.findKeyPosition(paramBTreeComparable);
+
+            if (((i & 0x1) == 1) || (localBTreeNode.isLeaf())) {
+                return localBTreeNode;
             }
+
+            localBTreeNode = localBTreeNode.getChild(i >> 1);
+        }
+
+        throw new IllegalStateException();
+    }
+
+    private BTreeNode findLeaf(BTreeComparable paramBTreeComparable) {
+        BTreeNode localBTreeNode = this.root;
+
+        while (localBTreeNode != null) {
+            if (localBTreeNode.isLeaf()) {
+                return localBTreeNode;
+            }
+
+            int i = localBTreeNode.findKeyPosition(paramBTreeComparable);
+
+            if ((i & 0x1) == 1) {
+                i--;
+            }
+
+            localBTreeNode = localBTreeNode.getChild(i >> 1);
+        }
+
+        throw new IllegalStateException();
+    }
+
+    protected void addHere(BTreeNode paramBTreeNode1, BTreeComparable paramBTreeComparable, BTreeNode paramBTreeNode2, BTreeNode paramBTreeNode3) {
+        if (paramBTreeNode1.isEmpty()) {
+            addHereToEmpty(paramBTreeNode1, paramBTreeComparable, paramBTreeNode2, paramBTreeNode3);
+            return;
+        }
+
+        int i = paramBTreeNode1.findKeyPosition(paramBTreeComparable);
+
+        if ((i & 0x1) == 1) {
+            throw new IllegalStateException("filled: " + paramBTreeNode1.getFilled() + " position: " + i + " item: " + paramBTreeComparable.toString());
+        }
+
+        i >>= 1;
+
+        if (paramBTreeNode1.getChild(i) != paramBTreeNode2) {
+            throw new IllegalStateException();
+        }
+
+        if (paramBTreeNode1.getFilled() < 2 * paramBTreeNode1.getOrder()) {
+            addHereNotFull(paramBTreeNode1, paramBTreeComparable, paramBTreeNode2, paramBTreeNode3, i);
+            return;
+        }
+
+        BTreeComparable[] arrayOfBTreeComparable1 = new BTreeComparable[this.order * 2 + 1];
+        BTreeNode[] arrayOfBTreeNode1 = new BTreeNode[this.order * 2 + 2];
+        addHereMakeTmp(paramBTreeNode1, paramBTreeComparable, paramBTreeNode2, paramBTreeNode3, arrayOfBTreeComparable1, arrayOfBTreeNode1, i);
+        BTreeNode localBTreeNode = addHereNewRight(paramBTreeNode1, arrayOfBTreeComparable1, arrayOfBTreeNode1, this.order);
+        addHereSetLeft(paramBTreeNode1, arrayOfBTreeComparable1, arrayOfBTreeNode1);
+
+        if (!localBTreeNode.isLeaf()) {
+            for (int j = 0; j <= this.order; j++) {
+                localBTreeNode.getChild(j).parent = localBTreeNode;
+            }
+        }
+
+        if (paramBTreeNode1 == this.root) {
+            BTreeComparable[] arrayOfBTreeComparable2
+                    = {
+                        arrayOfBTreeComparable1[this.order]
+                    };
+
+            BTreeNode[] arrayOfBTreeNode2
+                    = {
+                        paramBTreeNode1, localBTreeNode
+                    };
+
+            this.root = new BTreeNode(this.order, null, arrayOfBTreeComparable2, arrayOfBTreeNode2, false);
+            paramBTreeNode1.parent = this.root;
+            localBTreeNode.parent = this.root;
+
         } else {
-            // internal node
-            Node<T> lesser = node.getChild(index);
-            Node<T> greatest = this.getGreatestNode(lesser);
-            T replaceValue = this.removeGreatestValue(greatest);
-            node.addKey(replaceValue);
-            if (greatest.parent != null && greatest.numberOfKeys() < minKeySize) {
-                this.combined(greatest);
-            }
-            if (greatest.numberOfChildren() > maxChildrenSize) {
-                this.split(greatest);
-            }
+            addHere(paramBTreeNode1.getParent(), arrayOfBTreeComparable1[this.order], paramBTreeNode1, localBTreeNode);
+        }
+    }
+
+    protected void addHereToEmpty(BTreeNode paramBTreeNode1, BTreeComparable paramBTreeComparable, BTreeNode paramBTreeNode2, BTreeNode paramBTreeNode3) {
+        paramBTreeNode1.child[0] = paramBTreeNode2;
+        paramBTreeNode1.child[1] = paramBTreeNode3;
+        paramBTreeNode1.key[0] = paramBTreeComparable;
+        paramBTreeNode1.filled = 1;
+    }
+
+    protected void addHereNotFull(BTreeNode paramBTreeNode1, BTreeComparable paramBTreeComparable, BTreeNode paramBTreeNode2, BTreeNode paramBTreeNode3, int paramInt) {
+        int i = paramBTreeNode1.getFilled() - paramInt;
+        int j = paramInt;
+        System.arraycopy(paramBTreeNode1.key, j, paramBTreeNode1.key, j + 1, i);
+        System.arraycopy(paramBTreeNode1.child, j + 1, paramBTreeNode1.child, j + 2, i);
+        paramBTreeNode1.key[paramInt] = paramBTreeComparable;
+        paramBTreeNode1.child[(paramInt + 1)] = paramBTreeNode3;
+        paramBTreeNode1.filled += 1;
+    }
+
+    protected BTreeNode addHereNewRight(BTreeNode paramBTreeNode, BTreeComparable[] paramArrayOfBTreeComparable, BTreeNode[] paramArrayOfBTreeNode, int paramInt) {
+        BTreeComparable[] arrayOfBTreeComparable = new BTreeComparable[paramInt];
+        BTreeNode[] arrayOfBTreeNode = new BTreeNode[paramInt + 1];
+        System.arraycopy(paramArrayOfBTreeComparable, paramInt + 1, arrayOfBTreeComparable, 0, paramInt);
+        System.arraycopy(paramArrayOfBTreeNode, paramInt + 1, arrayOfBTreeNode, 0, paramInt + 1);
+        return new BTreeNode(paramInt, paramBTreeNode.getParent(), arrayOfBTreeComparable, arrayOfBTreeNode, paramBTreeNode.isLeaf());
+    }
+
+    protected void addHereMakeTmp(BTreeNode paramBTreeNode1, BTreeComparable paramBTreeComparable, BTreeNode paramBTreeNode2, BTreeNode paramBTreeNode3, BTreeComparable[] paramArrayOfBTreeComparable, BTreeNode[] paramArrayOfBTreeNode, int paramInt) {
+        int i = paramBTreeNode1.getFilled() - paramInt;
+        System.arraycopy(paramBTreeNode1.key, 0, paramArrayOfBTreeComparable, 0, paramInt);
+        System.arraycopy(paramBTreeNode1.child, 0, paramArrayOfBTreeNode, 0, paramInt);
+        System.arraycopy(paramBTreeNode1.key, paramInt, paramArrayOfBTreeComparable, paramInt + 1, i);
+        System.arraycopy(paramBTreeNode1.child, paramInt + 1, paramArrayOfBTreeNode, paramInt + 2, i);
+        paramArrayOfBTreeComparable[paramInt] = paramBTreeComparable;
+        paramArrayOfBTreeNode[paramInt] = paramBTreeNode2;
+        paramArrayOfBTreeNode[(paramInt + 1)] = paramBTreeNode3;
+    }
+
+    protected void addHereSetLeft(BTreeNode paramBTreeNode, BTreeComparable[] paramArrayOfBTreeComparable, BTreeNode[] paramArrayOfBTreeNode) {
+        paramBTreeNode.filled = paramBTreeNode.getOrder();
+        paramBTreeNode.cleanNode();
+        System.arraycopy(paramArrayOfBTreeComparable, 0, paramBTreeNode.key, 0, paramBTreeNode.getFilled());
+        System.arraycopy(paramArrayOfBTreeNode, 0, paramBTreeNode.child, 0, paramBTreeNode.getFilled() + 1);
+    }
+
+    protected BTreeNode findLogicalNext(BTreeNode paramBTreeNode, int paramInt) {
+        paramBTreeNode = paramBTreeNode.getChild(paramInt + 1);
+
+        while (paramBTreeNode.isLeaf() == false) {
+            paramBTreeNode = paramBTreeNode.getChild(0);
         }
 
-        size--;
-
-        return removed;
+        return paramBTreeNode;
     }
 
-    /**
-     * Remove greatest valued key from node.
-     *
-     * @param node to remove greatest value from.
-     * @return value removed;
-     */
-    private T removeGreatestValue(Node<T> node) {
-        T value = null;
-        if (node.numberOfKeys() > 0) {
-            value = node.removeKey(node.numberOfKeys() - 1);
-        }
-        return value;
+    protected BTreeNode swapWithLeaf(BTreeNode paramBTreeNode, int paramInt) {
+        BTreeNode localBTreeNode = findLogicalNext(paramBTreeNode, paramInt);
+        BTreeComparable localBTreeComparable = paramBTreeNode.key[paramInt];
+        paramBTreeNode.key[paramInt] = localBTreeNode.key[0];
+        localBTreeNode.key[0] = localBTreeComparable;
+        return localBTreeNode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void clear() {
-        root = null;
-        size = 0;
+    protected void removeOne(BTreeNode paramBTreeNode, int paramInt) {
+        System.arraycopy(paramBTreeNode.key, paramInt + 1, paramBTreeNode.key, paramInt, paramBTreeNode.getFilled() - paramInt - 1);
+        paramBTreeNode.filled -= 1;
+        paramBTreeNode.cleanNode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean contains(T value) {
-        Node<T> node = getNode(value);
-        return (node != null);
-    }
-
-    /**
-     * Get the node with value.
-     *
-     * @param value to find in the tree.
-     * @return Node<T> with value.
-     */
-    private Node<T> getNode(T value) {
-        Node<T> node = root;
-        while (node != null) {
-            T lesser = node.getKey(0);
-            if (value.compareTo(lesser) < 0) {
-                if (node.numberOfChildren() > 0) {
-                    node = node.getChild(0);
-                } else {
-                    node = null;
-                }
-                continue;
-            }
-
-            int numberOfKeys = node.numberOfKeys();
-            int last = numberOfKeys - 1;
-            T greater = node.getKey(last);
-            if (value.compareTo(greater) > 0) {
-                if (node.numberOfChildren() > numberOfKeys) {
-                    node = node.getChild(numberOfKeys);
-                } else {
-                    node = null;
-                }
-                continue;
-            }
-
-            for (int i = 0; i < numberOfKeys; i++) {
-                T currentValue = node.getKey(i);
-                if (currentValue.compareTo(value) == 0) {
-                    return node;
-                }
-
-                int next = i + 1;
-                if (next <= last) {
-                    T nextValue = node.getKey(next);
-                    if (currentValue.compareTo(value) < 0 && nextValue.compareTo(value) > 0) {
-                        if (next < node.numberOfChildren()) {
-                            node = node.getChild(next);
-                            break;
-                        }
-                        return null;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get the greatest valued child from node.
-     *
-     * @param nodeToGet child with the greatest value.
-     * @return Node<T> child with greatest value.
-     */
-    private Node<T> getGreatestNode(Node<T> nodeToGet) {
-        Node<T> node = nodeToGet;
-        while (node.numberOfChildren() > 0) {
-            node = node.getChild(node.numberOfChildren() - 1);
-        }
-        return node;
-    }
-
-    /**
-     * Combined children keys with parent when size is less than minKeySize.
-     *
-     * @param node with children to combined.
-     * @return True if combined successfully.
-     */
-    private boolean combined(Node<T> node) {
-        Node<T> parent = node.parent;
-        int index = parent.indexOf(node);
-        int indexOfLeftNeighbor = index - 1;
-        int indexOfRightNeighbor = index + 1;
-
-        Node<T> rightNeighbor = null;
-        int rightNeighborSize = -minChildrenSize;
-        if (indexOfRightNeighbor < parent.numberOfChildren()) {
-            rightNeighbor = parent.getChild(indexOfRightNeighbor);
-            rightNeighborSize = rightNeighbor.numberOfKeys();
+    protected void notEnoughKeys(BTreeNode paramBTreeNode) {
+        if ((paramBTreeNode.getFilled() >= this.order) || (paramBTreeNode == this.root)) {
+            return;
         }
 
-        // Try to borrow neighbor
-        if (rightNeighbor != null && rightNeighborSize > minKeySize) {
-            // Try to borrow from right neighbor
-            T removeValue = rightNeighbor.getKey(0);
-            int prev = getIndexOfPreviousValue(parent, removeValue);
-            T parentValue = parent.removeKey(prev);
-            T neighborValue = rightNeighbor.removeKey(0);
-            node.addKey(parentValue);
-            parent.addKey(neighborValue);
-            if (rightNeighbor.numberOfChildren() > 0) {
-                node.addChild(rightNeighbor.removeChild(0));
-            }
+        BTreeNode localBTreeNode1 = paramBTreeNode.getParent();
+        int i = localBTreeNode1.findChildPosition(paramBTreeNode);
+
+        if ((i > 0) && (localBTreeNode1.getChild(i - 1).getFilled() > this.order)) {
+            deleteBorrowLeft(paramBTreeNode, localBTreeNode1, i);
+        } else if ((i < localBTreeNode1.getFilled()) && (localBTreeNode1.getChild(i + 1).getFilled() > this.order)) {
+            deleteBorrowRight(paramBTreeNode, localBTreeNode1, i);
         } else {
-            Node<T> leftNeighbor = null;
-            int leftNeighborSize = -minChildrenSize;
-            if (indexOfLeftNeighbor >= 0) {
-                leftNeighbor = parent.getChild(indexOfLeftNeighbor);
-                leftNeighborSize = leftNeighbor.numberOfKeys();
+            BTreeNode localBTreeNode2;
+            BTreeNode localBTreeNode3;
+            if (i > 0) {
+                localBTreeNode2 = localBTreeNode1.getChild(--i);
+                localBTreeNode3 = paramBTreeNode;
+            } else {
+                localBTreeNode2 = paramBTreeNode;
+                localBTreeNode3 = localBTreeNode1.getChild(i + 1);
             }
 
-            if (leftNeighbor != null && leftNeighborSize > minKeySize) {
-                // Try to borrow from left neighbor
-                T removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
-                int prev = getIndexOfNextValue(parent, removeValue);
-                T parentValue = parent.removeKey(prev);
-                T neighborValue = leftNeighbor.removeKey(leftNeighbor.numberOfKeys() - 1);
-                node.addKey(parentValue);
-                parent.addKey(neighborValue);
-                if (leftNeighbor.numberOfChildren() > 0) {
-                    node.addChild(leftNeighbor.removeChild(leftNeighbor.numberOfChildren() - 1));
-                }
-            } else if (rightNeighbor != null && parent.numberOfKeys() > 0) {
-                // Can't borrow from neighbors, try to combined with right neighbor
-                T removeValue = rightNeighbor.getKey(0);
-                int prev = getIndexOfPreviousValue(parent, removeValue);
-                T parentValue = parent.removeKey(prev);
-                parent.removeChild(rightNeighbor);
-                node.addKey(parentValue);
-                for (int i = 0; i < rightNeighbor.keysSize; i++) {
-                    T v = rightNeighbor.getKey(i);
-                    node.addKey(v);
-                }
-                for (int i = 0; i < rightNeighbor.childrenSize; i++) {
-                    Node<T> c = rightNeighbor.getChild(i);
-                    node.addChild(c);
-                }
+            deleteJoinNode(localBTreeNode2, localBTreeNode3, localBTreeNode1, i);
 
-                if (parent.parent != null && parent.numberOfKeys() < minKeySize) {
-                    // removing key made parent too small, combined up tree
-                    this.combined(parent);
-                } else if (parent.numberOfKeys() == 0) {
-                    // parent no longer has keys, make this node the new root
-                    // which decreases the height of the tree
-                    node.parent = null;
-                    root = node;
-                }
-            } else if (leftNeighbor != null && parent.numberOfKeys() > 0) {
-                // Can't borrow from neighbors, try to combined with left neighbor
-                T removeValue = leftNeighbor.getKey(leftNeighbor.numberOfKeys() - 1);
-                int prev = getIndexOfNextValue(parent, removeValue);
-                T parentValue = parent.removeKey(prev);
-                parent.removeChild(leftNeighbor);
-                node.addKey(parentValue);
-                for (int i = 0; i < leftNeighbor.keysSize; i++) {
-                    T v = leftNeighbor.getKey(i);
-                    node.addKey(v);
-                }
-                for (int i = 0; i < leftNeighbor.childrenSize; i++) {
-                    Node<T> c = leftNeighbor.getChild(i);
-                    node.addChild(c);
-                }
-
-                if (parent.parent != null && parent.numberOfKeys() < minKeySize) {
-                    // removing key made parent too small, combined up tree
-                    this.combined(parent);
-                } else if (parent.numberOfKeys() == 0) {
-                    // parent no longer has keys, make this node the new root
-                    // which decreases the height of the tree
-                    node.parent = null;
-                    root = node;
-                }
+            if ((localBTreeNode1 == this.root) && (localBTreeNode1.getFilled() == 0)) {
+                this.root = localBTreeNode2;
+                return;
             }
         }
 
-        return true;
+        notEnoughKeys(localBTreeNode1);
     }
 
-    /**
-     * Get the index of previous key in node.
-     *
-     * @param node to find the previous key in.
-     * @param value to find a previous value for.
-     * @return index of previous key or -1 if not found.
-     */
-    private int getIndexOfPreviousValue(Node<T> node, T value) {
-        for (int i = 1; i < node.numberOfKeys(); i++) {
-            T t = node.getKey(i);
-            if (t.compareTo(value) >= 0) {
-                return i - 1;
-            }
+    protected void deleteBorrowLeft(BTreeNode paramBTreeNode1, BTreeNode paramBTreeNode2, int paramInt) {
+        System.arraycopy(paramBTreeNode1.key, 0, paramBTreeNode1.key, 1, paramBTreeNode1.filled);
+        System.arraycopy(paramBTreeNode1.child, 0, paramBTreeNode1.child, 1, ++paramBTreeNode1.filled);
+        paramBTreeNode1.key[0] = paramBTreeNode2.key[(paramInt - 1)];
+        BTreeNode localBTreeNode = paramBTreeNode2.getChild(paramInt - 1);
+        paramBTreeNode1.child[0] = localBTreeNode.child[localBTreeNode.filled];
+        if (paramBTreeNode1.isLeaf() == false) {
+            paramBTreeNode1.child[0].parent = paramBTreeNode1;
         }
-        return node.numberOfKeys() - 1;
+        paramBTreeNode2.key[(paramInt - 1)] = localBTreeNode.key[(--localBTreeNode.filled)];
+        localBTreeNode.cleanNode();
     }
 
-    /**
-     * Get the index of next key in node.
-     *
-     * @param node to find the next key in.
-     * @param value to find a next value for.
-     * @return index of next key or -1 if not found.
-     */
-    private int getIndexOfNextValue(Node<T> node, T value) {
-        for (int i = 0; i < node.numberOfKeys(); i++) {
-            T t = node.getKey(i);
-            if (t.compareTo(value) >= 0) {
-                return i;
-            }
+    protected void deleteBorrowRight(BTreeNode paramBTreeNode1, BTreeNode paramBTreeNode2, int paramInt) {
+        BTreeNode localBTreeNode = paramBTreeNode2.getChild(paramInt + 1);
+        paramBTreeNode1.key[(paramBTreeNode1.filled++)] = paramBTreeNode2.key[paramInt];
+        paramBTreeNode2.key[paramInt] = localBTreeNode.key[0];
+        paramBTreeNode1.child[paramBTreeNode1.filled] = localBTreeNode.child[0];
+        if (paramBTreeNode1.isLeaf() == false) {
+            paramBTreeNode1.child[paramBTreeNode1.filled].parent = paramBTreeNode1;
         }
-        return node.numberOfKeys() - 1;
+        localBTreeNode.filled -= 1;
+        System.arraycopy(localBTreeNode.key, 1, localBTreeNode.key, 0, localBTreeNode.filled);
+        System.arraycopy(localBTreeNode.child, 1, localBTreeNode.child, 0, localBTreeNode.filled + 1);
+        localBTreeNode.cleanNode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public int size() {
-        return size;
+    protected void deleteJoinNode(BTreeNode paramBTreeNode1, BTreeNode paramBTreeNode2, BTreeNode paramBTreeNode3, int paramInt) {
+        BTreeComparable[] arrayOfBTreeComparable = new BTreeComparable[paramBTreeNode1.getFilled() + paramBTreeNode2.getFilled() + 1];
+        BTreeNode[] arrayOfBTreeNode = new BTreeNode[paramBTreeNode1.getFilled() + paramBTreeNode2.getFilled() + 2];
+
+        System.arraycopy(paramBTreeNode1.key, 0, arrayOfBTreeComparable, 0, paramBTreeNode1.getFilled());
+        System.arraycopy(paramBTreeNode2.key, 0, arrayOfBTreeComparable, paramBTreeNode1.getFilled() + 1, paramBTreeNode2.getFilled());
+        arrayOfBTreeComparable[paramBTreeNode1.getFilled()] = paramBTreeNode3.key[paramInt];
+        System.arraycopy(paramBTreeNode1.child, 0, arrayOfBTreeNode, 0, paramBTreeNode1.getFilled() + 1);
+        System.arraycopy(paramBTreeNode2.child, 0, arrayOfBTreeNode, paramBTreeNode1.getFilled() + 1, paramBTreeNode2.getFilled() + 1);
+
+        System.arraycopy(arrayOfBTreeComparable, 0, paramBTreeNode1.key, 0, arrayOfBTreeComparable.length);
+        System.arraycopy(arrayOfBTreeNode, 0, paramBTreeNode1.child, 0, arrayOfBTreeNode.length);
+        paramBTreeNode1.filled = arrayOfBTreeComparable.length;
+
+        if (paramBTreeNode1.isLeaf() == false) {
+            for (int i = 0; i < arrayOfBTreeNode.length; i++) {
+                paramBTreeNode1.child[i].parent = paramBTreeNode1;
+            }
+        }
+        System.arraycopy(paramBTreeNode3.key, paramInt + 1, paramBTreeNode3.key, paramInt, paramBTreeNode3.getFilled() - paramInt - 1);
+        System.arraycopy(paramBTreeNode3.child, paramInt + 2, paramBTreeNode3.child, paramInt + 1, paramBTreeNode3.getFilled() - paramInt - 1);
+        paramBTreeNode3.filled -= 1;
+
+        paramBTreeNode2.filled = 0;
+
+        paramBTreeNode1.cleanNode();
+        paramBTreeNode2.cleanNode();
+        paramBTreeNode3.cleanNode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean validate() {
-        if (root == null) {
-            return true;
-        }
-        return validateNode(root);
+    public List<Contacto> getItems() {
+        return root.getItems();
     }
 
-    /**
-     * Validate the node according to the B-Tree invariants.
-     *
-     * @param node to validate.
-     * @return True if valid.
-     */
-    private boolean validateNode(Node<T> node) {
-        int keySize = node.numberOfKeys();
-        if (keySize > 1) {
-            // Make sure the keys are sorted
-            for (int i = 1; i < keySize; i++) {
-                T p = node.getKey(i - 1);
-                T n = node.getKey(i);
-                if (p.compareTo(n) > 0) {
-                    return false;
-                }
-            }
-        }
-        int childrenSize = node.numberOfChildren();
-        if (node.parent == null) {
-            // root
-            if (keySize > maxKeySize) {
-                // check max key size. root does not have a min key size
-                return false;
-            } else if (childrenSize == 0) {
-                // if root, no children, and keys are valid
-                return true;
-            } else if (childrenSize < 2) {
-                // root should have zero or at least two children
-                return false;
-            } else if (childrenSize > maxChildrenSize) {
-                return false;
-            }
-        } else {
-            // non-root
-            if (keySize < minKeySize) {
-                return false;
-            } else if (keySize > maxKeySize) {
-                return false;
-            } else if (childrenSize == 0) {
-                return true;
-            } else if (keySize != (childrenSize - 1)) {
-                // If there are chilren, there should be one more child then
-                // keys
-                return false;
-            } else if (childrenSize < minChildrenSize) {
-                return false;
-            } else if (childrenSize > maxChildrenSize) {
-                return false;
-            }
-        }
-
-        Node<T> first = node.getChild(0);
-        // The first child's last key should be less than the node's first key
-        if (first.getKey(first.numberOfKeys() - 1).compareTo(node.getKey(0)) > 0) {
-            return false;
-        }
-
-        Node<T> last = node.getChild(node.numberOfChildren() - 1);
-        // The last child's first key should be greater than the node's last key
-        if (last.getKey(0).compareTo(node.getKey(node.numberOfKeys() - 1)) < 0) {
-            return false;
-        }
-
-        // Check that each node's first and last key holds it's invariance
-        for (int i = 1; i < node.numberOfKeys(); i++) {
-            T p = node.getKey(i - 1);
-            T n = node.getKey(i);
-            Node<T> c = node.getChild(i);
-            if (p.compareTo(c.getKey(0)) > 0) {
-                return false;
-            }
-            if (n.compareTo(c.getKey(c.numberOfKeys() - 1)) < 0) {
-                return false;
-            }
-        }
-
-        for (int i = 0; i < node.childrenSize; i++) {
-            Node<T> c = node.getChild(i);
-            boolean valid = this.validateNode(c);
-            if (!valid) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public List<T> enlistarElementos() throws NoDatosException {
-        if (root == null) {
-            throw new NoDatosException("No se encontraron datos");
-        }
-        ArrayList<T> elementos = new ArrayList<>();
-        recorrerArbolElementos(root, elementos);
-        if (size() == 0) {
-            throw new NoDatosException("No se encontraron datos");
-        }
-        return elementos;
-    }
-
-    private boolean isShet(Node<T> n) {
-        return n.numberOfChildren() == 0;
-
-    }
-
-    private void recorrerArbolElementos(Node<T> node, ArrayList<T> elementos) {
-        int x = 0;
-
-        for (int i = 0; i < node.numberOfChildren(); i++) {
-            if (node.getChild(i) != null) {
-                recorrerArbolElementos(node.getChild(i), elementos);
-            }
-            if (x <= node.numberOfKeys() && node.getKey(x) != null) {
-                elementos.add(node.getKey(x++));
-            }
-        }
-        if (isShet(node)) {
-            for (int i = 0; i < node.numberOfKeys(); i++) {
-                elementos.add(node.getKey(i));
-            }
-        }
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
-        try {
-            return enlistarElementos().toString();
-        } catch (NoDatosException ex) {
-        }
-        return "none";
+        return this.root.toString();
     }
-
-    private class Node<T extends Comparable<T>> implements Serializable {
-
-        private T[] keys = null;
-        private int keysSize = 0;
-        private Node<T>[] children = null;
-        private int childrenSize = 0;
-        private Comparator<Node<T>> comparator = new Comparador();
-
-        protected Node<T> parent = null;
-
-        private Node(Node<T> parent, int maxKeySize, int maxChildrenSize) {
-            this.parent = parent;
-            this.keys = (T[]) new Comparable[maxKeySize + 1];
-            this.keysSize = 0;
-            this.children = new Node[maxChildrenSize + 1];
-            this.childrenSize = 0;
-        }
-
-        private T getKey(int index) {
-            return keys[index];
-        }
-
-        private int indexOf(T value) {
-            for (int i = 0; i < keysSize; i++) {
-                if (keys[i].equals(value)) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        private void addKey(T value) {
-            keys[keysSize++] = value;
-            Arrays.sort(keys, 0, keysSize);
-        }
-
-        private T removeKey(T value) {
-            T removed = null;
-            boolean found = false;
-            if (keysSize == 0) {
-                return null;
-            }
-            for (int i = 0; i < keysSize; i++) {
-                if (keys[i].equals(value)) {
-                    found = true;
-                    removed = keys[i];
-                } else if (found) {
-                    // shift the rest of the keys down
-                    keys[i - 1] = keys[i];
-                }
-            }
-            if (found) {
-                keysSize--;
-                keys[keysSize] = null;
-            }
-            return removed;
-        }
-
-        private T removeKey(int index) {
-            if (index >= keysSize) {
-                return null;
-            }
-            T value = keys[index];
-            for (int i = index + 1; i < keysSize; i++) {
-                // shift the rest of the keys down
-                keys[i - 1] = keys[i];
-            }
-            keysSize--;
-            keys[keysSize] = null;
-            return value;
-        }
-
-        private int numberOfKeys() {
-            return keysSize;
-        }
-
-        private Node<T> getChild(int index) {
-            if (index >= childrenSize) {
-                return null;
-            }
-            return children[index];
-        }
-
-        private int indexOf(Node<T> child) {
-            for (int i = 0; i < childrenSize; i++) {
-                if (children[i].equals(child)) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        private boolean addChild(Node<T> child) {
-            child.parent = this;
-            children[childrenSize++] = child;
-            Arrays.sort(children, 0, childrenSize, comparator);
-            return true;
-        }
-
-        private boolean removeChild(Node<T> child) {
-            boolean found = false;
-            if (childrenSize == 0) {
-                return found;
-            }
-            for (int i = 0; i < childrenSize; i++) {
-                if (children[i].equals(child)) {
-                    found = true;
-                } else if (found) {
-                    // shift the rest of the keys down
-                    children[i - 1] = children[i];
-                }
-            }
-            if (found) {
-                childrenSize--;
-                children[childrenSize] = null;
-            }
-            return found;
-        }
-
-        private Node<T> removeChild(int index) {
-            if (index >= childrenSize) {
-                return null;
-            }
-            Node<T> value = children[index];
-            children[index] = null;
-            for (int i = index + 1; i < childrenSize; i++) {
-                // shift the rest of the keys down
-                children[i - 1] = children[i];
-            }
-            childrenSize--;
-            children[childrenSize] = null;
-            return value;
-        }
-
-        private int numberOfChildren() {
-            return childrenSize;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            return "Node";
-        }
-
-        private class Comparador implements Comparator<Node<T>>, Serializable {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public int compare(Node<T> o1, Node<T> o2) {
-                return o1.getKey(0).compareTo(o2.getKey(0));
-            }
-        }
-    }
-
 }

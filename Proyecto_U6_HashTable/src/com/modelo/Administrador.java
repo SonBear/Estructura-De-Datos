@@ -9,9 +9,10 @@ import com.modelo.ArbolB.BTree;
 import com.modelo.ArbolB.Exception.NoDatosException;
 import com.modelo.DAO.DAOBTree;
 import com.modelo.DAO.DAOHashTable;
+import com.modelo.DAO.DAOUsuarios;
 import com.modelo.HasTable.HashTable;
 import java.io.File;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +22,6 @@ import java.util.List;
 public class Administrador {
 
     private Contacto usuario;
-    private final String RutaContactos = "archivos/" + "Usuarios" + ".txt";
-    private String rutaArbol = "";
     private boolean usuarioLogeado = false;
 
     public Contacto getUsuario() {
@@ -30,20 +29,20 @@ public class Administrador {
     }
 
     public void login(String correo, String contraseña) throws UsuarioIncorrectoException, ContraseñaIncorrectaException {
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-        Contacto usuario = usuarios.get(correo);
-
-        if (usuario == null) {
+        HashTable<String, String> directorios = DAOHashTable.getData();
+        //Contacto usuario = usuarios.get(correo);
+        if (!directorios.containsKey(correo)) {
             usuarioLogeado = false;
             throw new UsuarioIncorrectoException("El correo ingresado no está asociado a ninguna cuenta");
         }
+        Contacto nuevoUsuario = buscarContactoLista(correo);
 
-        if (!usuario.getContraseña().equals(contraseña)) {
+        if (!nuevoUsuario.getContraseña().equals(contraseña)) {
             usuarioLogeado = false;
             throw new UsuarioIncorrectoException("Error contraseña incorrecta");
         }
 
-        this.usuario = usuario;
+        this.usuario = nuevoUsuario;
         usuarioLogeado = true;
     }
 
@@ -59,26 +58,27 @@ public class Administrador {
 
     public void crearUsuario(String nombre, int edad, String correo, String contraseña, String rutaContacto) throws CorreoAsociadoException {
 
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-        if (usuarios.containsKey(correo)) {
+        HashTable<String, String> directorios = DAOHashTable.getData();
+
+        if (directorios.containsKey(correo)) {
             throw new CorreoAsociadoException("El correo ingresado ya ha sido asociado a una cuenta");
         }
-        Contacto usuario = new Contacto(nombre, edad, correo, contraseña, rutaContacto);
+        Contacto nuevoUsuario = new Contacto(nombre, edad, correo, contraseña, rutaContacto);
 
-        usuarios.add(correo, usuario);
-        DAOHashTable.saveData(usuarios, RutaContactos);
-    }
+        //Save and add data to list of usuarios
+        ArrayList<Contacto> usuarios = DAOUsuarios.getData();
+        usuarios.add(nuevoUsuario);
+        DAOUsuarios.saveData(usuarios);
 
-    public void crearUsuario(String nombre, int edad, String correo, String contraseña) throws CorreoAsociadoException {
+        //Save and add data to hastable of directories
+        directorios.add(correo, rutaContacto + "\\" + correo + ".dat");
+        DAOHashTable.saveData(directorios);
 
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-        if (usuarios.containsKey(correo)) {
-            throw new CorreoAsociadoException("El correo ingresado ya ha sido asociado a una cuenta");
-        }
-        Contacto usuario = new Contacto(nombre, edad, correo, contraseña);
+        //create the file of Btree
+        String directorio = directorios.get(correo);
+        BTree arbol = DAOBTree.getData(directorios.get(correo));
+        DAOBTree.saveData(arbol, directorio);
 
-        usuarios.add(correo, usuario);
-        DAOHashTable.saveData(usuarios, RutaContactos);
     }
 
     public Administrador() {
@@ -87,13 +87,26 @@ public class Administrador {
 
     public Contacto buscar(String correo) throws NoDatosException {
 
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-        if (usuarios.containsKey(correo)) {
-            return usuarios.get(correo);
+        HashTable<String, String> directorios = DAOHashTable.getData();
+
+        if (directorios.containsKey(correo)) {
+            Contacto contacto = buscarContactoLista(correo);
+            return contacto;
         } else {
             throw new NoDatosException("Usuario no encontrado");
         }
 
+    }
+
+    private Contacto buscarContactoLista(String correo) {
+        ArrayList<Contacto> usuarios = DAOUsuarios.getData();
+        for (int i = 0; i < usuarios.size(); i++) {
+            Contacto contac = usuarios.get(i);
+            if (contac.getCorreo().equals(correo)) {
+                return contac;
+            }
+        }
+        return null;
     }
 
     public void agregarContactosUsuario(List<Contacto> contactos) throws NoDatosException, UsuarioNoLoginException, Exception {
@@ -110,12 +123,13 @@ public class Administrador {
             if (contacto.getCorreo().equals(usuario.getCorreo())) {
                 throw new Exception("No se puede agregar a si mismo");
             }
-            String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
+            //Find the directory of the current user
+            HashTable<String, String> directorios = DAOHashTable.getData();
+            String directorio = directorios.get(usuario.getCorreo());
 
-            BTree<Contacto> arbol = DAOBTree.getData(directorio);
-
+            //add and save the contact to contacts user
+            BTree arbol = DAOBTree.getData(directorio);
             arbol.add(contacto);
-
             DAOBTree.saveData(arbol, directorio);
         } else {
             throw new UsuarioNoLoginException("No hay usuario logeado");
@@ -124,10 +138,11 @@ public class Administrador {
 
     public List<Contacto> enlistarContactos() throws UsuarioNoLoginException, NoDatosException {
         if (usuarioLogeado) {
-            String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
+            HashTable<String, String> directorios = DAOHashTable.getData();
+            String directorio = directorios.get(usuario.getCorreo());
 
-            BTree<Contacto> arbol = DAOBTree.getData(directorio);
-            return arbol.enlistarElementos();
+            BTree arbol = DAOBTree.getData(directorio);
+            return arbol.getItems();
         } else {
             throw new UsuarioNoLoginException("Usuario no logeado");
         }
@@ -136,25 +151,25 @@ public class Administrador {
 
     public List<Contacto> listarContactoDe(Contacto contacto) throws NoDatosException, CorreoAsociadoException {
 
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-        if (!usuarios.containsKey(contacto.getCorreo())) {
+        HashTable<String, String> directorios = DAOHashTable.getData();
+        if (!directorios.containsKey(contacto.getCorreo())) {
             throw new CorreoAsociadoException("Usuario no existe");
         }
-        String directorio = contacto.getRutaContacto() + "/" + contacto.getCorreo() + ".txt";
-
-        BTree<Contacto> arbol = DAOBTree.getData(directorio);
-        return arbol.enlistarElementos();
+        String directorio = directorios.get(contacto.getCorreo());
+        BTree arbol = DAOBTree.getData(directorio);
+        return arbol.getItems();
     }
 
-    public void eliminarContactoUsuario(Contacto contacto) throws UsuarioNoLoginException, UsuarioIncorrectoException {
+    public void eliminarContactoAUsuario(Contacto contacto) throws UsuarioNoLoginException, UsuarioIncorrectoException {
         if (usuarioLogeado) {
             if (contacto.getCorreo().equals(usuario.getCorreo())) {
                 throw new UsuarioIncorrectoException("No se puede eliminar a si mismo");
             }
-            String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
+            HashTable<String, String> directorios = DAOHashTable.getData();
+            String directorio = directorios.get(usuario.getCorreo());
 
-            BTree<Contacto> arbol = DAOBTree.getData(directorio);
-            System.out.println(arbol.remove(contacto));
+            BTree arbol = DAOBTree.getData(directorio);
+            arbol.remove(contacto);
             DAOBTree.saveData(arbol, directorio);
         } else {
             throw new UsuarioNoLoginException("No hay usuario logeado");
@@ -164,32 +179,52 @@ public class Administrador {
 
     public void eliminarCuentaActual() {
         if (usuarioLogeado) {
-            String directorio = usuario.getRutaContacto() + "/" + usuario.getCorreo() + ".txt";
+            eliminarContactoDeTodos(usuario);
+            //get the directory of the current user
+            HashTable<String, String> directorios = DAOHashTable.getData();
+
+            //delete the contacts file of current user
+            String directorio = directorios.get(usuario.getCorreo());
             File file = new File(directorio);
             file.delete();
-            HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
-            usuarios.remove(usuario.getCorreo());
-            DAOHashTable.saveData(usuarios, RutaContactos);
-            eliminarContactoDeTodos(usuario);
+
+            //Remove the current user from user list
+            ArrayList<Contacto> usuarios = DAOUsuarios.getData();
+            usuarios.remove(usuario);
+            DAOUsuarios.saveData(usuarios);
+
+            //remove the current user form other contacts list, and remove user from directory and save it
+            directorios.remove(usuario.getCorreo());
+            DAOHashTable.saveData(directorios);
+
+            usuario = null;
+            usuarioLogeado = false;
         }
     }
 
     public void eliminarContactoDeTodos(Contacto contactoEliminar) {
-        List<Contacto> contactos = listarTodos();
-        for (int i = 0; i < contactos.size(); i++) {
-            Contacto contacto = contactos.get(i);
-            String directorio = contacto.getRutaContacto() + "/" + contacto.getCorreo() + ".txt";
+        List<Contacto> usuarios = listarTodos();
+        HashTable<String, String> directorios = DAOHashTable.getData();
+        for (int i = 0; i < usuarios.size(); i++) {
+            Contacto contacto = usuarios.get(i);
+            if (!contacto.equals(contactoEliminar)) {
 
-            BTree<Contacto> arbol = DAOBTree.getData(directorio);
-            System.out.println(arbol.remove(contactoEliminar));
-            DAOBTree.saveData(arbol, directorio);
+                String directorio = directorios.get(contacto.getCorreo());
+
+                BTree arbol = DAOBTree.getData(directorio);
+
+                arbol.remove(contactoEliminar);
+                DAOBTree.saveData(arbol, directorio);
+
+            }
+
         }
     }
 
     public List<Contacto> listarTodos() {
-        HashTable<String, Contacto> usuarios = DAOHashTable.getData(RutaContactos);
+        ArrayList<Contacto> usuarios = DAOUsuarios.getData();
 
-        return Collections.list(usuarios.elements());
+        return usuarios;
         //usuarios.values()
     }
 
