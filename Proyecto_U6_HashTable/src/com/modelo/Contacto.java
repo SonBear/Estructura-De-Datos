@@ -87,6 +87,13 @@ public class Contacto implements BTreeComparable, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.correo);
+        return hash;
+    }
+
+    @Override
     public int compareTo(BTreeComparable other) {
         return getNombre().compareTo(((Contacto) other).getNombre());
     }

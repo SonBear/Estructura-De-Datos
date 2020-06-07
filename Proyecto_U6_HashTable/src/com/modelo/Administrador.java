@@ -71,7 +71,7 @@ public class Administrador {
         DAOUsuarios.saveData(usuarios);
 
         //Save and add data to hastable of directories
-        directorios.add(correo, rutaContacto + "\\" + correo + ".dat");
+        directorios.put(correo, rutaContacto + "\\" + correo + ".dat");
         DAOHashTable.saveData(directorios);
 
         //create the file of Btree
@@ -179,6 +179,7 @@ public class Administrador {
 
     public void eliminarCuentaActual() {
         if (usuarioLogeado) {
+            //remove the current user form all BTree contacts
             eliminarContactoDeTodos(usuario);
             //get the directory of the current user
             HashTable<String, String> directorios = DAOHashTable.getData();
@@ -193,7 +194,7 @@ public class Administrador {
             usuarios.remove(usuario);
             DAOUsuarios.saveData(usuarios);
 
-            //remove the current user form other contacts list, and remove user from directory and save it
+            //remove the current user from directory and save it
             directorios.remove(usuario.getCorreo());
             DAOHashTable.saveData(directorios);
 
