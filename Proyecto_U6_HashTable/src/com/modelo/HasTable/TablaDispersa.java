@@ -212,8 +212,8 @@ public class TablaDispersa<K, V> implements Serializable {
 
             out += " -> Entrada{" + "key=" + key + ", value=" + value + '}';
             while (aux != null) {
-                out += " -> Entrada{" + "key=" + next.key + ", value=" + next.value + '}';
-                aux = next.next;
+                out += " -> Entrada{" + "key=" + aux.key + ", value=" + aux.value + '}';
+                aux = aux.getNext();
             }
             return out;
         }
