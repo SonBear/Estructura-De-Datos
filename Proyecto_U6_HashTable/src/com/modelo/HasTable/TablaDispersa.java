@@ -47,24 +47,28 @@ public class TablaDispersa<K, V> implements Serializable {
             p = -p;
         }
 
-        // bucle de exploración
-        while (valores[p] != null && !(valores[p].getKey().equals(key))) {
-            i++;
-            p += (i * i) + 1;
-            p %= TAMTABLA; // considera el array como circular
-        }
-        System.out.println(p + "F");
-        return p;
+        return p < 0 ? -p : p;
     }
 
     public void put(K key, V element) {
         int posicion;
         posicion = direccion(key);
+        Entrada<K, V> prev = valores[posicion];
+        if (prev != null && prev.key != key) {
+            valores[posicion] = new Entrada(key, element, prev);
+
+            numElementos++;
+            //factorCarga = (double) (numElementos) / TAMTABLA;
+
+            return;
+
+        }
+
         valores[posicion] = new Entrada(key, element);
         numElementos++;
         factorCarga = (double) (numElementos) / TAMTABLA;
         if (factorCarga > 0.7) {
-            aumentarTamaño();
+            //  aumentarTamaño();
             System.out.println("\n!! Factor de carga supera el 70%.!!"
                     + " Conviene aumentar el tamaño.");
         }
@@ -72,14 +76,21 @@ public class TablaDispersa<K, V> implements Serializable {
 
     public V get(K key) {
         int posicion;
+        V value = null;
 
         posicion = direccion(key);
-        System.out.println(posicion);
-        Entrada<K, V> entrada = valores[posicion];
-        if (entrada == null) {
+
+        Entrada<K, V> aux = valores[posicion];
+        while (aux != null && aux.key != key) {
+            aux = aux.getNext();
+        }
+        if (aux == null) {
             return null;
         }
-        return entrada.getValue();
+        value = aux.value;
+
+        return value;
+
     }
 
     public V remove(K key) {
@@ -88,9 +99,29 @@ public class TablaDispersa<K, V> implements Serializable {
         posicion = direccion(key);
 
         if (valores[posicion] != null) {
-            value = valores[posicion].getValue();
-            System.out.println("valor Eliminado: " + valores[posicion].getValue());
-            valores[posicion] = null;
+
+            Entrada<K, V> prev = valores[posicion];
+
+            if (prev.key.equals(key)) {
+                value = prev.value;
+                valores[posicion] = valores[posicion].getNext();
+                System.out.println("valor Eliminado: " + value);
+                numElementos--;
+                return value;
+            }
+            Entrada<K, V> aux = valores[posicion].getNext();
+            while (aux != null && aux.getKey() != key) {
+                prev = aux;
+                aux = aux.next;
+            }
+            if (aux == null) {
+                return null;
+            }
+            value = aux.value;
+            prev.setNext(aux.getNext());
+
+            System.out.println("valor Eliminado: " + value);
+
             numElementos--;
         }
         return value;
@@ -133,12 +164,19 @@ public class TablaDispersa<K, V> implements Serializable {
         return numElementos == 0;
     }
 
-    private class Entrada<K, T> implements Serializable {
+    private class Entrada<K, V> implements Serializable {
 
         private K key;
-        private T value;
+        private V value;
+        private Entrada<K, V> next = null;
 
-        public Entrada(K key, T value) {
+        public Entrada(K key, V value, Entrada<K, V> next) {
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+
+        public Entrada(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -147,7 +185,7 @@ public class TablaDispersa<K, V> implements Serializable {
             return key;
         }
 
-        public T getValue() {
+        public V getValue() {
             return value;
         }
 
@@ -155,13 +193,29 @@ public class TablaDispersa<K, V> implements Serializable {
             this.key = key;
         }
 
-        public void setValue(T value) {
+        public void setValue(V value) {
             this.value = value;
+        }
+
+        public void setNext(Entrada<K, V> next) {
+            this.next = next;
+        }
+
+        public Entrada<K, V> getNext() {
+            return next;
         }
 
         @Override
         public String toString() {
-            return "Entrada{" + "key=" + key + ", value=" + value + '}';
+            String out = "";
+            Entrada<K, V> aux = next;
+
+            out += " -> Entrada{" + "key=" + key + ", value=" + value + '}';
+            while (aux != null) {
+                out += " -> Entrada{" + "key=" + next.key + ", value=" + next.value + '}';
+                aux = next.next;
+            }
+            return out;
         }
 
     }
