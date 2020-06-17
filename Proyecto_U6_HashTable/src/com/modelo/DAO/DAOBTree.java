@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.modelo.DAO;
 
 import com.modelo.ArbolB.BTree;
@@ -19,6 +14,7 @@ import java.io.ObjectOutputStream;
 public class DAOBTree {
 
     public static BTree getData(String directorio) {
+
         try {
             File file = new File(directorio);
             if (!file.exists()) {

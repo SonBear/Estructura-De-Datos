@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.controladores;
 
 import com.modelo.Administrador;
@@ -85,7 +80,7 @@ public class ControllerMenuPrincipal {
     private void listarMisContactos(ActionEvent e) {
         try {
             Contacto usuario = admi.getUsuario();
-            List<Contacto> contactos = admi.enlistarContactos();
+            List<Contacto> contactos = admi.listarContactosUsuario();
             contListado.iniciar(contactos, "Mis contactos", usuario.getNombre(), usuario.getCorreo());
         } catch (Exception ex) {
             menu.error(ex.getMessage());

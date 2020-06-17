@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.modelo.DAO;
 
 import com.modelo.HasTable.HashTable;
@@ -18,7 +13,7 @@ import java.io.ObjectOutputStream;
  */
 public class DAOHashTable {
 
-    private final static String directorio = "archivos/" + "DirectorioCorreos" + ".txt";
+    private final static String directorio = "archivos/" + "DirectorioCorreos" + ".dat";
 
     public static <T> HashTable<String, T> getData() {
         try {

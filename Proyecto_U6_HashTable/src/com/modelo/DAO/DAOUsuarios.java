@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.modelo.DAO;
 
 import com.modelo.Contacto;
@@ -19,7 +14,7 @@ import java.util.ArrayList;
  */
 public class DAOUsuarios {
 
-    private final static String directorio = "archivos/" + "Usuarios" + ".txt";
+    private final static String directorio = "archivos/" + "Usuarios" + ".dat";
 
     public static ArrayList<Contacto> getData() {
         try {

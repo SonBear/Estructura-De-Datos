@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.modelo.HasTable;
 
 import java.io.Serializable;
@@ -11,20 +6,33 @@ import java.io.Serializable;
  *
  * @author emman
  */
-public class TablaDispersa<K, T> implements Serializable {
+public class TablaDispersa<K, V> implements Serializable {
 
-    private static int TAMTABLA = 11;
+    private int TAMTABLA = 11;
     private int numElementos;
     private double factorCarga;
-    private Entrada<K, T>[] valores;
+    private Entrada<K, V>[] valores;
 
     public TablaDispersa() {
         valores = new Entrada[TAMTABLA];
-        for (int j = 0; j < TAMTABLA; j++) {
-            valores[j] = null;
-        }
         numElementos = 0;
         factorCarga = 0.0;
+    }
+
+    public void setTAMTABLA(int TAMTABLA) {
+        this.TAMTABLA = TAMTABLA;
+    }
+
+    public void setNumElementos(int numElementos) {
+        this.numElementos = numElementos;
+    }
+
+    public void setFactorCarga(double factorCarga) {
+        this.factorCarga = factorCarga;
+    }
+
+    public void setValores(Entrada<K, V>[] valores) {
+        this.valores = valores;
     }
 
     private int direccion(K key) {
@@ -32,23 +40,24 @@ public class TablaDispersa<K, T> implements Serializable {
         long d;
 
         d = key.hashCode();
+
         // aplica aritmética modular para obtener dirección base
         p = (int) (d % TAMTABLA);
         if (p < 0) {
             p = -p;
         }
-        System.out.println(p);
-        // bucle de exploración
 
-        while (valores[p] != null && !valores[p].getKey().equals(key)) {
+        // bucle de exploración
+        while (valores[p] != null && !(valores[p].getKey().equals(key))) {
             i++;
             p += (i * i) + 1;
             p %= TAMTABLA; // considera el array como circular
         }
+        System.out.println(p + "F");
         return p;
     }
 
-    public void put(K key, T element) {
+    public void put(K key, V element) {
         int posicion;
         posicion = direccion(key);
         valores[posicion] = new Entrada(key, element);
@@ -61,20 +70,21 @@ public class TablaDispersa<K, T> implements Serializable {
         }
     }
 
-    public T get(K key) {
+    public V get(K key) {
         int posicion;
 
         posicion = direccion(key);
-        Entrada<K, T> entrada = valores[posicion];
+        System.out.println(posicion);
+        Entrada<K, V> entrada = valores[posicion];
         if (entrada == null) {
             return null;
         }
         return entrada.getValue();
     }
 
-    public T remove(K key) {
+    public V remove(K key) {
         int posicion;
-        T value = null;
+        V value = null;
         posicion = direccion(key);
 
         if (valores[posicion] != null) {
@@ -87,7 +97,7 @@ public class TablaDispersa<K, T> implements Serializable {
     }
 
     public boolean containsKey(K key) {
-        T element = get(key);
+        V element = get(key);
         return element != null;
     }
 
@@ -98,15 +108,17 @@ public class TablaDispersa<K, T> implements Serializable {
     }
 
     private void aumentarTamaño() {
-        factorCarga = 0;
-        numElementos = 0;
-        Entrada<K, T> valoresAnteriores[] = valores.clone();
-        TAMTABLA *= 2;
-        valores = new Entrada[TAMTABLA];
+        setFactorCarga(0.0);
+        setNumElementos(0);
+
+        Entrada<K, V> valoresAnteriores[] = valores.clone();
+
+        setTAMTABLA(TAMTABLA * 2 + 1);
+        setValores(new Entrada[TAMTABLA]);
+
         //Se vueven a dispersar los valores
-        for (int i = 0; i < valoresAnteriores.length; i++) {
-            if (valoresAnteriores[i] != null) {
-                Entrada<K, T> valor = valoresAnteriores[i];
+        for (Entrada<K, V> valor : valoresAnteriores) {
+            if (valor != null) {
                 put(valor.key, valor.value);
             }
         }
@@ -145,6 +157,11 @@ public class TablaDispersa<K, T> implements Serializable {
 
         public void setValue(T value) {
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "Entrada{" + "key=" + key + ", value=" + value + '}';
         }
 
     }

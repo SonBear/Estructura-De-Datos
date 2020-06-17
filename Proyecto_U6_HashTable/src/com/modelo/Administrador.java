@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.modelo;
 
 import com.modelo.ArbolB.BTree;
@@ -31,8 +26,8 @@ public class Administrador {
     public void login(String correo, String contraseña) throws UsuarioIncorrectoException, ContraseñaIncorrectaException {
         HashTable<String, String> directorios = DAOHashTable.getData();
         //Contacto usuario = usuarios.get(correo);
+        directorios.imprimirTabla();
         if (!directorios.containsKey(correo)) {
-            usuarioLogeado = false;
             throw new UsuarioIncorrectoException("El correo ingresado no está asociado a ninguna cuenta");
         }
         Contacto nuevoUsuario = buscarContactoLista(correo);
@@ -76,7 +71,7 @@ public class Administrador {
 
         //create the file of Btree
         String directorio = directorios.get(correo);
-        BTree arbol = DAOBTree.getData(directorios.get(correo));
+        BTree arbol = DAOBTree.getData(directorio);
         DAOBTree.saveData(arbol, directorio);
 
     }
@@ -136,7 +131,7 @@ public class Administrador {
         }
     }
 
-    public List<Contacto> enlistarContactos() throws UsuarioNoLoginException, NoDatosException {
+    public List<Contacto> listarContactosUsuario() throws UsuarioNoLoginException, NoDatosException {
         if (usuarioLogeado) {
             HashTable<String, String> directorios = DAOHashTable.getData();
             String directorio = directorios.get(usuario.getCorreo());
@@ -206,27 +201,23 @@ public class Administrador {
     public void eliminarContactoDeTodos(Contacto contactoEliminar) {
         List<Contacto> usuarios = listarTodos();
         HashTable<String, String> directorios = DAOHashTable.getData();
-        for (int i = 0; i < usuarios.size(); i++) {
-            Contacto contacto = usuarios.get(i);
+        for (Contacto contacto : usuarios) {
+            //Mientras no sea el mismo
             if (!contacto.equals(contactoEliminar)) {
 
                 String directorio = directorios.get(contacto.getCorreo());
 
                 BTree arbol = DAOBTree.getData(directorio);
-
                 arbol.remove(contactoEliminar);
                 DAOBTree.saveData(arbol, directorio);
 
             }
-
         }
     }
 
     public List<Contacto> listarTodos() {
         ArrayList<Contacto> usuarios = DAOUsuarios.getData();
-
         return usuarios;
-        //usuarios.values()
     }
 
 }

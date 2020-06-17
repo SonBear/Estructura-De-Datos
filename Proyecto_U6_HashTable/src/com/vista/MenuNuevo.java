@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.vista;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -13,7 +9,7 @@ import javax.swing.JTextField;
  *
  * @author emman
  */
-public class MenuNuevo extends javax.swing.JFrame {
+public class MenuNuevo extends JDialog {
 
     /**
      * Creates new form MenuCreateAco
