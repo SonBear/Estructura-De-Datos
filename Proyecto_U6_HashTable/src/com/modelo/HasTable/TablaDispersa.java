@@ -36,16 +36,13 @@ public class TablaDispersa<K, V> implements Serializable {
     }
 
     private int direccion(K key) {
-        int i = 0, p;
+        int p;
         long d;
 
         d = key.hashCode();
 
         // aplica aritmética modular para obtener dirección base
         p = (int) (d % TAMTABLA);
-        if (p < 0) {
-            p = -p;
-        }
 
         return p < 0 ? -p : p;
     }
@@ -54,12 +51,14 @@ public class TablaDispersa<K, V> implements Serializable {
         int posicion;
         posicion = direccion(key);
         Entrada<K, V> prev = valores[posicion];
-        if (prev != null && prev.key != key) {
+        if (containsKey(key)) {
+            System.out.println("La llave ya existe");
+            return;
+        }
+        //Añadir la nueva entrada a la lista ligada no se añaden si las claves son iguales de ser iguales se remplaza
+        if (prev != null) {
             valores[posicion] = new Entrada(key, element, prev);
-
             numElementos++;
-            //factorCarga = (double) (numElementos) / TAMTABLA;
-
             return;
 
         }
@@ -67,10 +66,9 @@ public class TablaDispersa<K, V> implements Serializable {
         valores[posicion] = new Entrada(key, element);
         numElementos++;
         factorCarga = (double) (numElementos) / TAMTABLA;
+
         if (factorCarga > 0.7) {
-            //  aumentarTamaño();
-            System.out.println("\n!! Factor de carga supera el 70%.!!"
-                    + " Conviene aumentar el tamaño.");
+            reHash();
         }
     }
 
@@ -81,7 +79,8 @@ public class TablaDispersa<K, V> implements Serializable {
         posicion = direccion(key);
 
         Entrada<K, V> aux = valores[posicion];
-        while (aux != null && aux.key != key) {
+
+        while (aux != null && !aux.key.equals(key)) {
             aux = aux.getNext();
         }
         if (aux == null) {
@@ -110,7 +109,7 @@ public class TablaDispersa<K, V> implements Serializable {
                 return value;
             }
             Entrada<K, V> aux = valores[posicion].getNext();
-            while (aux != null && aux.getKey() != key) {
+            while (aux != null && !aux.getKey().equals(key)) {
                 prev = aux;
                 aux = aux.next;
             }
@@ -138,7 +137,7 @@ public class TablaDispersa<K, V> implements Serializable {
         }
     }
 
-    private void aumentarTamaño() {
+    private void reHash() {
         setFactorCarga(0.0);
         setNumElementos(0);
 
@@ -149,9 +148,12 @@ public class TablaDispersa<K, V> implements Serializable {
 
         //Se vueven a dispersar los valores
         for (Entrada<K, V> valor : valoresAnteriores) {
-            if (valor != null) {
-                put(valor.key, valor.value);
+            Entrada<K, V> aux = valor;
+            while (aux != null) {
+                put(aux.key, aux.value);
+                aux = aux.next;
             }
+
         }
 
     }
